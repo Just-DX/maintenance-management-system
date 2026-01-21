@@ -1,0 +1,54 @@
+{
+  "name": "@justdx/components",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./globals.css": "./src/styles/globals.css"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/",
+    "clean": "rm -rf dist .turbo storybook-static",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\""
+  },
+  "devDependencies": {
+    "@justdx/config": "workspace:*",
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/addon-interactions": "^8.4.7",
+    "@storybook/addon-links": "^8.4.7",
+    "@storybook/blocks": "^8.4.7",
+    "@storybook/react": "^8.4.7",
+    "@storybook/react-vite": "^8.4.7",
+    "@storybook/test": "^8.4.7",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "storybook": "^8.4.7",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1 || ^19.0.0",
+    "react-dom": "^18.3.1 || ^19.0.0"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.6.0"
+  }
+}

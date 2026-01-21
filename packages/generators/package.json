@@ -1,0 +1,19 @@
+{
+  "name": "@justdx/generators",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/",
+    "clean": "rm -rf .turbo",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\""
+  },
+  "devDependencies": {
+    "@justdx/config": "workspace:*",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2"
+  }
+}
