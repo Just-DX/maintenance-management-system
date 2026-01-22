@@ -1,6 +1,16 @@
 {
   "extends": "../config/src/typescript/base.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@": ["./src/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@shadcn-primitives/*": ["./src/shadcn-primitives/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@atoms/*": ["./src/atoms/*"],
+      "@molecules/*": ["./src/molecules/*"],
+      "@organisms/*": ["./src/organisms/*"]
+    },
     "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "react-jsx"

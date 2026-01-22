@@ -1,9 +1,9 @@
 // @justdx/database - Prisma client wrapper
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+  prisma: PrismaClient | undefined
+}
 
 /**
  * Prisma client factory
@@ -12,11 +12,11 @@ const globalForPrisma = globalThis as unknown as {
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
-    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-  });
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  })
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma
 }
 
 /**
@@ -24,8 +24,8 @@ if (process.env.NODE_ENV !== "production") {
  * Use this for serverless environments
  */
 export function getPrisma(): PrismaClient {
-  return prisma;
+  return prisma
 }
 
-export * from "@prisma/client";
-export { PrismaClient };
+export * from '@prisma/client'
+export { PrismaClient }

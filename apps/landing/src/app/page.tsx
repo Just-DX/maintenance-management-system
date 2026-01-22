@@ -7,5 +7,5 @@ export default function Home() {
         <p className="text-sm text-gray-500">Built with Next.js App Router + Tailwind CSS</p>
       </main>
     </div>
-  );
+  )
 }

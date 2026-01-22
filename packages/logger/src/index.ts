@@ -1,14 +1,14 @@
 // @justdx/logger - Standardized logging for APIs/workers
-import pino from "pino";
+import pino from 'pino'
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === 'development'
 
 export interface LogContext {
-  requestId?: string;
-  userId?: string;
-  jobId?: string;
-  service?: string;
-  [key: string]: unknown;
+  requestId?: string
+  userId?: string
+  jobId?: string
+  service?: string
+  [key: string]: unknown
 }
 
 /**
@@ -16,14 +16,14 @@ export interface LogContext {
  */
 export function createLogger(context: LogContext = {}) {
   return pino({
-    level: process.env.LOG_LEVEL || "info",
+    level: process.env.LOG_LEVEL || 'info',
     ...(isDev && {
       transport: {
-        target: "pino-pretty",
+        target: 'pino-pretty',
         options: {
           colorize: true,
-          translateTime: "SYS:standard",
-          ignore: "pid,hostname",
+          translateTime: 'SYS:standard',
+          ignore: 'pid,hostname',
         },
       },
     }),
@@ -31,12 +31,12 @@ export function createLogger(context: LogContext = {}) {
       env: process.env.NODE_ENV,
       ...context,
     },
-  });
+  })
 }
 
 /**
  * Default logger instance
  */
-export const logger = createLogger();
+export const logger = createLogger()
 
-export type Logger = ReturnType<typeof createLogger>;
+export type Logger = ReturnType<typeof createLogger>

@@ -1,4 +1,4 @@
-import "./App.css";
+import './App.css'
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
         <p className="version">Running on port 3002</p>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
