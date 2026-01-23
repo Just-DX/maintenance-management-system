@@ -3,13 +3,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@": ["./src/*"],
+      "@*": ["./src/*"],
       "@lib/*": ["./src/lib/*"],
       "@shadcn-primitives/*": ["./src/shadcn-primitives/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@atoms/*": ["./src/atoms/*"],
       "@molecules/*": ["./src/molecules/*"],
-      "@organisms/*": ["./src/organisms/*"]
+      "@organisms/*": ["./src/organisms/*"],
+      "@justdx/config": ["../config/src"]
     },
     "outDir": "./dist",
     "rootDir": "./src",

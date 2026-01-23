@@ -11,7 +11,7 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@atoms",
+    "components": "@",
     "utils": "@lib/utils",
     "ui": "@shadcn-primitives",
     "lib": "@lib",

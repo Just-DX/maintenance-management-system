@@ -1,1 +1,3 @@
-// Atom components - smallest building blocks
+// Button
+export { Button } from './Button'
+export type { ButtonProps } from './Button/types'
