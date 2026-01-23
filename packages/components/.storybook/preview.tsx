@@ -1,27 +1,12 @@
 import type { Decorator, Preview } from '@storybook/react-vite'
+import { withThemeByClassName } from '@storybook/addon-themes'
 import '../src/styles/globals.css'
 
-const applyTheme = (theme?: string) => {
-  if (typeof document === 'undefined') {
-    return
-  }
-  const root = document.documentElement
-  const prefersDark =
-    typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
-  const resolvedTheme = theme === 'system' ? (prefersDark ? 'dark' : 'light') : (theme ?? 'light')
-
-  if (resolvedTheme === 'dark') {
-    root.classList.add('dark')
-  } else {
-    root.classList.remove('dark')
-  }
-}
-
-// Lightweight toolbar toggle to reduce friction; manual theme testing remains required.
-const withTheme: Decorator = (Story, context) => {
-  applyTheme(context.globals.theme as string | undefined)
-  return <Story />
-}
+const fontDecorator: Decorator = (Story) => (
+  <div style={{ fontFamily: "'Inter', sans-serif" }} className="antialiased">
+    <Story />
+  </div>
+)
 
 const preview: Preview = {
   parameters: {
@@ -32,23 +17,24 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-  },
-  globalTypes: {
-    theme: {
-      name: 'Theme',
-      description: 'Global theme for components',
-      defaultValue: 'light',
-      toolbar: {
-        icon: 'circlehollow',
-        items: [
-          { value: 'light', title: 'Light' },
-          { value: 'dark', title: 'Dark' },
-          { value: 'system', title: 'System' },
-        ],
-      },
+    backgrounds: {
+      default: 'light',
+      values: [
+        { name: 'light', value: '#ffffff' },
+        { name: 'dark', value: '#0a0a0a' },
+      ],
     },
   },
-  decorators: [withTheme],
+  decorators: [
+    fontDecorator,
+    withThemeByClassName({
+      themes: {
+        light: '',
+        dark: 'dark',
+      },
+      defaultTheme: 'light',
+    }),
+  ],
 }
 
 export default preview

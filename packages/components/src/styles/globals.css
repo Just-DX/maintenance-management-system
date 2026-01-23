@@ -6,9 +6,81 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  html {
+    @apply antialiased;
   }
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+
+  /* Typography */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Status Utilities */
+  .alert-success {
+    @apply bg-success/10 text-success-foreground border-success/20;
+  }
+
+  .alert-warning {
+    @apply bg-warning/10 text-warning-foreground border-warning/20;
+  }
+
+  .alert-info {
+    @apply bg-info/10 text-info-foreground border-info/20;
+  }
+
+  .alert-destructive {
+    @apply bg-destructive/10 text-destructive-foreground border-destructive/20;
+  }
+
+  /* Table States */
+  .table-row-hover {
+    @apply hover:bg-muted/50 transition-colors;
+  }
+
+  .table-row-selected {
+    @apply bg-accent/50;
+  }
+
+  /* Skeleton Shimmer */
+  .skeleton-shimmer {
+    background: linear-gradient(90deg,
+        transparent,
+        oklch(0 0 0 / 0.04),
+        transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .dark .skeleton-shimmer {
+    background: linear-gradient(90deg,
+        transparent,
+        oklch(1 1 1 / 0.04),
+        transparent);
+  }
+
+  /* Surface refinements */
+  .popover-content,
+  .card {
+    @apply shadow-sm;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
   }
 }

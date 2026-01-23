@@ -1,22 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ChevronRight, Plus } from 'lucide-react'
 
+import { variants, textSizes, iconSizes } from './Button.constants'
+import { mockButtonProps } from './Button.fixtures'
 import { Button } from './index'
-
-const variants = ['default', 'secondary', 'outline', 'ghost', 'link', 'destructive'] as const
-
-const textSizes = ['default', 'sm', 'lg'] as const
-const iconSizes = ['icon', 'icon-sm', 'icon-lg'] as const
 
 const meta = {
   title: 'Atoms/Button',
   component: Button,
   tags: ['autodocs'],
-  args: {
-    children: 'Button',
-    variant: 'default',
-    size: 'default',
-  },
+  args: mockButtonProps,
   argTypes: {
     variant: {
       control: 'select',

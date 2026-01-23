@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: [getAbsolutePath('@storybook/addon-links')],
+  addons: [getAbsolutePath('@storybook/addon-links'), getAbsolutePath('@storybook/addon-themes')],
   framework: {
     name: getAbsolutePath('@storybook/react-vite'),
     options: {},
@@ -17,6 +17,6 @@ const config: StorybookConfig = {
 
 export default config
 
-function getAbsolutePath(value: string): any {
+function getAbsolutePath(value: string) {
   return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)))
 }

@@ -2,6 +2,10 @@
 // export * from './atoms';
 // export * from './molecules';
 // export * from './organisms';
-// export * from './hooks';
-// export * from './ui';
+
+// Export utilities and hooks for internal use
+export { useIsMobile } from './hooks/use-mobile'
 export { cn } from './lib/utils'
+
+// Export shadcn primitives
+export * from './shadcn-primitives'

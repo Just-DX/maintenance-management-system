@@ -24,10 +24,7 @@ const invalidStyles =
 /**
  * Variant styles
  */
-const defaultVariantStyles = twMerge(
-  'bg-primary text-primary-foreground',
-  'hover:bg-primary/90'
-)
+const defaultVariantStyles = twMerge('bg-primary text-primary-foreground', 'hover:bg-primary/90')
 
 const destructiveVariantStyles = twMerge(
   'bg-destructive text-white dark:bg-destructive/60',
@@ -51,10 +48,7 @@ const ghostVariantStyles = twMerge(
   'dark:hover:bg-accent/50'
 )
 
-const linkVariantStyles = twMerge(
-  'text-primary underline-offset-4',
-  'hover:underline'
-)
+const linkVariantStyles = twMerge('text-primary underline-offset-4', 'hover:underline')
 
 /**
  * Size styles
@@ -67,13 +61,7 @@ const sizeIconSmStyles = 'size-8'
 const sizeIconLgStyles = 'size-10'
 
 export const buttonVariants = cva(
-  twMerge(
-    baseStyles,
-    interactiveStyles,
-    disabledStyles,
-    iconStyles,
-    invalidStyles
-  ),
+  twMerge(baseStyles, interactiveStyles, disabledStyles, iconStyles, invalidStyles),
   {
     variants: {
       variant: {
