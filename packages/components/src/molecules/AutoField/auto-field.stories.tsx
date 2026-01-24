@@ -389,3 +389,86 @@ ZodValidation.parameters = {
     },
   },
 }
+
+// Input Group examples
+function InputGroupDemo() {
+  const form = useForm<{ search: string; website: string; password: string }>({
+    defaultValues: { search: '', website: '', password: '' },
+  })
+
+  // Input Group with icons using 'input-group' type
+  const websiteField: FieldConfig<{ search: string; website: string; password: string }> = {
+    name: 'website',
+    type: 'input-group',
+    label: 'Website',
+    props: {
+      placeholder: 'example.com',
+      startIcon: <span className="text-xs">https://</span>,
+    },
+  }
+
+  return (
+    <Form {...form}>
+      <form className="space-y-6">
+        <AutoField control={form.control} field={websiteField} />
+      </form>
+    </Form>
+  )
+}
+
+export const InputGroupFields: StoryFn = () => <InputGroupDemo />
+InputGroupFields.parameters = {
+  docs: {
+    description: {
+      story: 'Demonstration of Search, InputGroup, and Password field types.',
+    },
+  },
+}
+
+// Checkbox and Radio examples
+function SelectionControlsDemo() {
+  const form = useForm<{ terms: boolean; plan: string }>({
+    defaultValues: { terms: false, plan: 'free' },
+  })
+
+  const termsField: FieldConfig<{ terms: boolean; plan: string }> = {
+    name: 'terms',
+    type: 'checkbox',
+    label: 'Terms of Service',
+    description: 'Please review our terms',
+    checkBoxLabel: 'I accept the terms and conditions',
+    rules: { required: 'You must accept the terms' },
+  }
+
+  const planField: FieldConfig<{ terms: boolean; plan: string }> = {
+    name: 'plan',
+    type: 'radio-group',
+    label: 'Subscription Plan',
+    orientation: 'vertical',
+    options: [
+      { label: 'Free - $0/mo', value: 'free' },
+      { label: 'Pro - $29/mo', value: 'pro' },
+      { label: 'Enterprise - Custom', value: 'enterprise' },
+    ],
+    rules: { required: 'Please select a plan' },
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(console.log)} className="space-y-8">
+        <AutoField control={form.control} field={termsField} />
+        <AutoField control={form.control} field={planField} />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+  )
+}
+
+export const SelectionControls: StoryFn = () => <SelectionControlsDemo />
+SelectionControls.parameters = {
+  docs: {
+    description: {
+      story: 'Checkbox and RadioGroup examples. Checkbox uses checkBoxLabel for inline labeling.',
+    },
+  },
+}

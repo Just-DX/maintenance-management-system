@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: (args) => (
-    <Card className="w-[350px]" {...args}>
+    <Card className="w-87.5" {...args}>
       <CardHeader>
         <CardTitle>{cardContent.title}</CardTitle>
         <CardDescription>{cardContent.description}</CardDescription>

@@ -1,6 +1,9 @@
 // Button
 export { Button } from './Button'
 
+// Checkbox
+export { Checkbox } from './Checkbox'
+
 // Card
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './Card'
 
@@ -35,7 +38,7 @@ export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './Tool
 export { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from './InputOtp'
 
 // Sonner
-export { Toaster, toast } from './Sonner'
+export { toast, Toaster } from './Sonner'
 
 // Skeleton
 export { Skeleton } from './Skeleton'
@@ -110,3 +113,6 @@ export {
   FormMessage,
   useFormField,
 } from './Form'
+
+// Icons
+export * from './Icon'

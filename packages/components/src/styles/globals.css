@@ -1,3 +1,4 @@
+@source "../";
 @import '@justdx/config/tailwind/base.css';
 @import 'tw-animate-css';
 
@@ -6,7 +7,9 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
   }
 
   html {
@@ -19,7 +22,6 @@
 }
 
 @layer utilities {
-
   /* Typography */
   .text-balance {
     text-wrap: balance;
@@ -53,19 +55,13 @@
 
   /* Skeleton Shimmer */
   .skeleton-shimmer {
-    background: linear-gradient(90deg,
-        transparent,
-        oklch(0 0 0 / 0.04),
-        transparent);
+    background: linear-gradient(90deg, transparent, oklch(0 0 0 / 0.04), transparent);
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }
 
   .dark .skeleton-shimmer {
-    background: linear-gradient(90deg,
-        transparent,
-        oklch(1 1 1 / 0.04),
-        transparent);
+    background: linear-gradient(90deg, transparent, oklch(1 1 1 / 0.04), transparent);
   }
 
   /* Surface refinements */

@@ -3,6 +3,9 @@
 import * as React from 'react'
 import type { Control, FieldValues } from 'react-hook-form'
 
+import { Checkbox } from '../../atoms/Checkbox/Checkbox'
+import { InputGroup } from '../../atoms/InputGroup/InputGroup'
+import { RadioGroup } from '../../atoms/RadioGroup/RadioGroup'
 import { cn } from '../../lib/utils'
 import {
   FormControl,
@@ -134,6 +137,67 @@ function renderControl<TValues extends FieldValues>(
             ))}
           </SelectContent>
         </Select>
+      )
+
+    case 'input-group':
+      return (
+        <InputGroup
+          {...field.props}
+          disabled={field.disabled}
+          value={(rhf.value as string) ?? ''}
+          onChange={rhf.onChange}
+          onBlur={rhf.onBlur}
+          name={rhf.name}
+          ref={rhf.ref as React.Ref<HTMLInputElement>}
+        />
+      )
+
+    case 'checkbox':
+      return (
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            {...field.props}
+            disabled={field.disabled}
+            checked={!!rhf.value}
+            onCheckedChange={rhf.onChange}
+            name={rhf.name}
+            ref={rhf.ref as React.Ref<HTMLButtonElement>}
+            id={rhf.name}
+          />
+          {field.checkBoxLabel && (
+            <label
+              htmlFor={rhf.name}
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              {field.checkBoxLabel}
+            </label>
+          )}
+        </div>
+      )
+
+    case 'radio-group':
+      return (
+        <RadioGroup
+          {...field.props}
+          disabled={field.disabled}
+          value={(rhf.value as string) ?? ''}
+          onValueChange={rhf.onChange}
+          name={rhf.name}
+          ref={rhf.ref as React.Ref<HTMLDivElement>}
+          className={cn(field.orientation === 'horizontal' ? 'flex gap-4' : 'grid gap-2')}
+        >
+          {field.options.map((option) => (
+            <div key={option.value} className="flex items-center space-x-2">
+              <RadioGroup.Item value={option.value} id={`${rhf.name}-${option.value}`} />
+              <label
+                htmlFor={`${rhf.name}-${option.value}`}
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                {option.label}
+              </label>
+            </div>
+          ))}
+        </RadioGroup>
       )
 
     default: {

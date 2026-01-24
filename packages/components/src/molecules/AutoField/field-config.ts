@@ -1,6 +1,7 @@
 import type * as React from 'react'
 import type { FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 
+import type { InputGroup } from '../../atoms/InputGroup/InputGroup'
 import type { Input } from '../../shadcn-primitives/input'
 import type { Switch } from '../../shadcn-primitives/switch'
 import type { Textarea } from '../../shadcn-primitives/textarea'
@@ -81,6 +82,59 @@ export interface SelectField<TValues extends FieldValues> extends BaseField<TVal
 }
 
 /**
+ * Input Group field configuration
+ */
+export interface InputGroupField<TValues extends FieldValues> extends BaseField<TValues> {
+  type: 'input-group'
+  /** Optional props passed to InputGroup component */
+  props?: Omit<
+    React.ComponentProps<typeof InputGroup>,
+    'disabled' | 'value' | 'onChange' | 'onBlur' | 'name' | 'ref'
+  >
+}
+
+import type { Checkbox } from '../../atoms/Checkbox/Checkbox'
+import type { RadioGroup } from '../../atoms/RadioGroup/RadioGroup'
+
+/**
+ * Checkbox field configuration
+ */
+export interface CheckboxField<TValues extends FieldValues> extends BaseField<TValues> {
+  type: 'checkbox'
+  /** Optional content/label displayed next to the checkbox */
+  checkBoxLabel?: string
+  /** Optional props passed to Checkbox component */
+  props?: Omit<
+    React.ComponentProps<typeof Checkbox>,
+    'disabled' | 'checked' | 'onCheckedChange' | 'name' | 'ref' | 'value'
+  >
+}
+
+/**
+ * Radio Group option type
+ */
+export interface RadioOption {
+  label: string
+  value: string
+}
+
+/**
+ * Radio Group field configuration
+ */
+export interface RadioGroupField<TValues extends FieldValues> extends BaseField<TValues> {
+  type: 'radio-group'
+  /** Options to display in the radio group */
+  options: RadioOption[]
+  /** Orientation of the radio group */
+  orientation?: 'horizontal' | 'vertical'
+  /** Optional props passed to RadioGroup component */
+  props?: Omit<
+    React.ComponentProps<typeof RadioGroup>,
+    'disabled' | 'value' | 'onValueChange' | 'name' | 'ref'
+  >
+}
+
+/**
  * Discriminated union of all field configurations
  */
 export type FieldConfig<TValues extends FieldValues> =
@@ -88,3 +142,6 @@ export type FieldConfig<TValues extends FieldValues> =
   | TextareaField<TValues>
   | SwitchField<TValues>
   | SelectField<TValues>
+  | InputGroupField<TValues>
+  | CheckboxField<TValues>
+  | RadioGroupField<TValues>
