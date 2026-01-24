@@ -8,6 +8,12 @@ const loginCopy = {
   passwordPlaceholder: '••••••••',
   submit: 'Sign In',
   rememberMeLabel: 'Remember me',
+  forgotPassword: 'Forgot Password?',
+  signup: {
+    prompt: "Don't have an account?",
+    action: 'Sign up',
+    connect: 'Or continue with',
+  },
 }
 
 export { loginCopy }

@@ -1,3 +1,4 @@
+import { Toaster } from '@justdx/components/atoms/Sonner'
 import { queryClient } from '@plugins/react-query/client'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider } from '@tanstack/react-router'
@@ -16,6 +17,7 @@ createRoot(rootElement).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
+      <Toaster />
     </QueryClientProvider>
   </StrictMode>
 )

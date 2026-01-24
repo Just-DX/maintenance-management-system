@@ -6,6 +6,7 @@ import type { SubmitHandler, UseFormReturn } from 'react-hook-form'
 
 import { Link } from '@tanstack/react-router'
 import type { LoginFormData } from '../config/schema'
+import { loginCopy } from '../constants/copy'
 
 interface LoginFormProps {
   form: UseFormReturn<LoginFormData>
@@ -33,7 +34,7 @@ export function LoginForm({ form, fields, onSubmit, isSubmitting, submitLabel }:
           <AutoFields form={form} fields={rememberMeField} />
 
           <Button variant="link" asChild className="px-0 text-end">
-            <Link to="/forgot-password">Forgot Password?</Link>
+            <Link to="/forgot-password">{loginCopy.forgotPassword}</Link>
           </Button>
         </div>
 
