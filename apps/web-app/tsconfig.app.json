@@ -20,9 +20,14 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    "paths": {
+      "@*": ["./src/*"],
+      "@justdx/config": ["../../packages/config/src"],
+      "@justdx/components": ["../../packages/components/src"]
+    }
   },
   "include": ["src"]
 }

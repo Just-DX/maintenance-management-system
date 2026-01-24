@@ -15,16 +15,21 @@
   "dependencies": {
     "@justdx/common": "workspace:*",
     "@justdx/components": "workspace:*",
+    "@justdx/config": "workspace:*",
     "@justdx/types": "workspace:*",
     "@tanstack/react-query": "^5.62.12",
     "@tanstack/react-router": "^1.94.8",
+    "lucide-react": "^0.562.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@justdx/config": "workspace:*",
+    "@tailwindcss/vite": "^4.1.18",
     "@tanstack/router-devtools": "^1.94.8",
     "@tanstack/router-plugin": "^1.92.8",
+    "@types/node": "^22.13.5",
     "@types/react": "^19.0.6",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
