@@ -38,7 +38,7 @@ export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './Tool
 export { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from './InputOtp'
 
 // Sonner
-export { toast, Toaster } from './Sonner'
+export { Toaster, toast } from './Sonner'
 
 // Skeleton
 export { Skeleton } from './Skeleton'
@@ -116,3 +116,6 @@ export {
 
 // Icons
 export * from './Icon'
+
+// Avatar
+export { Avatar, AvatarFallback, AvatarImage } from './Avatar'

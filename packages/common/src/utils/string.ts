@@ -67,3 +67,16 @@ export function slugify(str: string): string {
 export function containsIgnoreCase(str: string, substring: string): boolean {
   return str.toLowerCase().includes(substring.toLowerCase())
 }
+
+/**
+ * Get initials from name
+ */
+export function getInitials(name?: string): string {
+  if (!name) return 'U'
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+}

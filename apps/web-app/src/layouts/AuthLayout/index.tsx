@@ -1,4 +1,4 @@
-import { LeftPanel } from './LeftPanel'
+import { LeftPanel } from './components/LeftPanel'
 
 export function AuthLayout({ children }: { children: React.ReactNode }) {
   return (

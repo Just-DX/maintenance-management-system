@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { Eye, EyeOff, Search } from 'lucide-react'
+import * as React from 'react'
 
 import { cn } from '../../lib/utils'
 import { Button } from '../Button'
@@ -10,32 +10,32 @@ export interface InputGroupProps extends React.ComponentProps<typeof Input> {
   endIcon?: React.ReactNode
 }
 
+import {
+  InputGroupLeft,
+  InputGroup as InputGroupPrimitive,
+  InputGroupRight,
+} from '../../shadcn-primitives/input-group'
+
+// ...
+
 const InputGroup = React.forwardRef<HTMLInputElement, InputGroupProps>(
   ({ className, startIcon, endIcon, ...props }, ref) => {
     return (
-      <div className="relative">
-        {startIcon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-            {startIcon}
-          </div>
-        )}
+      <InputGroupPrimitive>
+        {startIcon && <InputGroupLeft>{startIcon}</InputGroupLeft>}
         <Input
           ref={ref}
           className={cn(startIcon && 'pl-10', endIcon && 'pr-10', className)}
           {...props}
         />
-        {endIcon && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-            {endIcon}
-          </div>
-        )}
-      </div>
+        {endIcon && <InputGroupRight>{endIcon}</InputGroupRight>}
+      </InputGroupPrimitive>
     )
   }
 )
 InputGroup.displayName = 'InputGroup'
 
-const InputSearch = React.forwardRef<HTMLInputElement, React.ComponentProps<typeof Input>>(
+const InputSearch = React.forwardRef<HTMLInputElement, InputGroupProps>(
   ({ className, ...props }, ref) => {
     return (
       <InputGroup
@@ -81,4 +81,4 @@ const InputPassword = React.forwardRef<HTMLInputElement, React.ComponentProps<ty
 )
 InputPassword.displayName = 'InputPassword'
 
-export { InputGroup, InputSearch, InputPassword }
+export { InputGroup, InputPassword, InputSearch }

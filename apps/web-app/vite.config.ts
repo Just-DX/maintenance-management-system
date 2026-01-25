@@ -1,5 +1,5 @@
-import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
 import path from 'path'
 import { defineConfig } from 'vite'
 
@@ -13,6 +13,7 @@ export default defineConfig({
       '@routes': path.resolve(__dirname, './src/routes'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@layouts': path.resolve(__dirname, './src/layouts'),
+      '@shared': path.resolve(__dirname, './src/shared'),
       '@justdx/config': path.resolve(__dirname, '../../packages/config/src'),
       '@justdx/components': path.resolve(__dirname, '../../packages/components/src'),
     },

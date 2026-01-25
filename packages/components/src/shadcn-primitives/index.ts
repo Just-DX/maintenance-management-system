@@ -1,2 +1,5 @@
 export { Button, buttonVariants } from './button/button'
 export type { ButtonProps } from './button/button'
+export * from './dropdown-menu'
+export * from './input-group'
+export * from './sidebar'
