@@ -11,8 +11,8 @@ import { Skeleton } from '../atoms/Skeleton'
 import { PageHeader } from '../molecules/PageHeader'
 import { AppShell } from '../organisms/AppShell'
 import { mockAppShellProps, mockNavigationItems } from '../organisms/AppShell/AppShell.fixtures'
-import { mockUsers } from '../organisms/DataTable/DataTable.fixtures'
 import { PageLayout } from '../organisms/PageLayout'
+import { mockUsers } from '../organisms/RecordTable/RecordTable.fixtures'
 
 const meta = {
   title: 'Templates/DetailPageTemplate',

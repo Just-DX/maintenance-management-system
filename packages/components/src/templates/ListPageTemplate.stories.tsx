@@ -10,9 +10,9 @@ import { PageHeader } from '../molecules/PageHeader'
 import { TableToolbar } from '../molecules/TableToolbar'
 import { AppShell } from '../organisms/AppShell'
 import { mockAppShellProps, mockNavigationItems } from '../organisms/AppShell/AppShell.fixtures'
-import { DataTable, type ColumnDef } from '../organisms/DataTable'
-import { mockUsers, type MockUser } from '../organisms/DataTable/DataTable.fixtures'
 import { PageLayout } from '../organisms/PageLayout'
+import { RecordTable, type ColumnDef } from '../organisms/RecordTable'
+import { mockUsers, type MockUser } from '../organisms/RecordTable/RecordTable.fixtures'
 
 const meta = {
   title: 'Templates/ListPageTemplate',
@@ -180,7 +180,7 @@ export const Default: Story = {
             />
           }
         >
-          <DataTable
+          <RecordTable
             data={paginatedData}
             columns={userColumns}
             page={page}
@@ -252,7 +252,7 @@ export const EmptyState: Story = {
             />
           }
         >
-          <DataTable
+          <RecordTable
             data={[]}
             columns={userColumns}
             showPagination={false}
@@ -295,7 +295,7 @@ export const Loading: Story = {
           />
         }
       >
-        <DataTable
+        <RecordTable
           data={[]}
           columns={userColumns}
           isLoading

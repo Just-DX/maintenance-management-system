@@ -119,3 +119,9 @@ export * from './Icon'
 
 // Avatar
 export { Avatar, AvatarFallback, AvatarImage } from './Avatar'
+
+// PriorityBadge
+export { PriorityBadge, type PriorityBadgeProps, type PriorityLevel } from './PriorityBadge'
+
+// StatusBadge
+export { StatusBadge, type StatusBadgeProps, type StatusType } from './StatusBadge'

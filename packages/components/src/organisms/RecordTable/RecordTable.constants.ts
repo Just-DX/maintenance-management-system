@@ -1,6 +1,6 @@
-export const defaultDataTablePageSizes = [10, 20, 50] as const
+export const defaultRecordTablePageSizes = [10, 20, 50] as const
 
-export const dataTableStyles = {
+export const recordTableStyles = {
   root: 'space-y-4',
   tableWrapper: 'rounded-md border',
   skeleton: {

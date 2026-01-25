@@ -6,8 +6,9 @@ import { Badge } from '../../atoms/Badge'
 import { Button } from '../../atoms/Button'
 import { DropdownMenu } from '../../atoms/DropdownMenu'
 import { TableToolbar } from '../../molecules/TableToolbar'
-import { DataTable, type ColumnDef } from './DataTable'
-import { mockInvoices, mockUsers, type MockInvoice, type MockUser } from './DataTable.fixtures'
+import { RecordTable } from './RecordTable'
+import { mockInvoices, mockUsers, type MockInvoice, type MockUser } from './RecordTable.fixtures'
+import type { ColumnDef } from './RecordTable.types'
 
 // User columns
 const userColumns: ColumnDef<MockUser>[] = [
@@ -110,7 +111,7 @@ const invoiceColumns: ColumnDef<MockInvoice>[] = [
 ]
 
 const meta = {
-  title: 'Organisms/DataTable',
+  title: 'Organisms/RecordTable',
   parameters: {
     layout: 'padded',
   },
@@ -128,7 +129,7 @@ export const Default: Story = {
     const paginatedData = mockUsers.slice((page - 1) * pageSize, page * pageSize)
 
     return (
-      <DataTable
+      <RecordTable
         data={paginatedData}
         columns={userColumns}
         page={page}
@@ -155,7 +156,7 @@ export const WithToolbar: Story = {
     const paginatedData = filteredData.slice((page - 1) * pageSize, page * pageSize)
 
     return (
-      <DataTable
+      <RecordTable
         data={paginatedData}
         columns={userColumns}
         page={page}
@@ -201,7 +202,7 @@ export const WithSorting: Story = {
     const paginatedData = sortedData.slice((page - 1) * pageSize, page * pageSize)
 
     return (
-      <DataTable
+      <RecordTable
         data={paginatedData}
         columns={userColumns}
         page={page}
@@ -222,11 +223,11 @@ export const WithSorting: Story = {
 }
 
 export const Loading: Story = {
-  render: () => <DataTable data={[]} columns={userColumns} isLoading showPagination={false} />,
+  render: () => <RecordTable data={[]} columns={userColumns} isLoading showPagination={false} />,
 }
 
 export const Empty: Story = {
-  render: () => <DataTable data={[]} columns={userColumns} showPagination={false} />,
+  render: () => <RecordTable data={[]} columns={userColumns} showPagination={false} />,
 }
 
 export const EmptyWithToolbar: Story = {
@@ -234,7 +235,7 @@ export const EmptyWithToolbar: Story = {
     const [search, setSearch] = useState('nonexistent search term')
 
     return (
-      <DataTable
+      <RecordTable
         data={[]}
         columns={userColumns}
         showPagination={false}
@@ -257,51 +258,5 @@ export const EmptyWithToolbar: Story = {
 }
 
 export const Invoices: Story = {
-  render: () => <DataTable data={mockInvoices} columns={invoiceColumns} showPagination={false} />,
-}
-
-export const SmallPageSize: Story = {
-  render: () => {
-    const [page, setPage] = useState(1)
-    const pageSize = 5
-
-    const paginatedData = mockUsers.slice((page - 1) * pageSize, page * pageSize)
-
-    return (
-      <DataTable
-        data={paginatedData}
-        columns={userColumns}
-        page={page}
-        pageSize={pageSize}
-        total={mockUsers.length}
-        onPageChange={setPage}
-        pageSizeOptions={[5, 10, 15]}
-      />
-    )
-  },
-}
-
-export const LongContent: Story = {
-  render: () => {
-    const longContentData: MockUser[] = [
-      {
-        id: '1',
-        name: 'Dr. Alexander Maximilian Worthington III, PhD',
-        email: 'alexander.maximilian.worthington.third@verylongcompanyname.example.com',
-        role: 'Admin',
-        status: 'Active',
-        createdAt: '2024-01-15',
-      },
-      {
-        id: '2',
-        name: 'Lady Elizabeth Victoria Pemberton-Hawthorne',
-        email: 'elizabeth.pemberton.hawthorne@anotherverylongdomain.co.uk',
-        role: 'Editor',
-        status: 'Pending',
-        createdAt: '2024-02-20',
-      },
-    ]
-
-    return <DataTable data={longContentData} columns={userColumns} showPagination={false} />
-  },
+  render: () => <RecordTable data={mockInvoices} columns={invoiceColumns} showPagination={false} />,
 }
