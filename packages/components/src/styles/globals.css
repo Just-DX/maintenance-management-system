@@ -49,14 +49,6 @@
     @apply hover:bg-muted/50 transition-colors;
   }
 
-  .table-row-selected {
-    @apply bg-accent/50;
-  }
-
-  .table-header-blur {
-    @apply sticky top-0 backdrop-blur-md bg-background/80 z-10;
-  }
-
   /* Skeleton Shimmer */
   .skeleton-shimmer {
     background: linear-gradient(90deg, transparent, oklch(0 0 0 / 0.04), transparent);
@@ -77,6 +69,10 @@
   /* Quick Action Reveal on Hover */
   .row-quick-actions {
     @apply opacity-0 group-hover:opacity-100 transition-opacity duration-150;
+  }
+
+  .spacing-page {
+    @apply px-6;
   }
 }
 

@@ -6,5 +6,5 @@ export const appShellStyles = {
   headerSeparator: 'mr-2 data-[orientation=vertical]:h-4',
   headerContent: 'flex flex-1 items-center justify-between',
   content: 'flex flex-1 flex-col',
-  main: 'flex flex-1 flex-col gap-4 p-4 pt-0',
+  main: 'flex flex-1 flex-col gap-4',
 } as const

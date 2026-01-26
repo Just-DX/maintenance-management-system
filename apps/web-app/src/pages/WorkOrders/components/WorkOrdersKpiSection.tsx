@@ -1,14 +1,33 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@justdx/components'
+import { Card, CardContent, CardHeader, CardTitle, Skeleton } from '@justdx/components'
 import { Activity, AlertOctagon } from 'lucide-react'
 import type { WorkOrderStats } from '../types'
 
 interface WorkOrdersKPISectionProps {
   stats: WorkOrderStats
+  isLoading?: boolean
 }
 
-export function WorkOrdersKPISection({ stats }: WorkOrdersKPISectionProps) {
+export function WorkOrdersKPISection({ stats, isLoading }: WorkOrdersKPISectionProps) {
+  if (isLoading) {
+    return (
+      <div className="grid gap-4 md:grid-cols-3 mb-2">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <Card key={i} className="shadow-sm border-border/50">
+            <CardHeader className="pb-2">
+              <Skeleton className="h-4 w-32" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-16 mb-1" />
+              <Skeleton className="h-3 w-24" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    )
+  }
+
   return (
-    <div className="grid gap-4 md:grid-cols-3 mb-6">
+    <div className="grid gap-4 md:grid-cols-3 mb-2">
       <Card className="shadow-sm border-border/50">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">

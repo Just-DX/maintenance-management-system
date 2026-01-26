@@ -1,7 +1,7 @@
 export const defaultPageSizeOptions = [5, 10, 20, 50] as const
 
 export const tablePaginationStyles = {
-  root: 'flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between',
+  root: 'flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between spacing-page',
   info: 'text-sm text-muted-foreground',
   controls: 'flex items-center gap-6',
   pageSize: 'flex items-center gap-2',

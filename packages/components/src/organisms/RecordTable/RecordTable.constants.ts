@@ -2,11 +2,11 @@ export const defaultRecordTablePageSizes = [10, 20, 50] as const
 
 export const recordTableStyles = {
   root: 'space-y-4',
-  tableWrapper: 'rounded-md border',
+  tableWrapper: 'border border-muted',
   skeleton: {
     header: 'flex items-center gap-4 p-2 border-b',
     headerCell: 'h-4 flex-1',
-    row: 'flex items-center gap-4 p-2 border-b last:border-b-0',
+    row: 'flex items-center gap-4 p-2 border-b last:border-b-0 border-muted',
     cell: 'h-4 flex-1',
   },
   sortButton:
