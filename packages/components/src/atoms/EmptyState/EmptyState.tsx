@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { LucideIcon, PackageOpen } from 'lucide-react'
+import { type LucideIcon, PackageOpen } from 'lucide-react'
 
 import { cn } from '../../lib/utils'
 import { Button } from '../Button'

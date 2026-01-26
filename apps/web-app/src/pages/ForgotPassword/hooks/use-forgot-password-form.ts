@@ -23,7 +23,7 @@ export const useForgotPasswordForm = () => {
 
       toast.success('Reset link sent to your email!')
       navigate({ to: '/' })
-    } catch (error) {
+    } catch {
       toast.error('Failed to send reset link. Please try again.')
     }
   }

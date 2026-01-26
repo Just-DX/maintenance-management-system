@@ -1,12 +1,6 @@
-// @justdx/components - Shared React component library
-// export * from './atoms';
-// export * from './molecules';
-export * from './atoms/Kbd'
-// export * from './organisms';
-
-// Export utilities and hooks for internal use
-export { useIsMobile } from './hooks/use-mobile'
+export * from './atoms'
+export * from './hooks'
 export { cn } from './lib/utils'
-
-// Export shadcn primitives
-export * from './shadcn-primitives'
+export * from './molecules'
+export * from './organisms'
+export { useSidebar } from './shadcn-primitives/sidebar'

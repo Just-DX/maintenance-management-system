@@ -14,10 +14,6 @@
       "types": "./dist/index.d.ts"
     },
     "./globals.css": "./src/styles/globals.css",
-    "./shadcn-primitives": {
-      "import": "./dist/shadcn-primitives/index.js",
-      "types": "./dist/shadcn-primitives/index.d.ts"
-    },
     "./atoms/*": {
       "import": "./src/atoms/*/index.ts",
       "types": "./dist/atoms/*/index.d.ts"
@@ -30,9 +26,9 @@
       "import": "./src/organisms/*/index.ts",
       "types": "./dist/organisms/*/index.d.ts"
     },
-    "./utils/*": {
-      "import": "./src/utils/*.ts",
-      "types": "./dist/utils/*.d.ts"
+    "./lib/*": {
+      "import": "./src/lib/*.ts",
+      "types": "./dist/lib/*.d.ts"
     },
     "./hooks/*": {
       "import": "./src/hooks/*",
@@ -60,7 +56,6 @@
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.3.4",
-    "esbuild-plugin-tsconfig-paths": "^1.0.2",
     "eslint": "^9.17.0",
     "eslint-plugin-storybook": "10.2.0",
     "prettier": "^3.4.2",

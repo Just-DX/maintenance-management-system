@@ -7,8 +7,7 @@
  */
 
 @theme {
-  /* Colors - OKLCH for better color manipulation */
-  --color-background: oklch(1 0 0);
+  --color-background: oklch(99% 0.01 250);
   --color-foreground: oklch(0.141 0.005 285.823);
 
   --color-card: oklch(1 0 0);
@@ -44,6 +43,18 @@
   --color-border: oklch(0.92 0.004 286.32);
   --color-input: oklch(0.92 0.004 286.32);
   --color-ring: oklch(0.708 0 0);
+
+  /* Status Badge Tokens (Light mode) */
+  --color-status-open-bg: oklch(95% 0.04 250);
+  --color-status-open-fg: oklch(50% 0.15 250);
+  --color-status-progress-bg: oklch(95% 0.06 80);
+  --color-status-progress-fg: oklch(50% 0.18 80);
+  --color-status-completed-bg: oklch(95% 0.06 145);
+  --color-status-completed-fg: oklch(45% 0.16 145);
+  --color-status-critical-bg: oklch(95% 0.08 27);
+  --color-status-critical-fg: oklch(50% 0.2 27);
+  --color-status-overdue-bg: oklch(93% 0.1 27);
+  --color-status-overdue-fg: oklch(48% 0.22 27);
 
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.05);
@@ -115,6 +126,18 @@
   --color-border: oklch(1 0 0 / 10%);
   --color-input: oklch(1 0 0 / 15%);
   --color-ring: oklch(0.556 0 0);
+
+  /* Status Badge Tokens (Dark mode) */
+  --color-status-open-bg: oklch(28% 0.06 250);
+  --color-status-open-fg: oklch(80% 0.12 250);
+  --color-status-progress-bg: oklch(28% 0.08 80);
+  --color-status-progress-fg: oklch(82% 0.14 80);
+  --color-status-completed-bg: oklch(28% 0.08 145);
+  --color-status-completed-fg: oklch(78% 0.14 145);
+  --color-status-critical-bg: oklch(28% 0.1 27);
+  --color-status-critical-fg: oklch(80% 0.16 27);
+  --color-status-overdue-bg: oklch(26% 0.12 27);
+  --color-status-overdue-fg: oklch(82% 0.18 27);
 
   --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.5);
   --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.5);

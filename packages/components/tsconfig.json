@@ -3,46 +3,20 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@*": [
-        "./src/*"
-      ],
-      "@lib/*": [
-        "./src/lib/*"
-      ],
-      "@shadcn-primitives/*": [
-        "./src/shadcn-primitives/*"
-      ],
-      "@hooks/*": [
-        "./src/hooks/*"
-      ],
-      "@atoms/*": [
-        "./src/atoms/*"
-      ],
-      "@molecules/*": [
-        "./src/molecules/*"
-      ],
-      "@organisms/*": [
-        "./src/organisms/*"
-      ],
-      "@justdx/config": [
-        "../config/src"
-      ]
+      "@*": ["./src/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@shadcn-primitives/*": ["./src/shadcn-primitives/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@atoms/*": ["./src/atoms/*"],
+      "@molecules/*": ["./src/molecules/*"],
+      "@organisms/*": ["./src/organisms/*"],
+      "@justdx/config": ["../config/src"]
     },
     "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "react-jsx",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ]
+    "lib": ["dom", "dom.iterable", "esnext"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "storybook-static"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "storybook-static"]
 }

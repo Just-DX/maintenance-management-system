@@ -25,7 +25,7 @@ export const useSignupForm = () => {
 
       toast.success('Account created successfully!')
       navigate({ to: '/' })
-    } catch (error) {
+    } catch {
       toast.error('Failed to create account. Please try again.')
     }
   }

@@ -1,1 +1,1 @@
-// Shared React hooks
+export { useIsMobile } from './use-mobile'

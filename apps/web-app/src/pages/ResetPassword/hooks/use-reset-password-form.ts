@@ -24,7 +24,7 @@ export const useResetPasswordForm = () => {
 
       toast.success('Password updated successfully!')
       navigate({ to: '/' })
-    } catch (error) {
+    } catch {
       toast.error('Failed to update password. Please try again.')
     }
   }

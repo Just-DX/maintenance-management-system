@@ -65,7 +65,16 @@ export { RadioGroup } from './RadioGroup'
 export { Tabs } from './Tabs'
 
 // Table
-export { Table } from './Table'
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableCaption,
+  TableFooter,
+} from './Table'
 
 // Sidebar
 export { Sidebar } from './Sidebar'
