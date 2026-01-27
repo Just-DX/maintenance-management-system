@@ -21,3 +21,6 @@ export {
   type SwitchField,
   type TextareaField,
 } from './AutoField'
+
+// ThemeToggle
+export { ThemeToggle } from './theme-toggle/theme-toggle'

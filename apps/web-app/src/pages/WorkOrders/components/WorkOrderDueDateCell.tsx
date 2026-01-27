@@ -15,8 +15,8 @@ export function WorkOrderDueDateCell({
   return (
     <div
       className={cn('flex flex-col text-sm', {
-        'text-destructive font-medium': isOverdue,
-        'text-orange-500 font-medium': isDueSoon,
+        'text-warning font-medium': isOverdue,
+        'text-destructive font-medium': isDueSoon,
         'text-muted-foreground': !isOverdue && !isDueSoon,
       })}
     >

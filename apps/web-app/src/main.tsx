@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@justdx/components'
 import { Toaster } from '@justdx/components/atoms/Sonner'
 import { queryClient } from '@plugins/react-query/client'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -15,9 +16,11 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <Toaster />
-    </QueryClientProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <Toaster />
+      </QueryClientProvider>
+    </ThemeProvider>
   </StrictMode>
 )

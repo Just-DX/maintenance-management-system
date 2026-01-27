@@ -1,10 +1,11 @@
+import { ThemeToggle } from '@justdx/components'
 import { Badge } from '@justdx/components/atoms/Badge'
 import { Breadcrumb } from '@justdx/components/atoms/Breadcrumb'
 import { Button } from '@justdx/components/atoms/Button'
 import { InputSearch } from '@justdx/components/atoms/InputGroup'
 import { Kbd } from '@justdx/components/atoms/Kbd'
 import { AppShell } from '@justdx/components/organisms/AppShell'
-import { Bell, Moon } from 'lucide-react'
+import { Bell } from 'lucide-react'
 
 export function Header() {
   return (
@@ -38,9 +39,7 @@ export function Header() {
         </div>
 
         {/* Theme toggle */}
-        <Button variant="ghost" size="icon" className="size-8">
-          <Moon className="size-4" />
-        </Button>
+        <ThemeToggle />
 
         {/* Notifications */}
         <Button variant="ghost" size="icon" className="relative size-8">

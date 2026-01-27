@@ -41,29 +41,29 @@ export function WorkOrdersKPISection({ stats, isLoading }: WorkOrdersKPISectionP
         </CardContent>
       </Card>
 
-      <Card className="shadow-sm border-border/50 bg-destructive/5 dark:bg-destructive/10">
+      <Card className="shadow-sm border-border/50 bg-warning/5 dark:bg-warning/10">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-destructive">Critical Priority</CardTitle>
-          <AlertOctagon className="h-4 w-4 text-destructive" />
+          <CardTitle className="text-sm font-medium text-warning">Critical Priority</CardTitle>
+          <AlertOctagon className="h-4 w-4 text-warning" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-destructive">{stats.critical}</div>
-          <p className="text-xs text-destructive/80 mt-1">Requires immediate attention</p>
+          <div className="text-2xl font-bold text-warning">{stats.critical}</div>
+          <p className="text-xs text-warning/80 mt-1">Requires immediate attention</p>
         </CardContent>
       </Card>
 
-      <Card className="shadow-sm border-border/50">
+      <Card className="shadow-sm border-border/50 bg-destructive/5 dark:bg-destructive/10">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Overdue Tasks</CardTitle>
-          <div className="h-4 w-4 rounded-full bg-orange-500/20 text-orange-600 flex items-center justify-center text-[10px] font-bold">
+          <CardTitle className="text-sm font-medium text-destructive">Overdue Tasks</CardTitle>
+          <div className="h-4 w-4 rounded-full bg-destructive/20 text-destructive flex items-center justify-center text-[10px] font-bold">
             !
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+          <div className="text-2xl font-bold text-destructive dark:text-destructive">
             {stats.overdue}
           </div>
-          <p className="text-xs text-muted-foreground mt-1">Exceeded due date</p>
+          <p className="text-xs text-destructive mt-1">Exceeded due date</p>
         </CardContent>
       </Card>
     </div>
