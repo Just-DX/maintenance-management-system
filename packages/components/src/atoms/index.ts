@@ -137,3 +137,6 @@ export { StatusBadge, type StatusBadgeProps, type StatusType } from './StatusBad
 
 // MultiSelect
 export { MultiSelect, type MultiSelectOption, type MultiSelectProps } from './MultiSelect'
+
+// FileUpload
+export { FileUpload, type FileUploadProps, type UploadedFile } from './FileUpload'

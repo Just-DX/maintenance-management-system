@@ -24,3 +24,6 @@ export {
 
 // ThemeToggle
 export { ThemeToggle } from './theme-toggle/theme-toggle'
+
+// Attachments
+export { Attachments, type Attachment, type AttachmentsProps } from './Attachments'

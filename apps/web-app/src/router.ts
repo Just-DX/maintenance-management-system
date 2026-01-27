@@ -1,5 +1,6 @@
 import { dashboardRoute } from '@routes/app/dashboard'
 import { appRoute } from '@routes/app/layout'
+import { workOrderDetailRoute } from '@routes/app/work-order-detail'
 import { workOrderRoute } from '@routes/app/work-orders'
 import { indexRoute } from '@routes/public'
 import { forgotPasswordRoute } from '@routes/public/forgot-password'
@@ -11,7 +12,7 @@ import { rootRoute } from './routes/root'
 
 const routeTree = rootRoute.addChildren([
   publicRoute.addChildren([indexRoute, signupRoute, forgotPasswordRoute, resetPasswordRoute]),
-  appRoute.addChildren([dashboardRoute, workOrderRoute]),
+  appRoute.addChildren([dashboardRoute, workOrderRoute, workOrderDetailRoute]),
 ])
 
 export const router = createRouter({

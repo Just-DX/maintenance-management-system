@@ -20,11 +20,11 @@ export const Default: Story = {
 
     return (
       <Calendar
-        mode="single"
-        selected={date as any}
-        onSelect={setDate as any}
-        className="rounded-md border"
         {...args}
+        mode="single"
+        selected={date}
+        onSelect={(date) => setDate(date)}
+        className="rounded-md border"
       />
     )
   },

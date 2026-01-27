@@ -1,4 +1,4 @@
-import { passwordSchema } from '@justdx/common/validation'
+import { passwordSchema } from '@justdx/common'
 import { z } from 'zod'
 
 export const resetPasswordSchema = z

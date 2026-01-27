@@ -1,4 +1,4 @@
-import { emailSchema } from '@justdx/common/validation'
+import { emailSchema } from '@justdx/common'
 import { z } from 'zod'
 
 export const forgotPasswordSchema = z.object({

@@ -1,4 +1,4 @@
-import { requiredString } from '@justdx/common/validation'
+import { requiredString } from '@justdx/common'
 import z from 'zod'
 
 // ============================================================================
@@ -50,33 +50,35 @@ export type WorkOrderMaterialFormData = z.infer<typeof workOrderMaterialSchema>
 // Combined Create Work Order Schema
 // ============================================================================
 
-export const createWorkOrderSchema = z.object({
-  // Information tab fields
-  assetId: requiredString('Asset is required'),
-  location: z.string().optional(),
-  description: requiredString('Description is required').max(1000, 'Description is too long'),
-  type: z.enum(['PREVENTIVE', 'CORRECTIVE']),
-  priority: z.enum(['low', 'medium', 'high', 'critical']),
-  status: z.enum(['open', 'in-progress', 'on-hold', 'completed', 'cancelled']).default('open'),
-  expectedStartDate: z.date().optional(),
-  expectedEndDate: z.date().optional(),
+export const createWorkOrderSchema = z
+  .object({
+    // Information tab fields
+    assetId: requiredString('Asset is required'),
+    location: z.string().optional(),
+    description: requiredString('Description is required').max(1000, 'Description is too long'),
+    type: z.enum(['PREVENTIVE', 'CORRECTIVE']),
+    priority: z.enum(['low', 'medium', 'high', 'critical']),
+    status: z.enum(['open', 'in-progress', 'on-hold', 'completed', 'cancelled']).default('open'),
+    expectedStartDate: z.date().optional(),
+    expectedEndDate: z.date().optional(),
 
-  // Tasks array
-  tasks: z.array(workOrderTaskSchema).default([]),
+    // Tasks array
+    tasks: z.array(workOrderTaskSchema).default([]),
 
-  // Materials array
-  materials: z.array(workOrderMaterialSchema).default([]),
-}).refine(
-  (data) => {
-    if (data.expectedStartDate && data.expectedEndDate) {
-      return data.expectedEndDate >= data.expectedStartDate
+    // Materials array
+    materials: z.array(workOrderMaterialSchema).default([]),
+  })
+  .refine(
+    (data) => {
+      if (data.expectedStartDate && data.expectedEndDate) {
+        return data.expectedEndDate >= data.expectedStartDate
+      }
+      return true
+    },
+    {
+      message: 'End date must be after start date',
+      path: ['expectedEndDate'],
     }
-    return true
-  },
-  {
-    message: 'End date must be after start date',
-    path: ['expectedEndDate'],
-  }
-)
+  )
 
 export type CreateWorkOrderFormData = z.infer<typeof createWorkOrderSchema>

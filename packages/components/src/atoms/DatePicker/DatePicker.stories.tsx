@@ -17,10 +17,10 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     date: datePickerContent.date,
-    setDate: () => {},
+    onDateChange: () => {},
   },
   render: (args) => {
     const [date, setDate] = React.useState<Date | undefined>(args.date)
-    return <DatePicker {...args} date={date} setDate={setDate} />
+    return <DatePicker {...args} date={date} onDateChange={setDate} />
   },
 }

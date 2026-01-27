@@ -35,6 +35,9 @@ export interface RecordTableProps<T> {
   // Toolbar slot
   toolbar?: React.ReactNode
 
+  // Row click handler
+  onRowClick?: (row: T) => void
+
   // Styling
   className?: string
 }

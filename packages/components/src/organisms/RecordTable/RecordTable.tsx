@@ -47,6 +47,8 @@ export function RecordTable<T extends { id: string | number }>({
 
   toolbar,
 
+  onRowClick,
+
   className,
 }: RecordTableProps<T>) {
   const actualTotal = total ?? data.length
@@ -121,7 +123,13 @@ export function RecordTable<T extends { id: string | number }>({
           </Table.Header>
           <Table.Body>
             {data.map((row) => (
-              <Table.Row key={row.id}>
+              <Table.Row
+                key={row.id}
+                onClick={() => onRowClick?.(row)}
+                className={cn({
+                  'cursor-pointer hover:bg-accent': onRowClick,
+                })}
+              >
                 {columns.map((column) => (
                   <Table.Cell key={column.id} className={column.className}>
                     {column.cell(row)}

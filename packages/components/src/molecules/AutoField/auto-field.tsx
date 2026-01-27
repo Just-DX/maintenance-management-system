@@ -204,7 +204,10 @@ function renderControl<TValues extends FieldValues>(
 
     case 'date-picker':
       return (
-        <DatePicker date={rhf.value as Date | undefined} setDate={(date) => rhf.onChange(date)} />
+        <DatePicker
+          date={rhf.value as Date | undefined}
+          onDateChange={(date) => rhf.onChange(date)}
+        />
       )
 
     case 'multi-select':
