@@ -1,6 +1,7 @@
 import { RecordTable } from '@justdx/components/organisms/RecordTable'
 
 import { Button, TableToolbar } from '@justdx/components'
+import { Dialog } from '@justdx/components/atoms/Dialog'
 import { Plus } from 'lucide-react'
 import { workOrdersColumns } from '../config/table-columns'
 import type { WorkOrder } from '../types'
@@ -25,10 +26,12 @@ export function WorkOrdersTable({ data, isLoading }: WorkOrdersTableProps) {
         <TableToolbar
           searchPlaceholder="Search work orders..."
           actions={
-            <Button size="sm">
-              <Plus className="w-4 h-4" />
-              Add Work Order
-            </Button>
+            <Dialog.Trigger asChild>
+              <Button size="sm">
+                <Plus className="w-4 h-4" />
+                Add Work Order
+              </Button>
+            </Dialog.Trigger>
           }
         />
       }

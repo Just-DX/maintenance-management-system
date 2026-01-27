@@ -2,8 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
-import { loginSchema } from '../config/schema'
-import type { LoginFormData } from '../config/schema'
+import { loginSchema } from '@justdx/common'
+import type { LoginFormData } from '@justdx/common'
 
 export function useLoginForm() {
   const form = useForm<LoginFormData>({

@@ -26,7 +26,9 @@
     "paths": {
       "@*": ["./src/*"],
       "@justdx/config": ["../../packages/config/src"],
-      "@justdx/components": ["../../packages/components/src"]
+      "@justdx/components": ["../../packages/components/src"],
+      "@justdx/common": ["../../packages/common/src"],
+      "@justdx/common/*": ["../../packages/common/src/*"]
     }
   },
   "include": ["src"]

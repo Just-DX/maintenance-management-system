@@ -1,7 +1,7 @@
 import type { AutoFieldsProps } from '@justdx/components/molecules/AutoField'
 
 import { loginCopy } from '../constants/copy'
-import type { LoginFormData } from './schema'
+import type { LoginFormData } from '@justdx/common'
 
 const loginFields: AutoFieldsProps<LoginFormData>['fields'] = [
   {

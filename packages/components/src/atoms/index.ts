@@ -38,7 +38,7 @@ export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './Tool
 export { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from './InputOtp'
 
 // Sonner
-export { toast, Toaster } from './Sonner'
+export { Toaster, toast } from './Sonner'
 
 // Skeleton
 export { Skeleton } from './Skeleton'
@@ -68,12 +68,12 @@ export { Tabs } from './Tabs'
 export {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
-  TableCaption,
-  TableFooter,
 } from './Table'
 
 // Sidebar
@@ -134,3 +134,6 @@ export { PriorityBadge, type PriorityBadgeProps, type PriorityLevel } from './Pr
 
 // StatusBadge
 export { StatusBadge, type StatusBadgeProps, type StatusType } from './StatusBadge'
+
+// MultiSelect
+export { MultiSelect, type MultiSelectOption, type MultiSelectProps } from './MultiSelect'

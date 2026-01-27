@@ -5,7 +5,7 @@ import { ArrowRight, Loader2 } from 'lucide-react'
 import type { SubmitHandler, UseFormReturn } from 'react-hook-form'
 
 import { Link } from '@tanstack/react-router'
-import type { LoginFormData } from '../config/schema'
+import type { LoginFormData } from '@justdx/common'
 import { loginCopy } from '../constants/copy'
 
 interface LoginFormProps {

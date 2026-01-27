@@ -94,6 +94,7 @@ export interface InputGroupField<TValues extends FieldValues> extends BaseField<
 }
 
 import type { Checkbox } from '../../atoms/Checkbox/Checkbox'
+import type { MultiSelect, MultiSelectOption } from '../../atoms/MultiSelect/MultiSelect'
 import type { RadioGroup } from '../../atoms/RadioGroup/RadioGroup'
 
 /**
@@ -135,6 +136,31 @@ export interface RadioGroupField<TValues extends FieldValues> extends BaseField<
 }
 
 /**
+ * DatePicker field configuration
+ */
+export interface DatePickerField<TValues extends FieldValues> extends BaseField<TValues> {
+  type: 'date-picker'
+  /** Optional props for date picker */
+  props?: {
+    placeholder?: string
+  }
+}
+
+/**
+ * MultiSelect field configuration
+ */
+export interface MultiSelectField<TValues extends FieldValues> extends BaseField<TValues> {
+  type: 'multi-select'
+  /** Options to display in the multi-select dropdown */
+  options: MultiSelectOption[]
+  /** Optional props passed to MultiSelect component */
+  props?: Omit<
+    React.ComponentProps<typeof MultiSelect>,
+    'disabled' | 'value' | 'onValueChange' | 'options'
+  >
+}
+
+/**
  * Discriminated union of all field configurations
  */
 export type FieldConfig<TValues extends FieldValues> =
@@ -145,3 +171,5 @@ export type FieldConfig<TValues extends FieldValues> =
   | InputGroupField<TValues>
   | CheckboxField<TValues>
   | RadioGroupField<TValues>
+  | DatePickerField<TValues>
+  | MultiSelectField<TValues>

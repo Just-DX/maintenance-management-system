@@ -4,7 +4,9 @@ import * as React from 'react'
 import type { Control, FieldValues } from 'react-hook-form'
 
 import { Checkbox } from '../../atoms/Checkbox/Checkbox'
+import { DatePicker } from '../../atoms/DatePicker/DatePicker'
 import { InputGroup } from '../../atoms/InputGroup/InputGroup'
+import { MultiSelect } from '../../atoms/MultiSelect/MultiSelect'
 import { RadioGroup } from '../../atoms/RadioGroup/RadioGroup'
 import { cn } from '../../lib/utils'
 import {
@@ -198,6 +200,22 @@ function renderControl<TValues extends FieldValues>(
             </div>
           ))}
         </RadioGroup>
+      )
+
+    case 'date-picker':
+      return (
+        <DatePicker date={rhf.value as Date | undefined} setDate={(date) => rhf.onChange(date)} />
+      )
+
+    case 'multi-select':
+      return (
+        <MultiSelect
+          {...field.props}
+          disabled={field.disabled}
+          options={field.options}
+          value={(rhf.value as string[]) ?? []}
+          onValueChange={rhf.onChange}
+        />
       )
 
     default: {
