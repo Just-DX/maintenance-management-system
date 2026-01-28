@@ -12,7 +12,9 @@ import {
 /**
  * Format a date to a specific pattern
  */
-export function formatDate(date: Date | string, pattern: string = 'yyyy-MM-dd'): string {
+export function formatDate(date?: Date | string, pattern: string = 'yyyy-MM-dd'): string {
+  if (!date) return ''
+
   const dateObj = typeof date === 'string' ? parseISO(date) : date
   return format(dateObj, pattern)
 }

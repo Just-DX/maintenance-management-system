@@ -1,22 +1,26 @@
 import { Avatar, AvatarFallback } from '@justdx/components/atoms/Avatar'
 import { Badge } from '@justdx/components/atoms/Badge'
-import { Button } from '@justdx/components/atoms/Button'
 import { Checkbox } from '@justdx/components/atoms/Checkbox'
 import { EmptyState } from '@justdx/components/atoms/EmptyState'
 import { Input } from '@justdx/components/atoms/Input'
 import { Select } from '@justdx/components/atoms/Select'
 import { StatusBadge, type StatusType } from '@justdx/components/atoms/StatusBadge'
-import { CheckCircle2, ClipboardList, Plus, Trash2, XCircle } from 'lucide-react'
-import { useState } from 'react'
+import { AutoArrayFields } from '@justdx/components/molecules/AutoField'
+import { CheckCircle2, ClipboardList, XCircle } from 'lucide-react'
+import { type UseFormReturn } from 'react-hook-form'
 
-import type { WorkOrderTask } from '@features/work-orders'
-import { taskStatusOptions } from '@features/work-orders'
+import {
+  type CreateWorkOrderFormData,
+  taskStatusOptions,
+  type WorkOrderTask,
+} from '@features/work-orders'
 import { getInitials } from '@justdx/common'
 import { workOrderDetailCopy } from '../constants/copy'
 
 interface TasksTabProps {
   tasks: WorkOrderTask[]
   isEditing?: boolean
+  form?: UseFormReturn<CreateWorkOrderFormData>
 }
 
 // View Mode Component
@@ -104,174 +108,114 @@ function TasksViewMode({ tasks }: { tasks: WorkOrderTask[] }) {
   )
 }
 
-interface EditableTask {
-  id: string
-  description: string
-  status: 'Pending' | 'In Progress' | 'Done'
-  planTime?: number
-  actualTime?: number
-  required: boolean
-}
-
-// Edit Mode Component
-function TasksEditMode({ tasks }: { tasks: WorkOrderTask[] }) {
+// Edit Mode Component (using useFieldArray like TasksSection)
+function TasksEditMode({ form }: { form: UseFormReturn<CreateWorkOrderFormData> }) {
   const copy = workOrderDetailCopy.tasks
-  const [items, setItems] = useState<EditableTask[]>(
-    tasks.map((t) => ({
-      id: t.id,
-      description: t.description,
-      status: t.status,
-      planTime: t.planTime,
-      actualTime: t.actualTime,
-      required: t.required,
-    }))
-  )
-
-  const addTask = () => {
-    setItems([
-      ...items,
-      {
-        id: `new-${Date.now()}`,
-        description: '',
-        status: 'Pending',
-        planTime: undefined,
-        actualTime: undefined,
-        required: false,
-      },
-    ])
-  }
-
-  const removeTask = (id: string) => {
-    setItems(items.filter((t) => t.id !== id))
-  }
-
-  const updateTask = (
-    id: string,
-    field: keyof EditableTask,
-    value: string | number | boolean | undefined
-  ) => {
-    setItems(items.map((t) => (t.id === id ? { ...t, [field]: value } : t)))
-  }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-sm font-semibold">{copy.sectionTitle}</h3>
-        <Button type="button" variant="outline" size="sm" onClick={addTask}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Task
-        </Button>
-      </div>
-
-      {items.length === 0 ? (
-        <EmptyState icon={ClipboardList} title={copy.empty} className="p-12 border rounded-lg" />
-      ) : (
-        <div className="space-y-4">
-          {items.map((item) => (
-            <div key={item.id} className="rounded-lg border bg-card p-4">
-              <div className="flex items-start gap-4">
-                <div className="flex-1 space-y-4">
-                  <Input
-                    value={item.description}
-                    onChange={(e) => updateTask(item.id, 'description', e.target.value)}
-                    placeholder="Task description"
-                  />
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div>
-                      <label className="text-xs text-muted-foreground">{copy.columns.status}</label>
-                      <Select
-                        value={item.status}
-                        onValueChange={(val) => updateTask(item.id, 'status', val)}
-                      >
-                        <Select.Trigger className="mt-1 h-8">
-                          <Select.Value />
-                        </Select.Trigger>
-                        <Select.Content>
-                          {taskStatusOptions.map((opt) => (
-                            <Select.Item key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </Select.Item>
-                          ))}
-                        </Select.Content>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs text-muted-foreground">
-                        {copy.columns.planTime}
-                      </label>
-                      <Input
-                        type="number"
-                        step="0.25"
-                        min={0}
-                        value={item.planTime ?? ''}
-                        onChange={(e) =>
-                          updateTask(
-                            item.id,
-                            'planTime',
-                            e.target.value ? Number(e.target.value) : undefined
-                          )
-                        }
-                        className="mt-1 h-8"
-                        placeholder="Hours"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs text-muted-foreground">
-                        {copy.columns.actualTime}
-                      </label>
-                      <Input
-                        type="number"
-                        step="0.25"
-                        min={0}
-                        value={item.actualTime ?? ''}
-                        onChange={(e) =>
-                          updateTask(
-                            item.id,
-                            'actualTime',
-                            e.target.value ? Number(e.target.value) : undefined
-                          )
-                        }
-                        className="mt-1 h-8"
-                        placeholder="Hours"
-                      />
-                    </div>
-
-                    <div className="flex items-end pb-1">
-                      <label className="flex items-center gap-2 text-sm">
-                        <Checkbox
-                          checked={item.required}
-                          onCheckedChange={(checked) => updateTask(item.id, 'required', !!checked)}
-                        />
-                        Required
-                      </label>
-                    </div>
-                  </div>
+    <AutoArrayFields<CreateWorkOrderFormData>
+      form={form}
+      config={{
+        name: 'tasks',
+        layout: 'card',
+        itemFields: [
+          {
+            name: 'description',
+            type: 'input',
+            placeholder: 'Task description',
+          },
+          {
+            name: 'details',
+            type: 'custom',
+            render: ({ form, index }) => (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div>
+                  <label className="text-xs text-muted-foreground">{copy.columns.status}</label>
+                  <Select
+                    value={form.watch(`tasks.${index}.status`)}
+                    onValueChange={(val) =>
+                      form.setValue(
+                        `tasks.${index}.status`,
+                        val as 'Pending' | 'In Progress' | 'Done'
+                      )
+                    }
+                  >
+                    <Select.Trigger className="mt-1 h-8">
+                      <Select.Value />
+                    </Select.Trigger>
+                    <Select.Content>
+                      {taskStatusOptions.map((opt) => (
+                        <Select.Item key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </Select.Item>
+                      ))}
+                    </Select.Content>
+                  </Select>
                 </div>
 
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="text-destructive hover:text-destructive"
-                  onClick={() => removeTask(item.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <div>
+                  <label className="text-xs text-muted-foreground">{copy.columns.planTime}</label>
+                  <Input
+                    type="number"
+                    step="0.25"
+                    min={0}
+                    {...form.register(`tasks.${index}.planTime`, { valueAsNumber: true })}
+                    className="mt-1 h-8"
+                    placeholder="Hours"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs text-muted-foreground">{copy.columns.actualTime}</label>
+                  <Input
+                    type="number"
+                    step="0.25"
+                    min={0}
+                    {...form.register(`tasks.${index}.actualTime`, { valueAsNumber: true })}
+                    className="mt-1 h-8"
+                    placeholder="Hours"
+                  />
+                </div>
+
+                <div className="flex items-end pb-1">
+                  <label className="flex items-center gap-2 text-sm">
+                    <Checkbox
+                      checked={form.watch(`tasks.${index}.required`)}
+                      onCheckedChange={(checked) =>
+                        form.setValue(`tasks.${index}.required`, !!checked)
+                      }
+                    />
+                    Required
+                  </label>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+            ),
+          },
+        ],
+        defaultItem: {
+          description: '',
+          status: 'Pending',
+          assignees: [],
+          planTime: undefined,
+          actualTime: undefined,
+          type: undefined,
+          required: false,
+        },
+        emptyState: {
+          icon: ClipboardList,
+          title: copy.empty,
+          className: 'p-12 border rounded-lg',
+        },
+        addButton: { label: 'Add Task' },
+        title: copy.sectionTitle,
+      }}
+    />
   )
 }
 
-export function TasksTab({ tasks, isEditing = false }: TasksTabProps) {
-  if (isEditing) {
-    return <TasksEditMode tasks={tasks} />
+export function TasksTab({ tasks, isEditing = false, form }: TasksTabProps) {
+  if (isEditing && form) {
+    return <TasksEditMode form={form} />
   }
   return <TasksViewMode tasks={tasks} />
 }

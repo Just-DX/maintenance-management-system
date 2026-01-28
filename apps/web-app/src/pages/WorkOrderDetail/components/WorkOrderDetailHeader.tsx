@@ -72,11 +72,17 @@ export function WorkOrderDetailHeader({
         {isEditing ? (
           <>
             {/* Edit Mode Actions */}
-            <Button variant="outline" size="sm" onClick={onCancel} disabled={isSaving}>
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
+              onClick={onCancel}
+              disabled={isSaving}
+            >
               <X className="h-4 w-4 mr-2" />
               Cancel
             </Button>
-            <Button size="sm" onClick={onSave} disabled={isSaving}>
+            <Button size="sm" onClick={onSave} type="submit" disabled={isSaving}>
               <Save className="h-4 w-4 mr-2" />
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>
@@ -84,7 +90,7 @@ export function WorkOrderDetailHeader({
         ) : (
           <>
             {/* View Mode Actions */}
-            <Button variant="outline" size="sm" onClick={onEdit}>
+            <Button variant="outline" size="sm" type="button" onClick={onEdit}>
               <Pencil className="h-4 w-4 mr-2" />
               {workOrderDetailCopy.header.editLabel}
             </Button>

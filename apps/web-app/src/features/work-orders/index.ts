@@ -6,6 +6,9 @@ export * from './types'
 // Schemas
 export * from './schemas'
 
+// Fields (AutoField definitions)
+export * from './fields'
+
 // Constants
 export * from './constants'
 

@@ -1,6 +1,4 @@
-import { Button } from '@justdx/components/atoms/Button'
 import { EmptyState } from '@justdx/components/atoms/EmptyState'
-import { Input } from '@justdx/components/atoms/Input'
 import {
   Table,
   TableBody,
@@ -9,15 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from '@justdx/components/atoms/Table'
-import { Package, Plus, Trash2 } from 'lucide-react'
-import { useState } from 'react'
+import { AutoArrayFields } from '@justdx/components/molecules/AutoField'
+import { Package } from 'lucide-react'
+import { type UseFormReturn } from 'react-hook-form'
 
-import type { WorkOrderMaterial } from '@features/work-orders'
+import { type CreateWorkOrderFormData, type WorkOrderMaterial } from '@features/work-orders'
 import { workOrderDetailCopy } from '../constants/copy'
 
 interface MaterialsTabProps {
   materials: WorkOrderMaterial[]
   isEditing?: boolean
+  form?: UseFormReturn<CreateWorkOrderFormData>
 }
 
 function formatCurrency(amount: number): string {
@@ -85,146 +85,111 @@ function MaterialsViewMode({ materials }: { materials: WorkOrderMaterial[] }) {
   )
 }
 
-interface EditableMaterial {
-  id: string
-  name: string
-  planQuantity: number
-  actualQuantity?: number
-  unitCost: number
-}
-
-// Edit Mode Component
-function MaterialsEditMode({ materials }: { materials: WorkOrderMaterial[] }) {
+// Edit Mode Component (using useFieldArray like MaterialsSection)
+function MaterialsEditMode({ form }: { form: UseFormReturn<CreateWorkOrderFormData> }) {
   const copy = workOrderDetailCopy.materials
-  const [items, setItems] = useState<EditableMaterial[]>(
-    materials.map((m) => ({
-      id: m.id,
-      name: m.name,
-      planQuantity: m.planQuantity,
-      actualQuantity: m.actualQuantity,
-      unitCost: m.unitCost,
-    }))
-  )
-
-  const addMaterial = () => {
-    setItems([
-      ...items,
-      {
-        id: `new-${Date.now()}`,
-        name: '',
-        planQuantity: 1,
-        actualQuantity: undefined,
-        unitCost: 0,
-      },
-    ])
-  }
-
-  const removeMaterial = (id: string) => {
-    setItems(items.filter((m) => m.id !== id))
-  }
-
-  const updateMaterial = (id: string, field: keyof EditableMaterial, value: string | number) => {
-    setItems(items.map((m) => (m.id === id ? { ...m, [field]: value } : m)))
-  }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-sm font-semibold">{copy.sectionTitle}</h3>
-        <Button type="button" variant="outline" size="sm" onClick={addMaterial}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Material
-        </Button>
-      </div>
+    <AutoArrayFields<CreateWorkOrderFormData>
+      form={form}
+      config={{
+        name: 'materials',
+        layout: 'table',
+        itemFields: [
+          {
+            name: 'name',
+            type: 'input',
+            label: copy.columns.name,
+            width: 'auto', // Was 'xl' in section, but auto might be better here? Or xl.
+            placeholder: 'Material name',
+          },
+          {
+            name: 'planQuantity',
+            type: 'input',
+            label: copy.columns.planQty,
+            width: 'sm',
+            placeholder: 'Qty',
+            props: { type: 'number', min: 1, className: 'text-right' },
+            rules: { valueAsNumber: true },
+          },
+          {
+            name: 'actualQuantity',
+            type: 'input',
+            label: copy.columns.actualQty,
+            width: 'sm',
+            placeholder: '-',
+            props: { type: 'number', min: 0, className: 'text-right' },
+            rules: { valueAsNumber: true },
+          },
+          {
+            name: 'unitCost',
+            type: 'input',
+            label: copy.columns.unitCost,
+            width: 'sm',
+            placeholder: '$0.00',
+            props: { type: 'number', min: 0, step: '0.01', className: 'text-right' },
+            rules: { valueAsNumber: true },
+          },
+          {
+            name: 'total',
+            type: 'custom',
+            label: 'Total',
+            width: 'sm',
+            render: ({ form, index }) => {
+              const qty = form.watch(`materials.${index}.planQuantity`) || 0
+              const cost = form.watch(`materials.${index}.unitCost`) || 0
+              return (
+                <div className="text-right text-sm font-medium pr-2">
+                  ${(qty * cost).toFixed(2)}
+                </div>
+              )
+            },
+          },
+        ],
+        defaultItem: {
+          name: '',
+          planQuantity: 1,
+          actualQuantity: undefined,
+          unitCost: 0,
+          totalPlanCost: 0,
+          totalActualCost: undefined,
+        },
+        emptyState: {
+          icon: Package,
+          title: copy.empty,
+          className: 'p-12 border rounded-lg',
+        },
+        addButton: { label: 'Add Material' },
+        title: copy.sectionTitle,
+        footer: ({ form, fields }) => {
+          if (fields.length === 0) return null
 
-      {items.length === 0 ? (
-        <EmptyState icon={Package} title={copy.empty} className="p-12 border rounded-lg" />
-      ) : (
-        <div className="rounded-lg border bg-card overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/50">
-                <TableHead className="font-semibold">{copy.columns.name}</TableHead>
-                <TableHead className="text-right font-semibold w-24">
-                  {copy.columns.planQty}
-                </TableHead>
-                <TableHead className="text-right font-semibold w-24">
-                  {copy.columns.actualQty}
-                </TableHead>
-                <TableHead className="text-right font-semibold w-28">
-                  {copy.columns.unitCost}
-                </TableHead>
-                <TableHead className="w-12"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {items.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <Input
-                      value={item.name}
-                      onChange={(e) => updateMaterial(item.id, 'name', e.target.value)}
-                      placeholder="Material name"
-                      className="h-8"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Input
-                      type="number"
-                      value={item.planQuantity}
-                      onChange={(e) =>
-                        updateMaterial(item.id, 'planQuantity', Number(e.target.value))
-                      }
-                      className="h-8 text-right"
-                      min={1}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Input
-                      type="number"
-                      value={item.actualQuantity ?? ''}
-                      onChange={(e) =>
-                        updateMaterial(item.id, 'actualQuantity', Number(e.target.value))
-                      }
-                      className="h-8 text-right"
-                      min={0}
-                      placeholder="-"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={item.unitCost}
-                      onChange={(e) => updateMaterial(item.id, 'unitCost', Number(e.target.value))}
-                      className="h-8 text-right"
-                      min={0}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-destructive dark:text-destructive/60 hover:text-destructive/90"
-                      onClick={() => removeMaterial(item.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
-    </div>
+          const total = fields.reduce((sum, _, index) => {
+            const qty = form.watch(`materials.${index}.planQuantity`) || 0
+            const cost = form.watch(`materials.${index}.unitCost`) || 0
+            return sum + qty * cost
+          }, 0)
+
+          return (
+            <TableRow>
+              <TableCell colSpan={4} className="text-right font-semibold">
+                Total:
+              </TableCell>
+              <TableCell className="text-right text-sm font-medium pr-12">
+                ${total.toFixed(2)}
+              </TableCell>
+              <TableCell />
+            </TableRow>
+          )
+        },
+      }}
+    />
   )
 }
 
-export function MaterialsTab({ materials, isEditing = false }: MaterialsTabProps) {
-  if (isEditing) {
-    return <MaterialsEditMode materials={materials} />
+export function MaterialsTab({ materials, isEditing = false, form }: MaterialsTabProps) {
+  if (isEditing && form) {
+    return <MaterialsEditMode form={form} />
   }
   return <MaterialsViewMode materials={materials} />
 }

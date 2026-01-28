@@ -1,10 +1,10 @@
+import { Form } from '@justdx/components/atoms/Form'
 import { ScrollArea } from '@justdx/components/atoms/ScrollArea'
 import { Skeleton } from '@justdx/components/atoms/Skeleton'
 import { Tabs } from '@justdx/components/atoms/Tabs'
 import { PageLayout } from '@justdx/components/organisms/PageLayout'
 import { useParams } from '@tanstack/react-router'
 import { ClipboardList, Info, Package, Paperclip, Receipt } from 'lucide-react'
-import { useState } from 'react'
 
 import type { WorkOrderDetail } from '@features/work-orders'
 import { AttachmentsTab } from './components/AttachmentsTab'
@@ -15,6 +15,7 @@ import { TasksTab } from './components/TasksTab'
 import { WorkOrderDetailHeader } from './components/WorkOrderDetailHeader'
 import { workOrderDetailCopy } from './constants/copy'
 import { useWorkOrderDetail } from './hooks/useWorkOrderDetail'
+import { useWorkOrderEditForm } from './hooks/useWorkOrderEditForm'
 
 function WorkOrderDetailSkeleton() {
   return (
@@ -42,21 +43,8 @@ interface WorkOrderDetailContentProps {
 }
 
 function WorkOrderDetailContent({ workOrder }: WorkOrderDetailContentProps) {
-  const [isEditing, setIsEditing] = useState(false)
-
-  const handleEdit = () => {
-    setIsEditing(true)
-  }
-
-  const handleSave = () => {
-    console.log('Saving work order changes')
-    // TODO: Implement save functionality
-    setIsEditing(false)
-  }
-
-  const handleCancel = () => {
-    setIsEditing(false)
-  }
+  const { form, isEditing, startEditing, cancelEditing, handleSubmit } =
+    useWorkOrderEditForm(workOrder)
 
   const handlePrint = () => {
     window.print()
@@ -80,70 +68,72 @@ function WorkOrderDetailContent({ workOrder }: WorkOrderDetailContentProps) {
   }
 
   return (
-    <>
-      <WorkOrderDetailHeader
-        workOrder={workOrder}
-        isEditing={isEditing}
-        isSaving={false}
-        onEdit={handleEdit}
-        onSave={handleSave}
-        onCancel={handleCancel}
-        onPrint={handlePrint}
-        onDelete={handleDelete}
-      />
+    <Form {...form}>
+      <form onSubmit={handleSubmit}>
+        <WorkOrderDetailHeader
+          workOrder={workOrder}
+          isEditing={isEditing}
+          isSaving={false}
+          onEdit={startEditing}
+          onSave={() => handleSubmit()}
+          onCancel={cancelEditing}
+          onPrint={handlePrint}
+          onDelete={handleDelete}
+        />
 
-      <Tabs defaultValue="information" className="mt-6">
-        <Tabs.List className="w-full grid grid-cols-2 sm:grid-cols-5 gap-1">
-          <Tabs.Trigger value="information" className="gap-2">
-            <Info className="h-4 w-4" />
-            <span className="hidden sm:inline">{workOrderDetailCopy.tabs.information}</span>
-          </Tabs.Trigger>
-          <Tabs.Trigger value="materials" className="gap-2">
-            <Package className="h-4 w-4" />
-            <span className="hidden sm:inline">{workOrderDetailCopy.tabs.materials}</span>
-          </Tabs.Trigger>
-          <Tabs.Trigger value="tasks" className="gap-2">
-            <ClipboardList className="h-4 w-4" />
-            <span className="hidden sm:inline">{workOrderDetailCopy.tabs.tasks}</span>
-          </Tabs.Trigger>
-          <Tabs.Trigger value="otherCosts" className="gap-2">
-            <Receipt className="h-4 w-4" />
-            <span className="hidden sm:inline">{workOrderDetailCopy.tabs.otherCosts}</span>
-          </Tabs.Trigger>
-          <Tabs.Trigger value="attachments" className="gap-2">
-            <Paperclip className="h-4 w-4" />
-            <span className="hidden sm:inline">{workOrderDetailCopy.tabs.attachments}</span>
-          </Tabs.Trigger>
-        </Tabs.List>
+        <Tabs defaultValue="information" className="mt-6">
+          <Tabs.List className="w-full grid grid-cols-2 sm:grid-cols-5 gap-1">
+            <Tabs.Trigger value="information" className="gap-2">
+              <Info className="h-4 w-4" />
+              <span className="hidden sm:inline">{workOrderDetailCopy.tabs.information}</span>
+            </Tabs.Trigger>
+            <Tabs.Trigger value="materials" className="gap-2">
+              <Package className="h-4 w-4" />
+              <span className="hidden sm:inline">{workOrderDetailCopy.tabs.materials}</span>
+            </Tabs.Trigger>
+            <Tabs.Trigger value="tasks" className="gap-2">
+              <ClipboardList className="h-4 w-4" />
+              <span className="hidden sm:inline">{workOrderDetailCopy.tabs.tasks}</span>
+            </Tabs.Trigger>
+            <Tabs.Trigger value="otherCosts" className="gap-2">
+              <Receipt className="h-4 w-4" />
+              <span className="hidden sm:inline">{workOrderDetailCopy.tabs.otherCosts}</span>
+            </Tabs.Trigger>
+            <Tabs.Trigger value="attachments" className="gap-2">
+              <Paperclip className="h-4 w-4" />
+              <span className="hidden sm:inline">{workOrderDetailCopy.tabs.attachments}</span>
+            </Tabs.Trigger>
+          </Tabs.List>
 
-        <ScrollArea className="mt-6">
-          <Tabs.Content value="information" className="mt-0">
-            <InformationTab workOrder={workOrder} isEditing={isEditing} />
-          </Tabs.Content>
+          <ScrollArea className="mt-6">
+            <Tabs.Content value="information" className="mt-0">
+              <InformationTab workOrder={workOrder} isEditing={isEditing} form={form} />
+            </Tabs.Content>
 
-          <Tabs.Content value="materials" className="mt-0">
-            <MaterialsTab materials={workOrder.materials} isEditing={isEditing} />
-          </Tabs.Content>
+            <Tabs.Content value="materials" className="mt-0">
+              <MaterialsTab materials={workOrder.materials} isEditing={isEditing} form={form} />
+            </Tabs.Content>
 
-          <Tabs.Content value="tasks" className="mt-0">
-            <TasksTab tasks={workOrder.tasks} isEditing={isEditing} />
-          </Tabs.Content>
+            <Tabs.Content value="tasks" className="mt-0">
+              <TasksTab tasks={workOrder.tasks} isEditing={isEditing} form={form} />
+            </Tabs.Content>
 
-          <Tabs.Content value="otherCosts" className="mt-0">
-            <OtherCostsTab otherCosts={workOrder.otherCosts} isEditing={isEditing} />
-          </Tabs.Content>
+            <Tabs.Content value="otherCosts" className="mt-0">
+              <OtherCostsTab otherCosts={workOrder.otherCosts} isEditing={isEditing} form={form} />
+            </Tabs.Content>
 
-          <Tabs.Content value="attachments" className="mt-0">
-            <AttachmentsTab
-              attachments={workOrder.attachments}
-              isEditing={isEditing}
-              onDownload={handleAttachmentDownload}
-              onPreview={handleAttachmentPreview}
-            />
-          </Tabs.Content>
-        </ScrollArea>
-      </Tabs>
-    </>
+            <Tabs.Content value="attachments" className="mt-0">
+              <AttachmentsTab
+                attachments={workOrder.attachments}
+                isEditing={isEditing}
+                onDownload={handleAttachmentDownload}
+                onPreview={handleAttachmentPreview}
+              />
+            </Tabs.Content>
+          </ScrollArea>
+        </Tabs>
+      </form>
+    </Form>
   )
 }
 

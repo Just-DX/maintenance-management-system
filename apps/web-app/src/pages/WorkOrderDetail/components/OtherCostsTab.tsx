@@ -1,6 +1,4 @@
-import { Button } from '@justdx/components/atoms/Button'
 import { EmptyState } from '@justdx/components/atoms/EmptyState'
-import { Input } from '@justdx/components/atoms/Input'
 import {
   Table,
   TableBody,
@@ -9,15 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from '@justdx/components/atoms/Table'
-import { Plus, Receipt, Trash2 } from 'lucide-react'
-import { useState } from 'react'
+import { AutoArrayFields } from '@justdx/components/molecules/AutoField'
+import { Receipt } from 'lucide-react'
+import { type UseFormReturn } from 'react-hook-form'
 
-import type { OtherCost } from '@features/work-orders'
+import { type CreateWorkOrderFormData, type OtherCost } from '@features/work-orders'
 import { workOrderDetailCopy } from '../constants/copy'
 
 interface OtherCostsTabProps {
   otherCosts: OtherCost[]
   isEditing?: boolean
+  form?: UseFormReturn<CreateWorkOrderFormData>
 }
 
 function formatCurrency(amount: number): string {
@@ -71,124 +71,95 @@ function OtherCostsViewMode({ otherCosts }: { otherCosts: OtherCost[] }) {
   )
 }
 
-interface EditableCost {
-  id: string
-  description: string
-  quantity: number
-  cost: number
-}
-
-// Edit Mode Component
-function OtherCostsEditMode({ otherCosts }: { otherCosts: OtherCost[] }) {
+// Edit Mode Component (using useFieldArray)
+function OtherCostsEditMode({ form }: { form: UseFormReturn<CreateWorkOrderFormData> }) {
   const copy = workOrderDetailCopy.otherCosts
-  const [items, setItems] = useState<EditableCost[]>(
-    otherCosts.map((c) => ({
-      id: c.id,
-      description: c.description,
-      quantity: c.quantity,
-      cost: c.cost,
-    }))
-  )
-
-  const addCost = () => {
-    setItems([
-      ...items,
-      {
-        id: `new-${Date.now()}`,
-        description: '',
-        quantity: 1,
-        cost: 0,
-      },
-    ])
-  }
-
-  const removeCost = (id: string) => {
-    setItems(items.filter((c) => c.id !== id))
-  }
-
-  const updateCost = (id: string, field: keyof EditableCost, value: string | number) => {
-    setItems(items.map((c) => (c.id === id ? { ...c, [field]: value } : c)))
-  }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-sm font-semibold">{copy.sectionTitle}</h3>
-        <Button type="button" variant="outline" size="sm" onClick={addCost}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Cost
-        </Button>
-      </div>
+    <AutoArrayFields<CreateWorkOrderFormData>
+      form={form}
+      config={{
+        name: 'otherCosts',
+        layout: 'table',
+        itemFields: [
+          {
+            name: 'description',
+            type: 'input',
+            label: copy.columns.description,
+            width: 'auto',
+            placeholder: 'Cost description',
+          },
+          {
+            name: 'quantity',
+            type: 'input',
+            label: copy.columns.quantity,
+            width: 'sm',
+            placeholder: 'Qty',
+            props: { type: 'number', min: 1, className: 'text-right' },
+            rules: { valueAsNumber: true },
+          },
+          {
+            name: 'cost',
+            type: 'input',
+            label: copy.columns.cost,
+            width: 'sm',
+            placeholder: '$0.00',
+            props: { type: 'number', step: '0.01', min: 0, className: 'text-right' },
+            rules: { valueAsNumber: true },
+          },
+          {
+            name: 'total',
+            type: 'custom',
+            label: 'Total',
+            width: 'sm',
+            render: ({ form, index }) => {
+              const qty = form.watch(`otherCosts.${index}.quantity`) || 0
+              const cost = form.watch(`otherCosts.${index}.cost`) || 0
+              return (
+                <div className="text-right text-sm font-medium pr-2">
+                  ${(qty * cost).toFixed(2)}
+                </div>
+              )
+            },
+          },
+        ],
+        defaultItem: { description: '', quantity: 1, cost: 0 },
+        emptyState: {
+          icon: Receipt,
+          title: copy.empty,
+          className: 'p-12 border rounded-lg',
+        },
+        addButton: { label: 'Add Cost' },
+        title: copy.sectionTitle,
+        footer: ({ form, fields }) => {
+          if (fields.length === 0) return null
 
-      {items.length === 0 ? (
-        <EmptyState icon={Receipt} title={copy.empty} className="p-12 border rounded-lg" />
-      ) : (
-        <div className="rounded-lg border bg-card overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/50">
-                <TableHead className="font-semibold">{copy.columns.description}</TableHead>
-                <TableHead className="text-right font-semibold w-24">
-                  {copy.columns.quantity}
-                </TableHead>
-                <TableHead className="text-right font-semibold w-28">{copy.columns.cost}</TableHead>
-                <TableHead className="w-12"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {items.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <Input
-                      value={item.description}
-                      onChange={(e) => updateCost(item.id, 'description', e.target.value)}
-                      placeholder="Cost description"
-                      className="h-8"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Input
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) => updateCost(item.id, 'quantity', Number(e.target.value))}
-                      className="h-8 text-right"
-                      min={1}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={item.cost}
-                      onChange={(e) => updateCost(item.id, 'cost', Number(e.target.value))}
-                      className="h-8 text-right"
-                      min={0}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-destructive hover:text-destructive"
-                      onClick={() => removeCost(item.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
-    </div>
+          const total = fields.reduce((sum, _, index) => {
+            const qty = form.watch(`otherCosts.${index}.quantity`) || 0
+            const cost = form.watch(`otherCosts.${index}.cost`) || 0
+            return sum + qty * cost
+          }, 0)
+
+          return (
+            <TableRow>
+              <TableCell colSpan={3} className="text-right font-semibold">
+                Total:
+              </TableCell>
+              <TableCell className="text-right text-sm font-medium pr-12">
+                ${total.toFixed(2)}
+              </TableCell>
+              <TableCell />
+            </TableRow>
+          )
+        },
+      }}
+    />
   )
 }
 
-export function OtherCostsTab({ otherCosts, isEditing = false }: OtherCostsTabProps) {
-  if (isEditing) {
-    return <OtherCostsEditMode otherCosts={otherCosts} />
+export function OtherCostsTab({ otherCosts, isEditing = false, form }: OtherCostsTabProps) {
+  if (isEditing && form) {
+    return <OtherCostsEditMode form={form} />
   }
   return <OtherCostsViewMode otherCosts={otherCosts} />
 }

@@ -9,8 +9,7 @@ import { AutoFields } from '@justdx/components/molecules/AutoField'
 import { ClipboardList, Info, Loader2, Wrench } from 'lucide-react'
 import type { UseFormReturn } from 'react-hook-form'
 
-import { informationFields } from '../config/fields'
-import type { CreateWorkOrderFormData } from '../config/schema'
+import { type CreateWorkOrderFormData, informationFields } from '@features/work-orders'
 import { createWorkOrderCopy } from '../constants/copy'
 import { MaterialsSection } from './MaterialsSection'
 import { TasksSection } from './TasksSection'
@@ -28,7 +27,6 @@ export function CreateWorkOrderModal({
   isSubmitting,
   onOpenChange,
 }: CreateWorkOrderModalProps) {
-
   return (
     <Dialog.Content className="sm:max-w-2xl p-0 gap-0">
       {/* Header */}

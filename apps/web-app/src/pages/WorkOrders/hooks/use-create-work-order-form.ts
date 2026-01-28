@@ -1,17 +1,18 @@
+import {
+  createWorkOrderSchema,
+  mockAssets,
+  type CreateWorkOrderFormData,
+} from '@features/work-orders'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm, useWatch } from 'react-hook-form'
 
-import { mockAssets } from '../config/fields'
-import type { CreateWorkOrderFormData } from '../config/schema'
-import { createWorkOrderSchema } from '../config/schema'
-
 export function useCreateWorkOrderForm() {
   const [open, setOpen] = useState(false)
 
   const form = useForm<CreateWorkOrderFormData>({
-    resolver: zodResolver(createWorkOrderSchema) as never,
+    resolver: zodResolver(createWorkOrderSchema),
     defaultValues: {
       assetId: '',
       location: '',
