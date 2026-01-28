@@ -5,6 +5,7 @@ import * as React from 'react'
 import {
   type ArrayPath,
   type FieldArray,
+  type FieldArrayWithId,
   type FieldValues,
   type Path,
   useFieldArray,
@@ -64,7 +65,7 @@ interface FieldRendererProps {
   itemPath: string
   form: UseFormReturn<FieldValues>
   index: number
-  field: FieldArray<FieldValues>
+  field: FieldArrayWithId<FieldValues, ArrayPath<FieldValues>>
   compact?: boolean
 }
 
@@ -193,13 +194,13 @@ function FieldRenderer({
 
 interface TableLayoutProps<TValues extends FieldValues, TName extends ArrayPath<TValues>> {
   form: UseFormReturn<TValues>
-  fields: FieldArray<TValues, TName>[]
+  fields: FieldArrayWithId<TValues, TName>[]
   itemFields: ArrayItemFieldConfig[]
   name: TName
   remove: (index: number) => void
   footer?: (props: {
     form: UseFormReturn<TValues>
-    fields: FieldArray<TValues, TName>[]
+    fields: FieldArrayWithId<TValues, TName>[]
   }) => React.ReactNode
 }
 
@@ -268,13 +269,13 @@ function TableLayout<TValues extends FieldValues, TName extends ArrayPath<TValue
 
 interface CardLayoutProps<TValues extends FieldValues, TName extends ArrayPath<TValues>> {
   form: UseFormReturn<TValues>
-  fields: FieldArray<TValues, TName>[]
+  fields: FieldArrayWithId<TValues, TName>[]
   itemFields: ArrayItemFieldConfig[]
   name: TName
   remove: (index: number) => void
   footer?: (props: {
     form: UseFormReturn<TValues>
-    fields: FieldArray<TValues, TName>[]
+    fields: FieldArrayWithId<TValues, TName>[]
   }) => React.ReactNode
 }
 
@@ -397,6 +398,7 @@ export function AutoArrayFields<
     )
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const Layout = (config.layout === 'table' ? TableLayout : CardLayout) as React.ComponentType<any>
 
   return (

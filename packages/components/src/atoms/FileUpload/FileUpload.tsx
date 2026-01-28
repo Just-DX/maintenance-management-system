@@ -111,8 +111,9 @@ export function FileUpload({
       const droppedFiles = Array.from(e.dataTransfer.files)
       const validFiles = droppedFiles.filter((file) => file.size <= maxSize)
 
-      if (validFiles.length > 0) {
-        onFilesSelect?.(multiple ? validFiles : [validFiles[0]])
+      const firstFile = validFiles[0]
+      if (firstFile) {
+        onFilesSelect?.(multiple ? validFiles : [firstFile])
       }
     },
     [disabled, maxSize, multiple, onFilesSelect]
