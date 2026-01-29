@@ -40,4 +40,7 @@ export interface RecordTableProps<T> {
 
   // Styling
   className?: string
+
+  // Footer slot
+  footer?: React.ReactNode
 }

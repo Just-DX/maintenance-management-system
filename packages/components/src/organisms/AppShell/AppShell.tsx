@@ -4,17 +4,9 @@ import { cn } from '../../lib/utils'
 import { Separator } from '../../shadcn-primitives/separator'
 import { Sidebar } from '../../atoms/Sidebar'
 import { appShellStyles } from './AppShell.constants'
+import type { AppShellHeaderProps, AppShellProps } from './AppShell.type'
 
-export interface AppShellProps {
-  sidebar: React.ReactNode
-  header?: React.ReactNode
-  sidebarCollapsible?: 'offcanvas' | 'icon' | 'none'
-  defaultSidebarOpen?: boolean
-  sidebarOpen?: boolean
-  onSidebarOpenChange?: (open: boolean) => void
-  children: React.ReactNode
-  className?: string
-}
+export type { AppShellHeaderProps, AppShellProps } from './AppShell.type'
 
 function AppShellRoot({
   sidebar,
@@ -48,13 +40,7 @@ function AppShellRoot({
 }
 
 // Header sub-component with sidebar trigger built-in
-function AppShellHeader({
-  className,
-  children,
-}: {
-  className?: string
-  children?: React.ReactNode
-}) {
+function AppShellHeader({ className, children }: AppShellHeaderProps) {
   return (
     <header className={cn(appShellStyles.header, className)}>
       <Sidebar.Trigger className={appShellStyles.headerTrigger} />

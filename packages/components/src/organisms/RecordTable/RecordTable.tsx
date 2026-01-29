@@ -6,7 +6,9 @@ import { Table } from '../../atoms/Table'
 import { cn } from '../../lib/utils'
 import { TablePagination } from '../../molecules/TablePagination'
 import { defaultRecordTablePageSizes, recordTableStyles } from './RecordTable.constants'
-import type { RecordTableProps } from './RecordTable.types'
+import type { RecordTableProps } from './RecordTable.type'
+
+export type { RecordTableProps, ColumnDef } from './RecordTable.type'
 
 function RecordTableSkeleton({ columns }: { columns: number }) {
   return (
@@ -50,6 +52,7 @@ export function RecordTable<T extends { id: string | number }>({
   onRowClick,
 
   className,
+  footer,
 }: RecordTableProps<T>) {
   const actualTotal = total ?? data.length
   const showPaginationSection = showPagination && actualTotal > 0
@@ -138,6 +141,7 @@ export function RecordTable<T extends { id: string | number }>({
               </Table.Row>
             ))}
           </Table.Body>
+          {footer}
         </Table>
       </div>
 

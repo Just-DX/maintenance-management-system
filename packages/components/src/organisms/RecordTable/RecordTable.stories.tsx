@@ -8,7 +8,7 @@ import { DropdownMenu } from '../../atoms/DropdownMenu'
 import { TableToolbar } from '../../molecules/TableToolbar'
 import { RecordTable } from './RecordTable'
 import { mockInvoices, mockUsers, type MockInvoice, type MockUser } from './RecordTable.fixtures'
-import type { ColumnDef } from './RecordTable.types'
+import type { ColumnDef } from './RecordTable.type'
 
 // User columns
 const userColumns: ColumnDef<MockUser>[] = [

@@ -5,16 +5,11 @@ import { cn } from '../../lib/utils'
 import { Button } from '../Button'
 import { Calendar } from '../Calendar'
 import { Popover } from '../Popover'
+import type { DatePickerProps } from './DatePicker.type'
 
-export function DatePicker({
-  date,
-  onDateChange,
-  className,
-}: {
-  date: Date | undefined
-  onDateChange: (date: Date | undefined) => void
-  className?: string
-}) {
+export type { DatePickerProps } from './DatePicker.type'
+
+export function DatePicker({ date, onDateChange, className }: DatePickerProps) {
   return (
     <Popover>
       <Popover.Trigger asChild>

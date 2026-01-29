@@ -1,14 +1,8 @@
-import * as React from 'react'
-
 import { cn } from '../../lib/utils'
 import { pageHeaderStyles } from './PageHeader.constants'
+import type { PageHeaderProps } from './PageHeader.type'
 
-export interface PageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  title: string
-  description?: string
-  actions?: React.ReactNode
-  breadcrumb?: React.ReactNode
-}
+export type { PageHeaderProps } from './PageHeader.type'
 
 export function PageHeader({
   className,

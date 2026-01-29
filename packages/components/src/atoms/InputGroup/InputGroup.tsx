@@ -4,17 +4,14 @@ import * as React from 'react'
 import { cn } from '../../lib/utils'
 import { Button } from '../Button'
 import { Input } from '../Input'
-
-export interface InputGroupProps extends React.ComponentProps<typeof Input> {
-  startIcon?: React.ReactNode
-  endIcon?: React.ReactNode
-}
-
 import {
   InputGroupLeft,
   InputGroup as InputGroupPrimitive,
   InputGroupRight,
 } from '../../shadcn-primitives/input-group'
+import type { InputGroupProps } from './InputGroup.type'
+
+export type { InputGroupProps } from './InputGroup.type'
 
 // ...
 

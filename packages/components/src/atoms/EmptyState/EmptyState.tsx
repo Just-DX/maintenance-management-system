@@ -1,18 +1,10 @@
-import * as React from 'react'
-import { type LucideIcon, PackageOpen } from 'lucide-react'
+import { PackageOpen } from 'lucide-react'
 
 import { cn } from '../../lib/utils'
 import { Button } from '../Button'
+import type { EmptyStateProps } from './EmptyState.type'
 
-interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
-  icon?: LucideIcon
-  title: string
-  description?: string
-  action?: {
-    label: string
-    onClick: () => void
-  }
-}
+export type { EmptyStateProps } from './EmptyState.type'
 
 function EmptyState({
   className,

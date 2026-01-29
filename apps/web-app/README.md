@@ -1,6 +1,6 @@
 # Web App
 
-Frontend for the JustMT CMMS user experience. This app uses TanStack Router and TanStack Query, with page-level folders split into components, hooks, services, constants, and utils to keep UI clean and logic isolated.
+Frontend for the JustMT CMMS end-user experience. Built with React + Vite, TanStack Router, and TanStack Query. The codebase favors page folders with colocated UI and page-scoped config/constants, plus shared helpers under `src/shared` and domain logic under `src/features`.
 
 ## Quick start
 
@@ -16,103 +16,64 @@ Frontend for the JustMT CMMS user experience. This app uses TanStack Router and 
 - TypeScript
 - Shared monorepo packages (`@justdx/*`)
 
-## Project structure (high level)
-
-- `src/pages/` - page folders and screen-level composition
-- `src/routes/` - TanStack Router route definitions
-- `src/layouts/` - layout wrappers (App, Auth)
-- `src/plugins/` - shared client setups (TanStack Query)
-- `src/styles/` - global styles and Tailwind configuration
-- `src/assets/` - static assets
-
-## Page folder pattern
-
-Each page follows a structured pattern for maintainability:
-
-```
-src/pages/Login/
-├── components/     # UI-only building blocks (if needed)
-├── hooks/         # page-scoped state + event logic (if needed)
-├── services/      # TanStack Query queries/mutations (if needed)
-├── constants/     # copy, labels, and enums used by the page (if needed)
-├── utils/         # page-scoped helpers (if needed)
-├── config/        # page configuration (schemas, validation)
-└── index.tsx      # main page component
-```
-
-_Note: Only create folders as needed - not every page requires all folders._
-
-## TanStack Query setup
-
-- **Client**: `src/plugins/react-query/client.ts`
-- **Provider**: `src/main.tsx` wraps the app with `QueryClientProvider`
-- **Usage**: define queries/mutations in page `services/` folders
-
-## Layouts
-
-- `AuthLayout` - for authentication pages
-- `AppLayout` - for main application pages with sidebar navigation
-
 ## Scripts
 
 ```bash
-pnpm --filter web-app dev          # Start development server (port 3002)
-pnpm --filter web-app build        # Build for production
-pnpm --filter web-app preview      # Preview production build
-pnpm --filter web-app type-check   # Run TypeScript checks
-pnpm --filter web-app lint         # Run ESLint
-pnpm --filter web-app format       # Format code with Prettier
+pnpm --filter web-app dev           # Start dev server (port 3002)
+pnpm --filter web-app build         # Build for production
+pnpm --filter web-app preview       # Preview production build
+pnpm --filter web-app type-check    # Run TypeScript checks
+pnpm --filter web-app lint          # Run ESLint
+pnpm --filter web-app format        # Format code with Prettier
 ```
+
+## Code structure & conventions
+
+### Routing
+
+- Router entry: `src/router.ts`
+- Route tree: `src/routes/` (public + app routes and layouts)
+
+### Pages
+
+- Pages live in `src/pages/` and are organized by page folder.
+- Common per-page folders (use only when needed):
+
+```
+src/pages/WorkOrders/
+├── components/     # UI-only page building blocks
+├── hooks/          # page-scoped state + handlers
+├── constants/      # copy/labels/enums for the page
+├── config/         # page config (schemas, table columns, etc.)
+└── index.tsx       # main page component
+```
+
+### Features
+
+- Domain logic lives in `src/features/`.
+- Example: `src/features/work-orders/` contains types, schemas, constants, and shared fields for work order flows.
+
+### Shared
+
+- Cross-page helpers live in `src/shared/`:
+  - `config/` (navigation/auth config)
+  - `hooks/` (shared hooks)
+  - `utils/` (shared utilities)
+
+### Layouts, plugins, styles
+
+- Layouts: `src/layouts/`
+- TanStack Query client: `src/plugins/react-query/client.ts`
+- Global styles: `src/styles/globals.css`
+
+### Import aliases
+
+- `@*` maps to `src/*` (e.g., `@pages`, `@routes`, `@shared`, `@features`)
+- Shared monorepo packages: `@justdx/*`
 
 ## Shared packages
 
-This app leverages monorepo packages:
-
-- `@justdx/components` - shared UI component library
-- `@justdx/types` - TypeScript type definitions
+- `@justdx/components` - shared UI components
+- `@justdx/types` - shared TypeScript types
 - `@justdx/common` - shared utilities and schemas
 - `@justdx/config` - shared configuration (Tailwind, ESLint, etc.)
-
-## Enhancements needed
-
-### 1. Features folder structure
-
-Consider adding a `src/features/` folder for domain-specific logic:
-
-```
-src/features/
-├── auth/
-│   ├── services/    # auth-specific queries
-│   ├── hooks/       # auth state management
-│   └── types/       # auth-related types
-├── maintenance/
-│   ├── services/
-│   ├── hooks/
-│   └── types/
-└── shared/
-    ├── services/api/  # low-level API wrappers
-    └── hooks/         # cross-feature hooks
-```
-
-### 2. Context providers
-
-Add a `src/context/` folder for app-wide state:
-
-```
-src/context/
-├── AuthContext/     # user authentication state
-├── ThemeContext/    # UI theme management
-└── index.ts         # combined providers
-```
-
-### 3. API integration
-
-Set up proper API client with error handling and authentication:
-
-- Create `src/lib/api.ts` for base API client
-- Add environment configuration for API endpoints
-- Implement proper error boundaries and loading states
-
-```
-
-```

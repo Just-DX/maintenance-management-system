@@ -4,6 +4,7 @@ import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Button } from '../Button'
 import { Popover } from '../Popover'
+import type { AutoCompleteProps } from './AutoComplete.type'
 import {
   Command,
   CommandEmpty,
@@ -13,17 +14,7 @@ import {
   CommandList,
 } from '../../shadcn-primitives/command'
 
-export interface AutoCompleteProps {
-  options: {
-    value: string
-    label: string
-  }[]
-  value?: string
-  onSetValue?: (value: string) => void
-  placeholder?: string
-  emptyMessage?: string
-  className?: string
-}
+export type { AutoCompleteProps } from './AutoComplete.type'
 
 export function AutoComplete({
   options,

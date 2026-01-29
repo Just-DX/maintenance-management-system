@@ -1,12 +1,8 @@
 import { CheckCircle2, Circle, Clock, Pause, XCircle } from 'lucide-react'
 import { Badge } from '../Badge'
+import type { StatusBadgeProps, StatusType } from './StatusBadge.type'
 
-export type StatusType = 'open' | 'in-progress' | 'on-hold' | 'completed' | 'canceled'
-
-export interface StatusBadgeProps {
-  status: StatusType
-  className?: string
-}
+export type { StatusBadgeProps, StatusType } from './StatusBadge.type'
 
 const statusConfig: Record<
   StatusType,

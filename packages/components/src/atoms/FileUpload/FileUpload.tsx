@@ -3,6 +3,7 @@
 import { AlertCircle, CheckCircle2, FileIcon, Loader2, Upload, X } from 'lucide-react'
 import * as React from 'react'
 
+import { formatFileSize } from '@justdx/common'
 import { cn } from '../../lib/utils'
 import { Button } from '../Button'
 import {
@@ -10,51 +11,14 @@ import {
   fileUploadStyles,
   type FileUploadState,
 } from './FileUpload.constants'
+import type { FileUploadProps, UploadedFile } from './FileUpload.type'
+
+export type { FileUploadProps, UploadedFile } from './FileUpload.type'
 
 // ============================================================================
 // Types
 // ============================================================================
 
-export interface UploadedFile {
-  id: string
-  name: string
-  size: number
-  type: string
-  progress?: number
-  status: 'uploading' | 'success' | 'error'
-  error?: string
-}
-
-export interface FileUploadProps {
-  /** Accepted file types (e.g., 'image/*,.pdf') */
-  accept?: string
-  /** Maximum file size in bytes */
-  maxSize?: number
-  /** Allow multiple file uploads */
-  multiple?: boolean
-  /** Currently uploaded/uploading files */
-  files?: UploadedFile[]
-  /** Callback when files are selected */
-  onFilesSelect?: (files: File[]) => void
-  /** Callback when a file is removed */
-  onFileRemove?: (fileId: string) => void
-  /** Whether the upload zone is disabled */
-  disabled?: boolean
-  /** Custom class name */
-  className?: string
-}
-
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
-function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
 
 function getFileIcon(_fileType: string) {
   // Could extend with more specific icons based on file type

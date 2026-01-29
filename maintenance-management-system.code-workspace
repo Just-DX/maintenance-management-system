@@ -1,0 +1,50 @@
+{
+  "folders": [
+    { "path": "." },
+    { "path": "apps/api-admin" },
+    { "path": "apps/api-app" },
+    { "path": "apps/web-admin" },
+    { "path": "apps/web-app" },
+    { "path": "apps/landing" },
+    { "path": "apps/workers" },
+    { "path": "apps/e2e" },
+    { "path": "packages/common" },
+    { "path": "packages/components" },
+    { "path": "packages/config" },
+    { "path": "packages/database" },
+    { "path": "packages/generators" },
+    { "path": "packages/logger" },
+    { "path": "packages/types" },
+  ],
+
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.turbo": true,
+      "**/.next": true,
+      "apps/e2e/playwright-report": true,
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.turbo": true,
+    },
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit",
+    },
+    "eslint.validate": ["javascript", "typescript", "typescriptreact"],
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+
+  "extensions": {
+    "recommendations": [],
+    "unwantedRecommendations": [],
+  },
+}

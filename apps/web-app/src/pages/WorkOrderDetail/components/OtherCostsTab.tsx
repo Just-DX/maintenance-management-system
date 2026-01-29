@@ -1,17 +1,13 @@
 import { EmptyState } from '@justdx/components/atoms/EmptyState'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@justdx/components/atoms/Table'
+import { Table, TableCell, TableRow } from '@justdx/components/atoms/Table'
 import { AutoArrayFields } from '@justdx/components/molecules/AutoField'
+import { ClientTable } from '@justdx/components/organisms/ClientTable'
 import { Receipt } from 'lucide-react'
 import { type UseFormReturn } from 'react-hook-form'
 
 import { type CreateWorkOrderFormData, type OtherCost } from '@features/work-orders'
+import { formatCurrency } from '@justdx/common'
+import { otherCostsColumns } from '../config/table-columns'
 import { workOrderDetailCopy } from '../constants/copy'
 
 interface OtherCostsTabProps {
@@ -20,53 +16,39 @@ interface OtherCostsTabProps {
   form?: UseFormReturn<CreateWorkOrderFormData>
 }
 
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount)
-}
-
 // View Mode Component
 function OtherCostsViewMode({ otherCosts }: { otherCosts: OtherCost[] }) {
   const copy = workOrderDetailCopy.otherCosts
 
-  if (otherCosts.length === 0) {
-    return <EmptyState icon={Receipt} title={copy.empty} className="p-12 border rounded-lg" />
-  }
+  const columns = otherCostsColumns
 
   const total = otherCosts.reduce((sum, c) => sum + c.quantity * c.cost, 0)
 
+  const footer = (
+    <Table.Body>
+      <TableRow className="bg-muted/30 font-semibold hover:bg-muted/30">
+        <TableCell colSpan={3} className="text-right">
+          {copy.totalLabel}
+        </TableCell>
+        <TableCell className="text-right text-primary">{formatCurrency(total)}</TableCell>
+      </TableRow>
+    </Table.Body>
+  )
+
   return (
-    <div className="rounded-lg border bg-card overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow className="bg-muted/50">
-            <TableHead className="font-semibold">{copy.columns.description}</TableHead>
-            <TableHead className="text-right font-semibold">{copy.columns.quantity}</TableHead>
-            <TableHead className="text-right font-semibold">{copy.columns.cost}</TableHead>
-            <TableHead className="text-right font-semibold">Total</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {otherCosts.map((cost) => (
-            <TableRow key={cost.id}>
-              <TableCell className="font-medium">{cost.description}</TableCell>
-              <TableCell className="text-right">{cost.quantity}</TableCell>
-              <TableCell className="text-right">{formatCurrency(cost.cost)}</TableCell>
-              <TableCell className="text-right">
-                {formatCurrency(cost.quantity * cost.cost)}
-              </TableCell>
-            </TableRow>
-          ))}
-          <TableRow className="bg-muted/30 font-semibold">
-            <TableCell colSpan={3} className="text-right">
-              {copy.totalLabel}
-            </TableCell>
-            <TableCell className="text-right text-primary">{formatCurrency(total)}</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+    <div className="bg-card rounded-lg border overflow-hidden">
+      <ClientTable
+        data={otherCosts}
+        columns={columns}
+        emptyState={
+          <EmptyState icon={Receipt} title={copy.empty} className="p-12 border-0 rounded-none" />
+        }
+        showPagination={otherCosts.length > 5}
+        pageSizeOptions={[5, 10, 20]}
+        initialPageSize={5}
+        footer={otherCosts.length > 0 ? footer : undefined}
+        className="border-0"
+      />
     </div>
   )
 }

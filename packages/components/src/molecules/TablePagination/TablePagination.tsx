@@ -1,24 +1,11 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
-import * as React from 'react'
-
 import { Button } from '../../atoms/Button'
 import { Select } from '../../atoms/Select'
 import { cn } from '../../lib/utils'
 import { defaultPageSizeOptions, tablePaginationStyles } from './TablePagination.constants'
+import type { TablePaginationProps } from './TablePagination.type'
 
-export interface TablePaginationProps extends Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  'onChange'
-> {
-  page: number
-  pageSize: number
-  total: number
-  onPageChange: (page: number) => void
-  onPageSizeChange?: (size: number) => void
-  pageSizeOptions?: readonly number[]
-  showPageSize?: boolean
-  showInfo?: boolean
-}
+export type { TablePaginationProps } from './TablePagination.type'
 
 export function TablePagination({
   className,

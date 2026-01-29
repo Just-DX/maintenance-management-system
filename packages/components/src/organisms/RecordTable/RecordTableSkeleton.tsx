@@ -1,5 +1,8 @@
 import * as React from 'react'
 import { Skeleton } from '../../atoms/Skeleton'
+import type { RecordTableSkeletonProps } from './RecordTableSkeleton.type'
+
+export type { RecordTableSkeletonProps } from './RecordTableSkeleton.type'
 
 const tableStyles = {
   wrapper: 'p-8',
@@ -7,11 +10,6 @@ const tableStyles = {
   headerCell: 'h-8 flex-1',
   row: 'flex gap-4 mb-3',
   cell: 'h-12 flex-1',
-}
-
-interface RecordTableSkeletonProps {
-  columns: number
-  rows?: number
 }
 
 export const RecordTableSkeleton = React.memo<RecordTableSkeletonProps>(({ columns, rows = 5 }) => {

@@ -1,17 +1,13 @@
 import { EmptyState } from '@justdx/components/atoms/EmptyState'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@justdx/components/atoms/Table'
+import { Table, TableCell, TableRow } from '@justdx/components/atoms/Table'
 import { AutoArrayFields } from '@justdx/components/molecules/AutoField'
+import { ClientTable } from '@justdx/components/organisms/ClientTable'
 import { Package } from 'lucide-react'
 import { type UseFormReturn } from 'react-hook-form'
 
 import { type CreateWorkOrderFormData, type WorkOrderMaterial } from '@features/work-orders'
+import { formatCurrency } from '@justdx/common'
+import { materialsColumns } from '../config/table-columns'
 import { workOrderDetailCopy } from '../constants/copy'
 
 interface MaterialsTabProps {
@@ -20,67 +16,41 @@ interface MaterialsTabProps {
   form?: UseFormReturn<CreateWorkOrderFormData>
 }
 
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount)
-}
-
 // View Mode Component
 function MaterialsViewMode({ materials }: { materials: WorkOrderMaterial[] }) {
   const copy = workOrderDetailCopy.materials
 
-  if (materials.length === 0) {
-    return <EmptyState icon={Package} title={copy.empty} className="p-12 border rounded-lg" />
-  }
+  const columns = materialsColumns
 
   const totalPlanCost = materials.reduce((sum, m) => sum + m.totalPlanCost, 0)
   const totalActualCost = materials.reduce((sum, m) => sum + (m.totalActualCost ?? 0), 0)
 
+  const footer = (
+    <Table.Body>
+      <TableRow className="bg-muted/30 font-semibold hover:bg-muted/30">
+        <TableCell colSpan={4} className="text-right">
+          {copy.totalLabel}
+        </TableCell>
+        <TableCell className="text-right text-primary">{formatCurrency(totalPlanCost)}</TableCell>
+        <TableCell className="text-right text-primary">{formatCurrency(totalActualCost)}</TableCell>
+      </TableRow>
+    </Table.Body>
+  )
+
   return (
-    <div className="rounded-lg border bg-card overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow className="bg-muted/50">
-            <TableHead className="font-semibold">{copy.columns.name}</TableHead>
-            <TableHead className="text-right font-semibold">{copy.columns.planQty}</TableHead>
-            <TableHead className="text-right font-semibold">{copy.columns.actualQty}</TableHead>
-            <TableHead className="text-right font-semibold">{copy.columns.unitCost}</TableHead>
-            <TableHead className="text-right font-semibold">{copy.columns.totalPlanCost}</TableHead>
-            <TableHead className="text-right font-semibold">
-              {copy.columns.totalActualCost}
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {materials.map((material) => (
-            <TableRow key={material.id}>
-              <TableCell className="font-medium">{material.name}</TableCell>
-              <TableCell className="text-right">{material.planQuantity}</TableCell>
-              <TableCell className="text-right">{material.actualQuantity ?? '-'}</TableCell>
-              <TableCell className="text-right">{formatCurrency(material.unitCost)}</TableCell>
-              <TableCell className="text-right">{formatCurrency(material.totalPlanCost)}</TableCell>
-              <TableCell className="text-right">
-                {material.totalActualCost !== undefined
-                  ? formatCurrency(material.totalActualCost)
-                  : '-'}
-              </TableCell>
-            </TableRow>
-          ))}
-          <TableRow className="bg-muted/30 font-semibold">
-            <TableCell colSpan={4} className="text-right">
-              {copy.totalLabel}
-            </TableCell>
-            <TableCell className="text-right text-primary">
-              {formatCurrency(totalPlanCost)}
-            </TableCell>
-            <TableCell className="text-right text-primary">
-              {formatCurrency(totalActualCost)}
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+    <div className="bg-card rounded-lg border overflow-hidden">
+      <ClientTable
+        data={materials}
+        columns={columns}
+        emptyState={
+          <EmptyState icon={Package} title={copy.empty} className="p-12 border-0 rounded-none" />
+        }
+        showPagination={materials.length > 5}
+        pageSizeOptions={[5, 10, 20]}
+        initialPageSize={5}
+        footer={materials.length > 0 ? footer : undefined}
+        className="border-0"
+      />
     </div>
   )
 }

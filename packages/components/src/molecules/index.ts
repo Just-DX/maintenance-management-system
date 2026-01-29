@@ -23,7 +23,7 @@ export {
 } from './AutoField'
 
 // ThemeToggle
-export { ThemeToggle } from './theme-toggle/theme-toggle'
+export { ThemeToggle } from './ThemeToggle'
 
 // Attachments
 export { Attachments, type Attachment, type AttachmentsProps } from './Attachments'

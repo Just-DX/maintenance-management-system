@@ -2,51 +2,18 @@
 
 import { Download, Eye, FileIcon, FileText, Film, Image, Music, Trash2 } from 'lucide-react'
 
+import { formatFileSize } from '@justdx/common'
 import { Button } from '../../atoms/Button'
 import { cn } from '../../lib/utils'
 import { attachmentsStyles } from './Attachments.constants'
+import type { Attachment, AttachmentsProps } from './Attachments.type'
+
+export type { Attachment, AttachmentsProps } from './Attachments.type'
 
 // ============================================================================
 // Types
 // ============================================================================
 
-export interface Attachment {
-  id: string
-  fileName: string
-  fileUrl: string
-  fileType: string
-  fileSize: number
-  uploadedAt: string
-}
-
-export interface AttachmentsProps {
-  /** List of attachments to display */
-  attachments: Attachment[]
-  /** Callback when an attachment is removed */
-  onRemove?: (attachmentId: string) => void
-  /** Callback when an attachment is downloaded */
-  onDownload?: (attachment: Attachment) => void
-  /** Callback when an attachment is previewed */
-  onPreview?: (attachment: Attachment) => void
-  /** Display mode */
-  variant?: 'list' | 'grid'
-  /** Whether to show actions (remove, download) */
-  showActions?: boolean
-  /** Custom class name */
-  className?: string
-}
-
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
-function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString)

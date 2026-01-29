@@ -1,4 +1,4 @@
-import type { BaseRecord } from './RecordTable.types'
+import type { BaseRecord } from './RecordTable.type'
 
 export const isAllSelected = <T extends BaseRecord>(
   data: T[],

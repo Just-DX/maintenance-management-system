@@ -1,1 +1,1 @@
-export { Google } from './Google'
+export { Google, type GoogleProps } from './Google'

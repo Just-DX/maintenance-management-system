@@ -1,6 +1,7 @@
-// Utility functions
 export * from './array'
+export * from './currency'
 export * from './date'
+export * from './file'
 export * from './object'
 export * from './role'
 export * from './string'

@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { Tabs } from './Tabs'
-import { tabsContent } from './Tabs.fixtures'
 import { Button } from '../Button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../Card'
 import { Input } from '../Input'
 import { Label } from '../Label'
+import { Tabs } from './Tabs'
 
 const meta = {
   title: 'Atoms/Tabs',
@@ -19,7 +18,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
-    <Tabs defaultValue="account" className="w-[400px]">
+    <Tabs defaultValue="account" className="w-100">
       <Tabs.List className="grid w-full grid-cols-2">
         <Tabs.Trigger value="account">Account</Tabs.Trigger>
         <Tabs.Trigger value="password">Password</Tabs.Trigger>

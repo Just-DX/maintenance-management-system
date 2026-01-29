@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { ThemeProvider } from '../../providers/theme-provider'
-import { ThemeToggle } from './theme-toggle'
+import { ThemeToggle } from './ThemeToggle'
 
-const meta = {
+const meta: Meta<typeof ThemeToggle> = {
   title: 'Molecules/ThemeToggle',
   component: ThemeToggle,
   tags: ['autodocs'],
@@ -16,7 +16,7 @@ const meta = {
       </ThemeProvider>
     ),
   ],
-} satisfies Meta<typeof ThemeToggle>
+}
 
 export default meta
 

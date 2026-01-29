@@ -9,4 +9,8 @@ async function bootstrap() {
   logger.info('🔄 Workers service initialized and ready')
   logger.info('📋 Listening for jobs...')
 }
-bootstrap()
+
+void bootstrap().catch((error) => {
+  logger.error({ err: error }, 'Failed to start workers service')
+  process.exit(1)
+})

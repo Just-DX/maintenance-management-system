@@ -1,16 +1,11 @@
 'use client'
 
-import type { FieldValues, UseFormReturn } from 'react-hook-form'
+import type { FieldValues } from 'react-hook-form'
 
-import { AutoField } from './auto-field'
-import type { FieldConfig } from './field-config'
+import { AutoField } from './AutoField'
+import type { AutoFieldsProps } from './AutoFields.type'
 
-export interface AutoFieldsProps<TValues extends FieldValues> {
-  /** react-hook-form form object */
-  form: UseFormReturn<TValues>
-  /** Array of field configurations to render */
-  fields: FieldConfig<TValues>[]
-}
+export type { AutoFieldsProps } from './AutoFields.type'
 
 /**
  * Helper component that renders multiple AutoField components from a config array.

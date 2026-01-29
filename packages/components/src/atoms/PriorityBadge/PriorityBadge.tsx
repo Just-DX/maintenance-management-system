@@ -1,12 +1,10 @@
 import { cn } from '../../lib/utils'
 import { Badge } from '../Badge'
 import { PRIORITY_CONFIG } from './PriorityBadge.config'
-import type { PriorityLevel } from './PriorityBadge.constants'
+import type { PriorityBadgeProps } from './PriorityBadge.type'
 
-export interface PriorityBadgeProps {
-  priority: PriorityLevel
-  className?: string
-}
+export type { PriorityBadgeProps } from './PriorityBadge.type'
+export type { PriorityLevel } from './PriorityBadge.constants'
 
 export function PriorityBadge({ priority, className }: PriorityBadgeProps) {
   const config = PRIORITY_CONFIG[priority]

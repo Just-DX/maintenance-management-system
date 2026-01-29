@@ -36,29 +36,10 @@ import {
 } from '../../shadcn-primitives/table'
 import { Textarea } from '../../shadcn-primitives/textarea'
 
-import {
-  type ArrayItemFieldConfig,
-  type AutoArrayFieldsConfig,
-  COLUMN_WIDTH_CLASSES,
-} from './array-field-config'
+import { type ArrayItemFieldConfig, COLUMN_WIDTH_CLASSES } from './array-field-config'
+import type { AutoArrayFieldsProps } from './AutoArrayFields.type'
 
-// ============================================================================
-// Props and Types
-// ============================================================================
-
-export interface AutoArrayFieldsProps<
-  TValues extends FieldValues,
-  TName extends ArrayPath<TValues> = ArrayPath<TValues>,
-> {
-  /** react-hook-form form object */
-  form: UseFormReturn<TValues>
-  /** Array field configuration */
-  config: AutoArrayFieldsConfig<TValues, TName>
-}
-
-// ============================================================================
-// Field Renderer
-// ============================================================================
+export type { AutoArrayFieldsProps } from './AutoArrayFields.type'
 
 interface FieldRendererProps {
   fieldConfig: ArrayItemFieldConfig

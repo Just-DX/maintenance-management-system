@@ -1,17 +1,9 @@
-import * as React from 'react'
-
 import { cn } from '../../lib/utils'
 import { InputSearch } from '../../atoms/InputGroup'
 import { tableToolbarStyles } from './TableToolbar.constants'
+import type { TableToolbarProps } from './TableToolbar.type'
 
-export interface TableToolbarProps extends React.HTMLAttributes<HTMLDivElement> {
-  searchValue?: string
-  onSearchChange?: (value: string) => void
-  searchPlaceholder?: string
-  showSearch?: boolean
-  filters?: React.ReactNode
-  actions?: React.ReactNode
-}
+export type { TableToolbarProps } from './TableToolbar.type'
 
 export function TableToolbar({
   className,
