@@ -16,8 +16,8 @@ export const pageLayoutVariants = cva('flex flex-col', {
     },
     padding: {
       none: '',
-      default: 'p-6',
-      compact: 'p-4',
+      default: 'px-6',
+      compact: 'px-4',
     },
   },
   defaultVariants: {

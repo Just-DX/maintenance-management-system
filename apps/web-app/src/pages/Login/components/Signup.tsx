@@ -17,9 +17,7 @@ export function Signup() {
 
       <div className="relative flex items-center mt-2">
         <Separator className="flex-1" />
-        <span className="mx-3 bg-background px-2 text-sm text-muted-foreground">
-          {loginCopy.signup.connect}
-        </span>
+        <span className="mx-3 px-2 text-sm text-muted-foreground">{loginCopy.signup.connect}</span>
         <Separator className="flex-1" />
       </div>
 

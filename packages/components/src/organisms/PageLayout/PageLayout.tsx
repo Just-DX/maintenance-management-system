@@ -19,7 +19,10 @@ export function PageLayout({
   ...props
 }: PageLayoutProps) {
   return (
-    <div className={cn(pageLayoutVariants({ variant, maxWidth, padding }), className)} {...props}>
+    <div
+      className={cn(pageLayoutVariants({ variant, maxWidth, padding }), className, 'my-6')}
+      {...props}
+    >
       {header && <div className={pageLayoutStyles.header}>{header}</div>}
       <div className={pageLayoutStyles.content}>{children}</div>
     </div>

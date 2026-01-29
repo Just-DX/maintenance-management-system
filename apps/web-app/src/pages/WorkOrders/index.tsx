@@ -1,3 +1,4 @@
+import { PageLayout } from '@justdx/components'
 import { Dialog } from '@justdx/components/atoms/Dialog'
 import { CreateWorkOrderModal } from './components/CreateWorkOrderModal'
 import { WorkOrdersHeader } from './components/WorkOrdersHeader'
@@ -11,13 +12,16 @@ export function WorkOrdersPage() {
   const { data, stats, isLoading } = useWorkOrders()
 
   return (
-    <div className="h-full flex-1 flex-col space-y-8 md:flex">
-      <div className="flex flex-col gap-6 spacing-page">
-        <WorkOrdersHeader />
+    <PageLayout
+      padding="none"
+      header={
+        <div className="flex flex-col gap-6 spacing-page">
+          <WorkOrdersHeader />
 
-        <WorkOrdersKPISection stats={stats} isLoading={isLoading} />
-      </div>
-
+          <WorkOrdersKPISection stats={stats} isLoading={isLoading} />
+        </div>
+      }
+    >
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <WorkOrdersTable data={data} isLoading={isLoading} />
         <CreateWorkOrderModal
@@ -27,6 +31,6 @@ export function WorkOrdersPage() {
           onOpenChange={handleOpenChange}
         />
       </Dialog>
-    </div>
+    </PageLayout>
   )
 }

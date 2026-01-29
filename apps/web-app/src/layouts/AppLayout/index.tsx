@@ -5,7 +5,7 @@ import { Sidebar } from './components/Sidebar'
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <AppShell defaultSidebarOpen sidebar={<Sidebar />} header={<Header />}>
-      <div className="py-6">{children}</div>
+      {children}
     </AppShell>
   )
 }

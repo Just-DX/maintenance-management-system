@@ -143,7 +143,7 @@ export function WorkOrderDetailPage() {
 
   if (isLoading) {
     return (
-      <PageLayout className="py-6">
+      <PageLayout variant="detail">
         <WorkOrderDetailSkeleton />
       </PageLayout>
     )
@@ -151,7 +151,7 @@ export function WorkOrderDetailPage() {
 
   if (isError || !workOrder) {
     return (
-      <PageLayout className="py-6">
+      <PageLayout variant="detail">
         <div className="text-center py-12">
           <p className="text-destructive">Failed to load work order details</p>
         </div>
@@ -160,7 +160,7 @@ export function WorkOrderDetailPage() {
   }
 
   return (
-    <PageLayout className="py-6">
+    <PageLayout variant="detail">
       <WorkOrderDetailContent workOrder={workOrder} />
     </PageLayout>
   )
