@@ -3,14 +3,9 @@
   "compilerOptions": {
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "sourceMap": true,
-    "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "noEmit": true,
     "paths": {
       "@/*": ["./src/*"],
       "@decorations/*": ["./src/decorations/*"],
