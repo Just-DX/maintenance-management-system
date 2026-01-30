@@ -1,6 +1,5 @@
 import type { GoogleProps } from './Google.type'
 
-export type { GoogleProps } from './Google.type'
 
 export function Google(props: GoogleProps) {
   return (

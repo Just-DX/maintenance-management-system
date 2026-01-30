@@ -8,13 +8,6 @@ import { cn } from '../../lib/utils'
 import { attachmentsStyles } from './Attachments.constants'
 import type { AttachmentsProps } from './Attachments.type'
 
-export type { Attachment, AttachmentsProps } from './Attachments.type'
-
-// ============================================================================
-// Types
-// ============================================================================
-
-
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
   return date.toLocaleDateString('en-US', {

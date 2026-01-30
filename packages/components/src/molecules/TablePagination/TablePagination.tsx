@@ -5,7 +5,6 @@ import { cn } from '../../lib/utils'
 import { defaultPageSizeOptions, tablePaginationStyles } from './TablePagination.constants'
 import type { TablePaginationProps } from './TablePagination.type'
 
-export type { TablePaginationProps } from './TablePagination.type'
 
 export function TablePagination({
   className,

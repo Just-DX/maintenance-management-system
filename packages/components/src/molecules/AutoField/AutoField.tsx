@@ -3,11 +3,11 @@
 import * as React from 'react'
 import type { Control, FieldValues } from 'react-hook-form'
 
-import { Checkbox } from '../../atoms/Checkbox/Checkbox'
-import { DatePicker } from '../../atoms/DatePicker/DatePicker'
-import { InputGroup } from '../../atoms/InputGroup/InputGroup'
-import { MultiSelect } from '../../atoms/MultiSelect/MultiSelect'
-import { RadioGroup } from '../../atoms/RadioGroup/RadioGroup'
+import { Checkbox } from '../../atoms/Checkbox'
+import { DatePicker } from '../../atoms/DatePicker'
+import { InputGroup } from '../../atoms/InputGroup'
+import { MultiSelect } from '../../atoms/MultiSelect'
+import { RadioGroup } from '../../atoms/RadioGroup'
 import { cn } from '../../lib/utils'
 import {
   FormControl,

@@ -1,1 +1,2 @@
-export { Attachments, type Attachment, type AttachmentsProps } from './Attachments'
+export { Attachments } from './Attachments'
+export type { Attachment, AttachmentsProps } from './Attachments.type'

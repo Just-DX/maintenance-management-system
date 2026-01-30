@@ -4,7 +4,6 @@ import { cn } from '../../lib/utils'
 import { Button } from '../Button'
 import type { EmptyStateProps } from './EmptyState.type'
 
-export type { EmptyStateProps } from './EmptyState.type'
 
 function EmptyState({
   className,

@@ -13,13 +13,6 @@ import {
 } from './FileUpload.constants'
 import type { FileUploadProps, UploadedFile } from './FileUpload.type'
 
-export type { FileUploadProps, UploadedFile } from './FileUpload.type'
-
-// ============================================================================
-// Types
-// ============================================================================
-
-
 function getFileIcon(_fileType: string) {
   // Could extend with more specific icons based on file type
   return FileIcon

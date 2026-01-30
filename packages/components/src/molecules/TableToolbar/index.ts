@@ -1,1 +1,2 @@
-export { TableToolbar, type TableToolbarProps } from './TableToolbar'
+export { TableToolbar } from './TableToolbar'
+export type { TableToolbarProps } from './TableToolbar.type'
