@@ -1,8 +1,9 @@
 import 'reflect-metadata'
+
 import { logger } from '@justdx/logger'
+import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { ValidationPipe } from '@nestjs/common'
 import { AppModule } from './app.module'
 
 async function bootstrap() {

@@ -17,7 +17,6 @@ import { Button } from '../Button'
 import { Popover } from '../Popover'
 import type { MultiSelectProps } from './MultiSelect.type'
 
-
 export function MultiSelect({
   options,
   value = [],

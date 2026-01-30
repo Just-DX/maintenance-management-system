@@ -1,6 +1,6 @@
-import { config as loadEnv } from 'dotenv'
 import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from './generated/prisma/client'
+import { config as loadEnv } from 'dotenv'
+import { PrismaClient } from '../generated/prisma/client'
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined }
 
@@ -34,5 +34,5 @@ export function getPrisma(): PrismaClient {
   return prisma
 }
 
-export * from './generated/prisma/client'
+export * from '../generated/prisma/client'
 export { PrismaClient }

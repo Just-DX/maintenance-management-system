@@ -1,12 +1,12 @@
+import { SupabaseService } from '@modules/supabase/supabase.service'
 import {
   BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common'
-import { SupabaseService } from '@modules/supabase/supabase.service'
-import { UserRepository } from './repositories/user.repository'
 import { SignupDto } from './dto/signup.dto'
+import { UserRepository } from './repositories/user.repository'
 
 type OAuthInput = {
   redirectTo: string

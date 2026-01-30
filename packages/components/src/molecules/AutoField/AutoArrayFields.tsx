@@ -39,7 +39,6 @@ import { Textarea } from '../../shadcn-primitives/textarea'
 import { type ArrayItemFieldConfig, COLUMN_WIDTH_CLASSES } from './array-field-config'
 import type { AutoArrayFieldsProps } from './AutoArrayFields.type'
 
-
 interface FieldRendererProps {
   fieldConfig: ArrayItemFieldConfig
   itemPath: string

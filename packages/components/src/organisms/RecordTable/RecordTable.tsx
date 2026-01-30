@@ -8,7 +8,6 @@ import { TablePagination } from '../../molecules/TablePagination'
 import { defaultRecordTablePageSizes, recordTableStyles } from './RecordTable.constants'
 import type { RecordTableProps } from './RecordTable.type'
 
-
 function RecordTableSkeleton({ columns }: { columns: number }) {
   return (
     <div className={recordTableStyles.tableWrapper}>

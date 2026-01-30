@@ -1,5 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "DATABASE_URL",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL"
+  ],
   "globalDependencies": [
     "**/.env.*local"
   ],
@@ -37,6 +42,19 @@
     },
     "clean": {
       "cache": false
+    }
+  },
+  "pipeline": {
+    "db:generate": {
+      "outputs": [
+        "packages/database/generated/**"
+      ]
+    },
+    "build": {
+      "dependsOn": [
+        "^db:generate",
+        "^build"
+      ]
     }
   }
 }

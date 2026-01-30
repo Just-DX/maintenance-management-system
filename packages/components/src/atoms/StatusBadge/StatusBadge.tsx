@@ -2,7 +2,6 @@ import { CheckCircle2, Circle, Clock, Pause, XCircle } from 'lucide-react'
 import { Badge } from '../Badge'
 import type { StatusBadgeProps, StatusType } from './StatusBadge.type'
 
-
 const statusConfig: Record<
   StatusType,
   {

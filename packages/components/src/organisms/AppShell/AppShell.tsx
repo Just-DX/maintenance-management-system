@@ -6,7 +6,6 @@ import { Sidebar } from '../../atoms/Sidebar'
 import { appShellStyles } from './AppShell.constants'
 import type { AppShellHeaderProps, AppShellProps } from './AppShell.type'
 
-
 function AppShellRoot({
   sidebar,
   header,

@@ -7,4 +7,8 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
+  esbuildOptions(options) {
+    options.platform = 'node'
+    options.target = 'node18'
+  },
 })

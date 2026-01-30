@@ -19,6 +19,12 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@decorations/*": ["./src/decorations/*"],
+      "@modules/*": ["./src/modules/*"]
+    }
+  },
+  "exclude": ["dist", "node_modules"]
 }

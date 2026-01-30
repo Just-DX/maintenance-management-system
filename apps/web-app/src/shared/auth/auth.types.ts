@@ -1,3 +1,5 @@
+import type { AuthResponse, Session } from '@supabase/supabase-js'
+
 export type RoleCode = string
 
 export type RequestUser = {
@@ -15,11 +17,11 @@ export type RequestUser = {
 
 export type AuthContextValue = {
   user: RequestUser | null
-  session: import('@supabase/supabase-js').Session | null
+  session: Session | null
   accessToken: string | null
   isAuthenticated: boolean
   isLoading: boolean
-  signInWithPassword: (params: { email: string; password: string }) => Promise<import('@supabase/supabase-js').AuthResponse>
+  signInWithPassword: (params: { email: string; password: string }) => Promise<AuthResponse>
   signInWithGoogle: (redirectTo?: string) => Promise<void>
   signInWithGithub: (redirectTo?: string) => Promise<void>
   signOut: () => Promise<void>

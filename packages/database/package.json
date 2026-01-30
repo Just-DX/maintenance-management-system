@@ -12,6 +12,11 @@
       "import": "./dist/index.js"
     }
   },
+  "files": [
+    "dist",
+    "generated",
+    "prisma"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

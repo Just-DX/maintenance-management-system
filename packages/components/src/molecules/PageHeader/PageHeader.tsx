@@ -2,7 +2,6 @@ import { cn } from '../../lib/utils'
 import { pageHeaderStyles } from './PageHeader.constants'
 import type { PageHeaderProps } from './PageHeader.type'
 
-
 export function PageHeader({
   className,
   title,

@@ -1,9 +1,9 @@
-import { Controller, Get, UseGuards } from '@nestjs/common'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
-import { AppService } from './app.service'
 import { AuthGuard } from '@decorations/auth/auth.guard'
 import { CurrentUser } from '@decorations/auth/current-user.decorator'
 import { RequestUser } from '@modules/auth/auth.types'
+import { Controller, Get, UseGuards } from '@nestjs/common'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { AppService } from './app.service'
 
 @ApiTags('health')
 @Controller()

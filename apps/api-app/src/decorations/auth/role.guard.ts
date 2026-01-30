@@ -1,7 +1,7 @@
+import { RequestUserRole } from '@modules/auth/auth.types'
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { ROLES_KEY } from './roles.decorator'
-import { RequestUserRole } from '@modules/auth/auth.types'
 
 @Injectable()
 export class RoleGuard implements CanActivate {

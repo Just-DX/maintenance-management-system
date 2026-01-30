@@ -14,7 +14,6 @@ import {
   CommandList,
 } from '../../shadcn-primitives/command'
 
-
 export function AutoComplete({
   options,
   value,
