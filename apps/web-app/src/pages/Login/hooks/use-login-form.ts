@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from '@justdx/components/atoms/Sonner'
 import { loginSchema, type LoginFormData } from '@justdx/common'
+import { toast } from '@justdx/components/atoms/Sonner'
 import { useAuth } from '@shared/auth'
 import { useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
@@ -21,7 +21,7 @@ export function useLoginForm() {
       ? new URLSearchParams(window.location.search).get('returnTo')
       : null
 
-  const onSubmit = form.handleSubmit(async (data) => {
+  const onSubmit = async (data: LoginFormData) => {
     const toastId = toast.loading('Signing you in...')
     try {
       await signInWithPassword(data)
@@ -33,7 +33,7 @@ export function useLoginForm() {
       const message = error instanceof Error ? error.message : 'Unable to sign in'
       toast.error(message, { id: toastId })
     }
-  })
+  }
 
   return {
     form,
