@@ -1,4 +1,7 @@
+import type { AppServiceTypes } from '@justdx/types'
 import type { AuthResponse, Session } from '@supabase/supabase-js'
+
+export type SignUpRequest = AppServiceTypes.components['schemas']['SignupDto']
 
 export type RoleCode = string
 
@@ -21,6 +24,7 @@ export type AuthContextValue = {
   accessToken: string | null
   isAuthenticated: boolean
   isLoading: boolean
+  signUp: (params: SignUpRequest) => Promise<void>
   signInWithPassword: (params: { email: string; password: string }) => Promise<AuthResponse>
   signInWithGoogle: (redirectTo?: string) => Promise<void>
   signInWithGithub: (redirectTo?: string) => Promise<void>

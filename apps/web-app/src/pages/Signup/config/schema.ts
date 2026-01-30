@@ -7,6 +7,7 @@ export const signupSchema = z.object({
     2,
     'Full Name must be at least 2 characters'
   ),
+  username: requiredString('Username is required').min(3, 'Username must be at least 3 characters'),
   password: passwordSchema,
 })
 

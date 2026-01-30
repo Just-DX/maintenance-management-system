@@ -1,38 +1,31 @@
-import { AuthContext } from './auth-context'
-import type { AuthContextValue, RequestUser, RoleCode } from './auth.types'
-import type { Session } from '@supabase/supabase-js'
 import { supabase } from '@plugins/supabase/client'
+import { apiClientGet, apiClientPost } from '@shared/api'
+import type { Session } from '@supabase/supabase-js'
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { AuthContext } from './auth-context'
+import type { AuthContextValue, RequestUser, RoleCode, SignUpRequest } from './auth.types'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<RequestUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const apiUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
 
-  const loadProfile = useCallback(
-    async (accessToken: string) => {
-      try {
-        const res = await fetch(`${apiUrl}/me`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
+  const loadProfile = useCallback(async () => {
+    try {
+      const [data, error] = await apiClientGet('/me')
 
-        if (!res.ok) {
-          setUser(null)
-          return
-        }
-
-        const data: RequestUser = await res.json()
-        setUser(data)
-      } catch (error) {
+      if (error) {
         console.error('Failed to load profile', error)
         setUser(null)
+        return
       }
-    },
-    [apiUrl]
-  )
+
+      setUser(data ?? null)
+    } catch (error) {
+      console.error('Failed to load profile', error)
+      setUser(null)
+    }
+  }, [])
 
   useEffect(() => {
     let active = true
@@ -44,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(currentSession)
 
         if (currentSession?.access_token) {
-          await loadProfile(currentSession.access_token)
+          await loadProfile()
         } else {
           setUser(null)
         }
@@ -56,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(nextSession)
 
       if (nextSession?.access_token) {
-        await loadProfile(nextSession.access_token)
+        await loadProfile()
       } else {
         setUser(null)
       }
@@ -77,13 +70,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const accessToken = result.data.session?.access_token
       if (accessToken) {
-        await loadProfile(accessToken)
+        await loadProfile()
       }
 
       return result
     },
     [loadProfile]
   )
+
+  const signUp = useCallback(async (params: SignUpRequest) => {
+    const [, error] = await apiClientPost('/auth/signup', params)
+
+    if (error) throw error
+  }, [])
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut()
@@ -125,13 +124,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       accessToken: session?.access_token ?? null,
       isAuthenticated: Boolean(session),
       isLoading,
+      signUp,
       signInWithPassword,
       signInWithGoogle: (redirectTo?: string) => signInWithOAuth('google', redirectTo),
       signInWithGithub: (redirectTo?: string) => signInWithOAuth('github', redirectTo),
       signOut,
       hasRole,
     }),
-    [user, session, isLoading, signInWithPassword, signOut, hasRole, signInWithOAuth]
+    [user, session, isLoading, signUp, signInWithPassword, signOut, hasRole, signInWithOAuth]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

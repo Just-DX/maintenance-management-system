@@ -21,6 +21,14 @@ export const signupFields: FieldConfig<SignupFormData>[] = [
     },
   },
   {
+    name: 'username',
+    type: 'input',
+    label: 'Username',
+    props: {
+      placeholder: 'Choose a username',
+    },
+  },
+  {
     name: 'password',
     type: 'input',
     label: 'Password',

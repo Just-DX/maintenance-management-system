@@ -1,21 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from '@justdx/components/atoms/Sonner'
-import { apiClientPost } from '@shared/api'
 import { useAuth } from '@shared/auth'
-import { useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 
 import { type SignupFormData, signupSchema } from '../config/schema'
 
 export const useSignupForm = () => {
-  const navigate = useNavigate()
-  const { signInWithPassword } = useAuth()
+  const { signUp } = useAuth()
 
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
       email: '',
       fullName: '',
+      username: '',
       password: '',
     },
   })
@@ -23,13 +21,9 @@ export const useSignupForm = () => {
   const onSubmit = async (data: SignupFormData) => {
     const toastId = toast.loading('Creating your account...')
     try {
-      await apiClientPost('/auth/signup', data)
+      await signUp(data)
 
-      // Auto-login after successful signup
-      await signInWithPassword({ email: data.email, password: data.password })
-
-      toast.success('Account created. Welcome!', { id: toastId })
-      navigate({ to: '/dashboard', replace: true })
+      toast.success('Account created. Please check your email for verification!', { id: toastId })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create account'
       toast.error(message, { id: toastId })
