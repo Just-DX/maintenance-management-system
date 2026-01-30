@@ -93,9 +93,9 @@ export interface InputGroupField<TValues extends FieldValues> extends BaseField<
   >
 }
 
-import type { Checkbox } from '../../atoms/Checkbox/Checkbox'
-import type { MultiSelect, MultiSelectOption } from '../../atoms/MultiSelect/MultiSelect'
-import type { RadioGroup } from '../../atoms/RadioGroup/RadioGroup'
+import type { Checkbox } from '../../atoms/Checkbox'
+import type { MultiSelect, MultiSelectOption } from '../../atoms/MultiSelect'
+import type { RadioGroup } from '../../atoms/RadioGroup'
 
 /**
  * Checkbox field configuration
