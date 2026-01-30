@@ -28,6 +28,9 @@ Thumbs.db
 npm-debug.log*
 pnpm-debug.log*
 
+# Runtime caches
+**/node-compile-cache
+
 # Testing
 coverage
 
