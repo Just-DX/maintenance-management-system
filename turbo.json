@@ -2,15 +2,27 @@
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": [
     "DATABASE_URL",
+    "ENV",
+    "NODE_ENV",
+    "PORT",
     "SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_URL"
   ],
   "globalDependencies": [
+    "**/.env",
+    "**/.env.*",
     "**/.env.*local"
   ],
   "tasks": {
+    "db:generate": {
+      "outputs": [
+        "node_modules/.prisma/**"
+      ]
+    },
     "build": {
       "dependsOn": [
+        "db:generate",
+        "^db:generate",
         "^build"
       ],
       "outputs": [
@@ -42,19 +54,6 @@
     },
     "clean": {
       "cache": false
-    }
-  },
-  "pipeline": {
-    "db:generate": {
-      "outputs": [
-        "packages/database/generated/**"
-      ]
-    },
-    "build": {
-      "dependsOn": [
-        "^db:generate",
-        "^build"
-      ]
     }
   }
 }

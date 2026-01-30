@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: api-app
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm turbo run db:generate build --filter=api-app
+    startCommand: pnpm --filter api-app start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: ENV
+        sync: false

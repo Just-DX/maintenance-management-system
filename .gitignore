@@ -34,7 +34,7 @@ coverage
 # Prisma
 packages/database/prisma/*.db
 packages/database/prisma/*.db-journal
-packages/database/src/generated
+packages/database/generated
 
 # Storybook
 storybook-static
