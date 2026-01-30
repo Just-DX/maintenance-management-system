@@ -3,9 +3,11 @@ import { toast } from '@justdx/components/atoms/Sonner'
 import { useAuth } from '@shared/auth'
 import { useForm } from 'react-hook-form'
 
+import { useNavigate } from '@tanstack/react-router'
 import { type SignupFormData, signupSchema } from '../config/schema'
 
 export const useSignupForm = () => {
+  const navigate = useNavigate()
   const { signUp } = useAuth()
 
   const form = useForm<SignupFormData>({
@@ -22,7 +24,7 @@ export const useSignupForm = () => {
     const toastId = toast.loading('Creating your account...')
     try {
       await signUp(data)
-
+      navigate({ to: '/' })
       toast.success('Account created. Please check your email for verification!', { id: toastId })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to create account'
