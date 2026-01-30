@@ -1,7 +1,10 @@
 import type * as React from 'react'
 import type { FieldPath, FieldValues, RegisterOptions } from 'react-hook-form'
 
-import type { InputGroup } from '../../atoms/InputGroup/InputGroup'
+import type { Checkbox } from '../../atoms/Checkbox'
+import type { InputGroup } from '../../atoms/InputGroup'
+import type { MultiSelect, MultiSelectOption } from '../../atoms/MultiSelect'
+import type { RadioGroup } from '../../atoms/RadioGroup'
 import type { Input } from '../../shadcn-primitives/input'
 import type { Switch } from '../../shadcn-primitives/switch'
 import type { Textarea } from '../../shadcn-primitives/textarea'
@@ -92,10 +95,6 @@ export interface InputGroupField<TValues extends FieldValues> extends BaseField<
     'disabled' | 'value' | 'onChange' | 'onBlur' | 'name' | 'ref'
   >
 }
-
-import type { Checkbox } from '../../atoms/Checkbox'
-import type { MultiSelect, MultiSelectOption } from '../../atoms/MultiSelect'
-import type { RadioGroup } from '../../atoms/RadioGroup'
 
 /**
  * Checkbox field configuration
