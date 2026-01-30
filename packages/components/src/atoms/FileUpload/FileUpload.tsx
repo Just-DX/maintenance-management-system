@@ -13,7 +13,6 @@ import {
 } from './FileUpload.constants'
 import type { FileUploadProps, UploadedFile } from './FileUpload.type'
 
-export type { FileUploadProps, UploadedFile } from './FileUpload.type'
 
 // ============================================================================
 // Types

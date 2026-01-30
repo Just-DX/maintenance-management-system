@@ -1,1 +1,2 @@
-export { PageLayout, type PageLayoutProps } from './PageLayout'
+export { PageLayout } from './PageLayout'
+export type { PageLayoutProps } from './PageLayout.type'

@@ -3,7 +3,6 @@ import { InputSearch } from '../../atoms/InputGroup'
 import { tableToolbarStyles } from './TableToolbar.constants'
 import type { TableToolbarProps } from './TableToolbar.type'
 
-export type { TableToolbarProps } from './TableToolbar.type'
 
 export function TableToolbar({
   className,

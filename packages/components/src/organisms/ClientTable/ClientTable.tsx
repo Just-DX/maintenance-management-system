@@ -4,7 +4,6 @@ import { RecordTable } from '../RecordTable/RecordTable'
 import { defaultRecordTablePageSizes } from '../RecordTable/RecordTable.constants'
 import type { ClientTableProps } from './ClientTable.type'
 
-export type { ClientTableProps, ColumnDef } from './ClientTable.type'
 
 /**
  * A wrapper around RecordTable that handles pagination and sorting client-side.

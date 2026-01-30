@@ -1,1 +1,2 @@
-export { AppShell, type AppShellProps } from './AppShell'
+export { AppShell } from './AppShell'
+export type { AppShellProps } from './AppShell.type'

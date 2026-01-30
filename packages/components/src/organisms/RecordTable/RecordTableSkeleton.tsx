@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Skeleton } from '../../atoms/Skeleton'
 import type { RecordTableSkeletonProps } from './RecordTableSkeleton.type'
 
-export type { RecordTableSkeletonProps } from './RecordTableSkeleton.type'
 
 const tableStyles = {
   wrapper: 'p-8',

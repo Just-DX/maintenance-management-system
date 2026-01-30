@@ -11,7 +11,6 @@ import {
 } from '../../shadcn-primitives/input-group'
 import type { InputGroupProps } from './InputGroup.type'
 
-export type { InputGroupProps } from './InputGroup.type'
 
 // ...
 

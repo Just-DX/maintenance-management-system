@@ -6,9 +6,7 @@ import { formatFileSize } from '@justdx/common'
 import { Button } from '../../atoms/Button'
 import { cn } from '../../lib/utils'
 import { attachmentsStyles } from './Attachments.constants'
-import type { Attachment, AttachmentsProps } from './Attachments.type'
-
-export type { Attachment, AttachmentsProps } from './Attachments.type'
+import type { AttachmentsProps } from './Attachments.type'
 
 // ============================================================================
 // Types

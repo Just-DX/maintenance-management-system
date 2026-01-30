@@ -2,7 +2,6 @@ import { cn } from '../../lib/utils'
 import { pageLayoutStyles, pageLayoutVariants } from './PageLayout.constants'
 import type { PageLayoutProps } from './PageLayout.type'
 
-export type { PageLayoutProps } from './PageLayout.type'
 
 export function PageLayout({
   className,

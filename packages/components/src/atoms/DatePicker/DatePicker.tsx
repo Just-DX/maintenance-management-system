@@ -7,7 +7,6 @@ import { Calendar } from '../Calendar'
 import { Popover } from '../Popover'
 import type { DatePickerProps } from './DatePicker.type'
 
-export type { DatePickerProps } from './DatePicker.type'
 
 export function DatePicker({ date, onDateChange, className }: DatePickerProps) {
   return (

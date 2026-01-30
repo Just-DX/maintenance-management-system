@@ -5,7 +5,6 @@ import type { FieldValues } from 'react-hook-form'
 import { AutoField } from './AutoField'
 import type { AutoFieldsProps } from './AutoFields.type'
 
-export type { AutoFieldsProps } from './AutoFields.type'
 
 /**
  * Helper component that renders multiple AutoField components from a config array.

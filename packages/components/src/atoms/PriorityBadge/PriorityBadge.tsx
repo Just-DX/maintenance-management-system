@@ -3,7 +3,6 @@ import { Badge } from '../Badge'
 import { PRIORITY_CONFIG } from './PriorityBadge.config'
 import type { PriorityBadgeProps } from './PriorityBadge.type'
 
-export type { PriorityBadgeProps } from './PriorityBadge.type'
 export type { PriorityLevel } from './PriorityBadge.constants'
 
 export function PriorityBadge({ priority, className }: PriorityBadgeProps) {

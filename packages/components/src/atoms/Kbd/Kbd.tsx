@@ -3,7 +3,6 @@ import * as React from 'react'
 import { cn } from '../../lib/utils'
 import type { KbdProps } from './Kbd.type'
 
-export type { KbdProps } from './Kbd.type'
 
 const Kbd = React.forwardRef<HTMLElement, KbdProps>(({ className, ...props }, ref) => {
   return (

@@ -4,9 +4,11 @@ export type {
   ArrayItemFieldConfig,
   AutoArrayFieldsConfig,
 } from './array-field-config'
-export { AutoArrayFields, type AutoArrayFieldsProps } from './AutoArrayFields'
+export { AutoArrayFields } from './AutoArrayFields'
+export type { AutoArrayFieldsProps } from './AutoArrayFields.type'
 export { AutoField, type AutoFieldProps } from './AutoField'
-export { AutoFields, type AutoFieldsProps } from './AutoFields'
+export { AutoFields } from './AutoFields'
+export type { AutoFieldsProps } from './AutoFields.type'
 export type {
   BaseField,
   CheckboxField,
