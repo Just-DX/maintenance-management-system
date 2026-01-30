@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { SubmitHandler } from 'react-hook-form'
+import { toast } from '@justdx/components/atoms/Sonner'
+import { loginSchema, type LoginFormData } from '@justdx/common'
+import { useAuth } from '@shared/auth'
+import { useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
-
-import { loginSchema } from '@justdx/common'
-import type { LoginFormData } from '@justdx/common'
 
 export function useLoginForm() {
   const form = useForm<LoginFormData>({
@@ -14,13 +14,32 @@ export function useLoginForm() {
     },
   })
 
-  const onSubmit: SubmitHandler<LoginFormData> = (data) => {
-    console.info('login.submit', data)
-  }
+  const { signInWithPassword, signInWithGoogle, signInWithGithub } = useAuth()
+  const navigate = useNavigate()
+  const returnTo =
+    typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('returnTo')
+      : null
+
+  const onSubmit = form.handleSubmit(async (data) => {
+    const toastId = toast.loading('Signing you in...')
+    try {
+      await signInWithPassword(data)
+      toast.success('Welcome back!', { id: toastId })
+
+      const destination = returnTo && returnTo.startsWith('/') ? returnTo : '/dashboard'
+      navigate({ to: destination, replace: true })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to sign in'
+      toast.error(message, { id: toastId })
+    }
+  })
 
   return {
     form,
     onSubmit,
     isSubmitting: form.formState.isSubmitting,
+    signInWithGoogle,
+    signInWithGithub,
   }
 }

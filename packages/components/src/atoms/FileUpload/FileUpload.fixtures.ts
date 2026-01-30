@@ -1,4 +1,4 @@
-import type { UploadedFile } from './FileUpload'
+import type { UploadedFile } from './FileUpload.type'
 
 export const fileUploadFixtures: {
   emptyFiles: UploadedFile[]

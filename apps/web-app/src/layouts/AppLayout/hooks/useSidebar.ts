@@ -1,16 +1,17 @@
 import { useSidebar as useSidebarComponent } from '@justdx/components'
-import { useMockUser } from '@shared/hooks/useMockUser'
-import { useLocation } from '@tanstack/react-router'
+import { useAuth } from '@shared/auth'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 
 export function useSidebar() {
-  const { user, appLogo: AppLogo } = useMockUser()
+  const { user, signOut } = useAuth()
   const { isMobile } = useSidebarComponent()
   const location = useLocation()
+  const navigate = useNavigate()
   const pathname = location.pathname
 
-  const handleSignOut = () => {
-    // TODO: Implement sign out
-    console.log('Sign out')
+  const handleSignOut = async () => {
+    await signOut()
+    navigate({ to: '/', replace: true })
   }
 
   const checkIsActive = (href: string) => {
@@ -22,9 +23,8 @@ export function useSidebar() {
 
   return {
     user,
-    AppLogo,
     isMobile,
-    role: user?.role,
+    role: user?.roles?.[0]?.code ?? 'technician',
     handleSignOut,
     checkIsActive,
   }

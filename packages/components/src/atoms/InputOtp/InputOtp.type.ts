@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react'
 
-import type { InputOtp } from './InputOtp'
+import type { InputOTP } from './InputOtp'
 
-export type InputOtpProps = ComponentProps<typeof InputOtp>
+export type InputOtpProps = ComponentProps<typeof InputOTP>

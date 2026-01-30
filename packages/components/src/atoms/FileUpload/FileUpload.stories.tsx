@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 
-import { FileUpload, type UploadedFile } from './FileUpload'
+import { FileUpload } from './FileUpload'
 import { fileUploadFixtures } from './FileUpload.fixtures'
+import type { UploadedFile } from './FileUpload.type'
 
 const meta: Meta<typeof FileUpload> = {
   title: 'Atoms/FileUpload',

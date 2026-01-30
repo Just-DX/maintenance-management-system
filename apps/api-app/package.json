@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "postinstall": "pnpm --filter @justdx/database run db:generate",
+    "postinstall": "pnpm --filter @justdx/database run db:generate && pnpm --filter @justdx/database run build",
     "build": "nest build",
     "dev": "nest start --watch",
     "start": "node dist/main",
@@ -27,6 +27,8 @@
     "@nestjs/core": "^11.0.8",
     "@nestjs/platform-express": "^11.0.8",
     "@nestjs/swagger": "^8.0.7",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "@supabase/supabase-js": "^2.47.10",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
@@ -37,19 +39,19 @@
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.8",
     "@types/express": "^5.0.0",
+    "@types/supertest": "^6.0.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.5",
-    "@types/supertest": "^6.0.2",
     "eslint": "^9.17.0",
     "jest": "^29.7.0",
     "prettier": "^3.4.2",
-    "supertest": "^7.0.0",
     "source-map-support": "^0.5.21",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "supertest": "^7.0.0"
   },
   "jest": {
     "moduleFileExtensions": [

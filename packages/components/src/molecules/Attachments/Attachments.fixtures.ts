@@ -1,4 +1,4 @@
-import type { Attachment } from './Attachments'
+import type { Attachment } from './Attachments.type'
 
 export const attachmentsFixtures: {
   emptyAttachments: Attachment[]

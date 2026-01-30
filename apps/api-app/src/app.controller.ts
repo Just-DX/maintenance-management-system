@@ -1,6 +1,9 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, UseGuards } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
-import { type AppService } from './app.service'
+import { AppService } from './app.service'
+import { AuthGuard } from '@decorations/auth/auth.guard'
+import { CurrentUser } from '@decorations/auth/current-user.decorator'
+import { RequestUser } from '@modules/auth/auth.types'
 
 @ApiTags('health')
 @Controller()
@@ -21,5 +24,12 @@ export class AppController {
       timestamp: new Date().toISOString(),
       service: 'api-app',
     }
+  }
+
+  @Get('me')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Return the authenticated user profile and roles' })
+  me(@CurrentUser() user: RequestUser) {
+    return user
   }
 }

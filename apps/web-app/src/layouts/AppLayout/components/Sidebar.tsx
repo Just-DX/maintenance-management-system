@@ -1,23 +1,26 @@
 import { getInitials, getRoleBadgeClass } from '@justdx/common'
 import { cn } from '@justdx/components'
-import { Avatar, AvatarFallback } from '@justdx/components/atoms/Avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@justdx/components/atoms/Avatar'
 import { Badge } from '@justdx/components/atoms/Badge'
 import { DropdownMenu } from '@justdx/components/atoms/DropdownMenu'
 import { Sidebar as SidebarComponent } from '@justdx/components/atoms/Sidebar'
 import { APP_CONFIG, NAVIGATION_GROUPS } from '@shared/config/navigation'
 import { Link } from '@tanstack/react-router'
-import { LogOut } from 'lucide-react'
+import { LogOut, Wrench } from 'lucide-react'
 import { useSidebar } from '../hooks/useSidebar'
 
 export function Sidebar() {
-  const { user, AppLogo, isMobile, role, handleSignOut, checkIsActive } = useSidebar()
+  const { user, isMobile, role, handleSignOut, checkIsActive } = useSidebar()
+  const displayName = user?.fullName || 'User'
+  const displayEmail = user?.email || 'Not signed in'
+  const userAvatarUrl = user?.avatar || ''
 
   return (
     <SidebarComponent variant="inset">
       <SidebarComponent.Header>
         <SidebarComponent.MenuButton size="lg">
           <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <AppLogo className="size-6" />
+            <Wrench className="size-6" />
           </div>
           <div className="flex flex-col gap-0.5 leading-none group-data-[collapsible=icon]:hidden!">
             <span className="font-semibold">{APP_CONFIG.name}</span>
@@ -61,13 +64,14 @@ export function Sidebar() {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage src={userAvatarUrl} alt={displayName} />
                     <AvatarFallback className="rounded-lg">
-                      {getInitials(user?.name)}
+                      {getInitials(displayName)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                    <span className="truncate font-semibold">{user?.name}</span>
-                    <span className="truncate text-xs">{user?.email}</span>
+                    <span className="truncate font-semibold">{displayName}</span>
+                    <span className="truncate text-xs">{displayEmail}</span>
                   </div>
                   <Badge
                     variant="outline"
@@ -89,12 +93,12 @@ export function Sidebar() {
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarFallback className="rounded-lg">
-                      {getInitials(user?.name)}
+                      {getInitials(displayName)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{user?.name}</span>
-                    <span className="truncate text-xs">{user?.email}</span>
+                    <span className="truncate font-semibold">{displayName}</span>
+                    <span className="truncate text-xs">{displayEmail}</span>
                   </div>
                 </div>
                 <DropdownMenu.Separator />

@@ -1,15 +1,13 @@
+import { config as loadEnv } from 'dotenv'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from './generated/prisma/client'
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
-}
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined }
+
+loadEnv()
 
 const databaseUrl = process.env.DATABASE_URL
-
-if (!databaseUrl) {
-  throw new Error('DATABASE_URL is not set')
-}
+if (!databaseUrl) throw new Error('DATABASE_URL is not set')
 
 /**
  * Prisma client factory

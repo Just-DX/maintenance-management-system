@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react'
 
-import type { Sonner } from './Sonner'
+import type { Toaster } from './Sonner'
 
-export type SonnerProps = ComponentProps<typeof Sonner>
+export type SonnerProps = ComponentProps<typeof Toaster>
