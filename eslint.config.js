@@ -5,9 +5,7 @@ module.exports = (async () => {
   const globals = (await import('globals')).default
   const reactHooks = (await import('eslint-plugin-react-hooks')).default
   const reactRefresh = (await import('eslint-plugin-react-refresh')).default
-  const eslintPluginPrettierRecommended = (await import(
-    'eslint-plugin-prettier/recommended'
-  )).default
+  const eslintConfigPrettier = (await import('eslint-config-prettier')).default
 
   const compat = new FlatCompat({ baseDirectory: __dirname })
 
@@ -74,13 +72,10 @@ module.exports = (async () => {
     },
     {
       files: ['apps/workers/**/*.{ts,js,cts,mts,cjs,mjs}'],
-      ...eslintPluginPrettierRecommended,
       rules: {
-        ...eslintPluginPrettierRecommended.rules,
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-floating-promises': 'warn',
         '@typescript-eslint/no-unsafe-argument': 'warn',
-        'prettier/prettier': ['error', { endOfLine: 'auto' }],
       },
     },
     {
@@ -102,5 +97,6 @@ module.exports = (async () => {
         },
       },
     },
+    eslintConfigPrettier,
   ]
 })()
