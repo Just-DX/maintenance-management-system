@@ -1,8 +1,7 @@
 import { AuthGuard } from '@decorations/auth/auth.guard'
 import { CurrentUser } from '@decorations/auth/current-user.decorator'
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common'
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import type { Response } from 'express'
 import { AuthService } from './auth.service'
 import type { RequestUser } from './auth.types'
 import { AuthCallbackDto } from './dto/callback.dto'
@@ -27,22 +26,30 @@ export class AuthController {
 
   @Post('callback')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Complete OAuth/email callback and set auth cookies' })
+  @ApiOperation({ summary: 'Complete OAuth/email callback' })
   @ApiOkResponse({ type: SignInResponseDto })
-  async callback(@Body() body: AuthCallbackDto, @Res({ passthrough: true }) res: Response) {
+  async callback(@Body() body: AuthCallbackDto) {
     const { user, session } = await this.authService.signInWithCallback(body)
-    this.authService.setAuthCookies(res, session)
-    return { user, sessionExpiresAt: session.expires_at ?? null }
+    return {
+      user,
+      sessionExpiresAt: session.expires_at ?? null,
+      accessToken: session.access_token,
+      refreshToken: session.refresh_token || null,
+    }
   }
 
   @Post('sign-in')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Sign in with email and password (BFF cookie flow)' })
+  @ApiOperation({ summary: 'Sign in with email and password' })
   @ApiOkResponse({ type: SignInResponseDto })
-  async signIn(@Body() body: SignInDto, @Res({ passthrough: true }) res: Response) {
+  async signIn(@Body() body: SignInDto) {
     const { user, session } = await this.authService.signInWithPassword(body)
-    this.authService.setAuthCookies(res, session)
-    return { user, sessionExpiresAt: session.expires_at ?? null }
+    return {
+      user,
+      sessionExpiresAt: session.expires_at ?? null,
+      accessToken: session.access_token,
+      refreshToken: session.refresh_token || null,
+    }
   }
 
   @Post('login/google')
@@ -72,10 +79,9 @@ export class AuthController {
 
   @Post('sign-out')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Clear auth cookies' })
+  @ApiOperation({ summary: 'Sign out' })
   @ApiOkResponse({ type: SignOutResponseDto })
-  async signOut(@Res({ passthrough: true }) res: Response) {
-    this.authService.clearAuthCookies(res)
+  async signOut() {
     return { success: true }
   }
 }

@@ -9,11 +9,13 @@ import { AppModule } from './app.module'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
+  const whitelist = ['http://localhost:3002', process.env.WEBSITE_URL]
+
   app.setGlobalPrefix('api')
 
   // Enable CORS
   app.enableCors({
-    origin: true,
+    origin: whitelist,
     credentials: true,
   })
 

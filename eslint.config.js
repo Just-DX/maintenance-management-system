@@ -9,12 +9,10 @@ module.exports = (async () => {
 
   const compat = new FlatCompat({ baseDirectory: __dirname })
 
-  const nextConfigs = compat
-    .extends('next/core-web-vitals', 'next/typescript')
-    .map((config) => ({
-      ...config,
-      files: ['apps/landing/**/*.{js,jsx,ts,tsx}'],
-    }))
+  const nextConfigs = compat.extends('next/core-web-vitals', 'next/typescript').map((config) => ({
+    ...config,
+    files: ['apps/landing/**/*.{js,jsx,ts,tsx}'],
+  }))
 
   return [
     {

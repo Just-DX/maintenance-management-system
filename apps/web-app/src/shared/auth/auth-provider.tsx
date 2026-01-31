@@ -1,13 +1,8 @@
-import { apiClientGetRaw, apiClientPostRaw } from '@shared/api'
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { AuthContext } from './auth-context'
-import type {
-  AuthContextValue,
-  RequestUser,
-  RoleCode,
-  SignInResponse,
-  SignUpRequest,
-} from './auth.types'
+import { authService } from './auth.service'
+import type { AuthContextValue, RequestUser, RoleCode, SignUpRequest } from './auth.types'
+import { tokenStorage } from './token-storage'
 
 /**
  * Check if the current path is the auth callback route.
@@ -22,94 +17,68 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   const loadProfile = useCallback(async () => {
-    try {
-      const [data, error] = await apiClientGetRaw('/auth/me')
-
-      if (error) {
-        console.error('Failed to load profile', error)
-        setUser(null)
-        return
-      }
-
-      setUser((data as RequestUser | null) ?? null)
-    } catch (error) {
-      console.error('Failed to load profile', error)
-      setUser(null)
-    }
-  }, [])
-
-  const refreshProfile = useCallback(async () => {
-    setIsLoading(true)
-    try {
-      await loadProfile()
-    } finally {
-      setIsLoading(false)
-    }
-  }, [loadProfile])
-
-  useEffect(() => {
-    let active = true
-
-    // Skip initial profile load on auth callback route
-    // The callback flow will explicitly call refreshProfile after tokens are set
-    if (isAuthCallbackRoute()) {
+    // If no token exists, don't attempt to load profile (unless on callback route)
+    if (!tokenStorage.getAccessToken() && !isAuthCallbackRoute()) {
       setIsLoading(false)
       return
     }
 
-    loadProfile()
-      .catch(() => {
-        if (!active) return
-        setUser(null)
-      })
-      .finally(() => active && setIsLoading(false))
+    try {
+      const userProfile = await authService.getProfile()
+      setUser(userProfile)
+    } catch (error) {
+      console.error('Failed to load profile', error)
+      setUser(null)
 
-    return () => {
-      active = false
+      const msg = error instanceof Error ? error.message : String(error)
+      if (msg.includes('401') || msg.toLowerCase().includes('unauthorized')) {
+        tokenStorage.clear()
+      }
+    } finally {
+      setIsLoading(false)
     }
-  }, [loadProfile])
+  }, [])
+
+  const signUp = useCallback(async (params: SignUpRequest) => {
+    await authService.signUp(params)
+  }, [])
 
   const signInWithPassword = useCallback(
     async ({ email, password }: { email: string; password: string }) => {
-      const [data, error] = await apiClientPostRaw('/auth/sign-in', { email, password })
+      const response = await authService.signInWithPassword({ email, password })
 
-      if (error) throw error
-      if (!data) throw new Error('Unable to sign in')
+      if (response.accessToken) {
+        tokenStorage.setAccessToken(response.accessToken)
+      }
+      if (response.refreshToken) {
+        tokenStorage.setRefreshToken(response.refreshToken)
+      }
 
-      const payload = data as SignInResponse
-      if (payload.user) {
-        setUser(payload.user)
+      if (response.user) {
+        setUser(response.user)
       } else {
         await loadProfile()
       }
 
-      return payload
+      return response
     },
     [loadProfile]
   )
 
-  const signUp = useCallback(async (params: SignUpRequest) => {
-    const [, error] = await apiClientPostRaw('/auth/signup', params)
-
-    if (error) throw error
+  const signInWithOAuth = useCallback(async (provider: 'google' | 'github') => {
+    const callbackUrl = new URL('/auth/callback', window.location.origin).toString()
+    const redirectUrl = await authService.signInWithOAuth(provider, callbackUrl)
+    window.location.href = redirectUrl
   }, [])
 
   const signOut = useCallback(async () => {
-    await apiClientPostRaw('/auth/sign-out')
-    setUser(null)
-  }, [])
-
-  const signInWithOAuth = useCallback(async (provider: 'google' | 'github') => {
-    const callbackUrl = new URL('/auth/callback', window.location.origin)
-    const [data, error] = await apiClientPostRaw(
-      provider === 'google' ? '/auth/login/google' : '/auth/login/github',
-      { redirectTo: callbackUrl.toString() }
-    )
-
-    if (error) throw error
-    if (data && typeof data === 'object' && 'url' in data && data.url) {
-      window.location.href = String(data.url)
+    try {
+      await authService.signOut()
+    } catch (e) {
+      console.error('Sign out error', e)
     }
+    tokenStorage.clear()
+    setUser(null)
   }, [])
 
   const hasRole = useCallback(
@@ -122,6 +91,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [user]
   )
 
+  useEffect(() => {
+    if (isAuthCallbackRoute()) {
+      setIsLoading(false)
+      return
+    }
+    loadProfile()
+  }, [loadProfile])
+
   const value: AuthContextValue = useMemo(
     () => ({
       user,
@@ -132,10 +109,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signInWithGoogle: () => signInWithOAuth('google'),
       signInWithGithub: () => signInWithOAuth('github'),
       signOut,
+      loadProfile,
       hasRole,
-      refreshProfile,
     }),
-    [user, isLoading, signUp, signInWithPassword, signOut, hasRole, signInWithOAuth, refreshProfile]
+    [user, isLoading, signUp, signInWithPassword, signOut, hasRole, signInWithOAuth, loadProfile]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

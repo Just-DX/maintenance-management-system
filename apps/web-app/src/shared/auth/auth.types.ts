@@ -20,6 +20,8 @@ export type RequestUser = {
 export type SignInResponse = {
   user: RequestUser
   sessionExpiresAt?: number | null
+  accessToken: string
+  refreshToken: string | null
 }
 
 export type AuthContextValue = {
@@ -32,6 +34,5 @@ export type AuthContextValue = {
   signInWithGithub: (redirectTo?: string) => Promise<void>
   signOut: () => Promise<void>
   hasRole: (roles: RoleCode[], siteId?: string) => boolean
-  /** Manually refresh the user profile from the server */
-  refreshProfile: () => Promise<void>
+  loadProfile: () => Promise<void>
 }

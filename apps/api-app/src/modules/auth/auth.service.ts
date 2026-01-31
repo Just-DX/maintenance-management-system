@@ -6,14 +6,11 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import type { CookieOptions, Response } from 'express'
 import type { Session, User } from '@supabase/supabase-js'
-import { SignupDto } from './dto/signup.dto'
-import { SignInDto } from './dto/signin.dto'
-import { UserRepository } from './repositories/auth.repository'
-import { AUTH_ACCESS_TOKEN_COOKIE, AUTH_REFRESH_TOKEN_COOKIE } from './auth.constants'
 import { AuthCallbackDto } from './dto/callback.dto'
+import { SignInDto } from './dto/signin.dto'
+import { SignupDto } from './dto/signup.dto'
+import { UserRepository } from './repositories/auth.repository'
 
 type OAuthInput = {
   redirectTo: string
@@ -23,8 +20,7 @@ type OAuthInput = {
 export class AuthService {
   constructor(
     private readonly supabaseService: SupabaseService,
-    private readonly userRepo: UserRepository,
-    private readonly configService: ConfigService
+    private readonly userRepo: UserRepository
   ) {}
 
   async signup(input: SignupDto) {
@@ -136,30 +132,6 @@ export class AuthService {
     }
   }
 
-  setAuthCookies(response: Response, session: Session) {
-    const accessMaxAgeMs =
-      typeof session.expires_in === 'number' ? session.expires_in * 1000 : undefined
-    const refreshMaxAgeMs = this.getRefreshTokenMaxAgeMs()
-
-    response.cookie(
-      AUTH_ACCESS_TOKEN_COOKIE,
-      session.access_token,
-      this.getCookieOptions(accessMaxAgeMs)
-    )
-    if (session.refresh_token) {
-      response.cookie(
-        AUTH_REFRESH_TOKEN_COOKIE,
-        session.refresh_token,
-        this.getCookieOptions(refreshMaxAgeMs)
-      )
-    }
-  }
-
-  clearAuthCookies(response: Response) {
-    response.clearCookie(AUTH_ACCESS_TOKEN_COOKIE, this.getCookieOptions())
-    response.clearCookie(AUTH_REFRESH_TOKEN_COOKIE, this.getCookieOptions())
-  }
-
   async getGoogleLoginUrl(input: OAuthInput) {
     if (!input.redirectTo) throw new BadRequestException('redirectTo is required')
     const url = await this.supabaseService.getOAuthSignInUrl('google', input.redirectTo)
@@ -207,7 +179,8 @@ export class AuthService {
       throw new BadRequestException('OAuth provider did not supply an email address')
     }
 
-    const metadata = (supabaseUser as { user_metadata?: Record<string, unknown> }).user_metadata ?? {}
+    const metadata =
+      (supabaseUser as { user_metadata?: Record<string, unknown> }).user_metadata ?? {}
     const rawFullName = this.pickFirstString(
       metadata.full_name,
       metadata.fullName,
@@ -293,45 +266,5 @@ export class AuthService {
   private randomDigits(length: number) {
     const digits = Math.floor(Math.random() * Math.pow(10, length))
     return digits.toString().padStart(length, '0')
-  }
-
-  private getRefreshTokenMaxAgeMs() {
-    const envValue = this.configService.get<string>('AUTH_REFRESH_TOKEN_TTL_DAYS')
-    const ttlDays = envValue ? Number(envValue) : 30
-    if (!Number.isFinite(ttlDays) || ttlDays <= 0) return 30 * 24 * 60 * 60 * 1000
-    return ttlDays * 24 * 60 * 60 * 1000
-  }
-
-  private getCookieOptions(maxAgeMs?: number): CookieOptions {
-    const secure = this.parseBoolean(
-      this.configService.get<string>('AUTH_COOKIE_SECURE'),
-      this.configService.get<string>('NODE_ENV') === 'production'
-    )
-
-    const sameSite =
-      this.configService.get<string>('AUTH_COOKIE_SAMESITE') ??
-      (secure ? 'none' : 'lax')
-
-    const normalizedSameSite = this.normalizeSameSite(sameSite, secure)
-
-    return {
-      httpOnly: true,
-      secure,
-      sameSite: normalizedSameSite,
-      path: '/',
-      ...(typeof maxAgeMs === 'number' ? { maxAge: maxAgeMs } : {}),
-    }
-  }
-
-  private normalizeSameSite(value: string, secure: boolean): 'lax' | 'strict' | 'none' {
-    const lower = value.toLowerCase()
-    if (lower === 'strict') return 'strict'
-    if (lower === 'none') return secure ? 'none' : 'lax'
-    return 'lax'
-  }
-
-  private parseBoolean(value: string | undefined, fallback: boolean) {
-    if (value === undefined) return fallback
-    return ['true', '1', 'yes', 'y', 'on'].includes(value.toLowerCase())
   }
 }

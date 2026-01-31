@@ -22,6 +22,17 @@ export class SignInResponseDto {
     description: 'Unix timestamp (seconds) when the access token expires',
   })
   sessionExpiresAt!: number | null
+
+  @ApiProperty({
+    description: 'JWT access token for Authorization header',
+  })
+  accessToken!: string
+
+  @ApiProperty({
+    nullable: true,
+    description: 'Refresh token for obtaining new access tokens',
+  })
+  refreshToken!: string | null
 }
 
 export class SignOutResponseDto {

@@ -1,7 +1,7 @@
 import { AppShell } from '@justdx/components/organisms/AppShell'
 import { LoadingLayout } from '@layouts/LoadingLayout'
 import { useAuth } from '@shared/auth'
-import { useLocation, useNavigate } from '@tanstack/react-router'
+import { Navigate, useLocation, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { Header } from './components/Header'
 import { Sidebar } from './components/Sidebar'
@@ -21,9 +21,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   // Show loading while auth state is being determined
   if (isLoading) return <LoadingLayout />
 
-  // Don't render children until we've confirmed authentication
-  // This prevents API calls from being made before the auth token is available
-  if (!isAuthenticated) return <LoadingLayout />
+  if (!isAuthenticated) return <Navigate to="/auth/login" />
 
   return (
     <AppShell defaultSidebarOpen sidebar={<Sidebar />} header={<Header />}>

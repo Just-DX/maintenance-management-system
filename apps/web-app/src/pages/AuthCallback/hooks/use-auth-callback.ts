@@ -1,119 +1,21 @@
-import { supabase } from '@plugins/supabase/client'
 import { apiClientPostRaw } from '@shared/api'
-import { useAuth } from '@shared/auth'
-import type { Session } from '@supabase/supabase-js'
+import { useAuth, type SignInResponse } from '@shared/auth'
+import { tokenStorage } from '@shared/auth/token-storage'
 import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-
-type CallbackSession = Pick<
-  Session,
-  'access_token' | 'refresh_token' | 'token_type' | 'expires_in' | 'expires_at'
->
-
-type CallbackStatus = 'loading' | 'success' | 'error'
-
-const normalizeTokenType = (value: string | null): 'bearer' => {
-  return value === 'bearer' ? 'bearer' : 'bearer'
-}
-
-const getSafeRedirect = (value: string | null) => {
-  if (!value) return '/dashboard'
-  try {
-    const url = new URL(value, window.location.origin)
-    if (url.origin !== window.location.origin) return '/dashboard'
-    return `${url.pathname}${url.search}${url.hash}`
-  } catch {
-    return value.startsWith('/') ? value : '/dashboard'
-  }
-}
-
-const verifyEmailLink = async ({
-  tokenHash,
-  token,
-  email,
-  type,
-}: {
-  tokenHash: string | null
-  token: string | null
-  email: string | null
-  type: string | null
-}): Promise<CallbackSession | null> => {
-  if (!type) return null
-
-  if (tokenHash) {
-    const { data, error } = await supabase.auth.verifyOtp({
-      type: type as 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change' | 'email',
-      token_hash: tokenHash,
-    })
-    if (error) throw error
-    if (!data.session) return null
-    const { access_token, refresh_token, token_type, expires_in, expires_at } = data.session
-    return {
-      access_token,
-      refresh_token,
-      token_type: normalizeTokenType(token_type),
-      expires_in,
-      expires_at,
-    }
-  }
-
-  if (token && email) {
-    const { data, error } = await supabase.auth.verifyOtp({
-      type: type as 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change' | 'email',
-      token,
-      email,
-    })
-    if (error) throw error
-    if (!data.session) return null
-    const { access_token, refresh_token, token_type, expires_in, expires_at } = data.session
-    return {
-      access_token,
-      refresh_token,
-      token_type: normalizeTokenType(token_type),
-      expires_in,
-      expires_at,
-    }
-  }
-
-  return null
-}
-
-const exchangeCodeForSession = async (code: string): Promise<CallbackSession | null> => {
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code)
-  if (error) throw error
-  if (!data.session) return null
-  const { access_token, refresh_token, token_type, expires_in, expires_at } = data.session
-  return {
-    access_token,
-    refresh_token,
-    token_type: normalizeTokenType(token_type),
-    expires_in,
-    expires_at,
-  }
-}
-
-const getSessionFromHash = (hashParams: URLSearchParams): CallbackSession | null => {
-  const accessToken = hashParams.get('access_token')
-  const refreshToken = hashParams.get('refresh_token')
-  const expiresIn = hashParams.get('expires_in')
-  const expiresAt = hashParams.get('expires_at')
-  const tokenType = hashParams.get('token_type')
-
-  if (!accessToken || !tokenType || !expiresIn) return null
-
-  return {
-    access_token: accessToken,
-    refresh_token: refreshToken ?? '',
-    token_type: normalizeTokenType(tokenType),
-    expires_in: Number(expiresIn),
-    expires_at: expiresAt ? Number(expiresAt) : undefined,
-  }
-}
+import {
+  exchangeCodeForSession,
+  getSafeRedirect,
+  getSessionFromHash,
+  verifyEmailLink,
+  type CallbackSession,
+  type CallbackStatus,
+} from './auth-callback.utils'
 
 export const useAuthCallback = () => {
   const [status, setStatus] = useState<CallbackStatus>('loading')
   const [message, setMessage] = useState('Verifying your sign-in...')
-  const { refreshProfile } = useAuth()
+  const { loadProfile } = useAuth()
   const navigate = useNavigate()
 
   const redirectTo = useMemo(() => {
@@ -127,14 +29,12 @@ export const useAuthCallback = () => {
   }, [])
 
   const handleRedirect = useCallback(async () => {
-    // Refresh the auth context with the new session
-    // This ensures isAuthenticated is true before we navigate
-    await refreshProfile()
+    // Refresh the auth context with the new session (using stored token)
+    await loadProfile()
 
     // Use router navigation to avoid full page reload
-    // This maintains the auth context state
     navigate({ to: redirectTo, replace: true })
-  }, [refreshProfile, navigate, redirectTo])
+  }, [loadProfile, navigate, redirectTo])
 
   useEffect(() => {
     let active = true
@@ -174,14 +74,23 @@ export const useAuthCallback = () => {
         throw new Error('No session data found in callback URL')
       }
 
-      const [, callbackError] = await apiClientPostRaw('/auth/callback', {
+      const [data, callbackError] = await apiClientPostRaw('/auth/callback', {
         accessToken: session.access_token,
         refreshToken: session.refresh_token,
         expiresAt: session.expires_at ?? null,
         expiresIn: session.expires_in ?? null,
       })
+
       if (callbackError) {
         throw callbackError
+      }
+
+      const response = data as SignInResponse
+      if (response && response.accessToken) {
+        tokenStorage.setAccessToken(response.accessToken)
+        if (response.refreshToken) {
+          tokenStorage.setRefreshToken(response.refreshToken)
+        }
       }
 
       window.history.replaceState({}, '', window.location.pathname)
@@ -190,7 +99,6 @@ export const useAuthCallback = () => {
       setStatus('success')
       setMessage('Sign-in complete. Redirecting...')
 
-      // Use the new redirect handler that refreshes profile first
       await handleRedirect()
     }
 
