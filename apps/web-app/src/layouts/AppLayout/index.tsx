@@ -18,7 +18,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     }
   }, [isLoading, isAuthenticated, navigate, location.pathname, location.searchStr])
 
+  // Show loading while auth state is being determined
   if (isLoading) return <LoadingLayout />
+
+  // Don't render children until we've confirmed authentication
+  // This prevents API calls from being made before the auth token is available
+  if (!isAuthenticated) return <LoadingLayout />
 
   return (
     <AppShell defaultSidebarOpen sidebar={<Sidebar />} header={<Header />}>

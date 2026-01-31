@@ -1,7 +1,9 @@
 import { supabase } from '@plugins/supabase/client'
 import { apiClientPostRaw } from '@shared/api'
-import { useEffect, useMemo, useState } from 'react'
+import { useAuth } from '@shared/auth'
 import type { Session } from '@supabase/supabase-js'
+import { useNavigate } from '@tanstack/react-router'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 type CallbackSession = Pick<
   Session,
@@ -111,6 +113,8 @@ const getSessionFromHash = (hashParams: URLSearchParams): CallbackSession | null
 export const useAuthCallback = () => {
   const [status, setStatus] = useState<CallbackStatus>('loading')
   const [message, setMessage] = useState('Verifying your sign-in...')
+  const { refreshProfile } = useAuth()
+  const navigate = useNavigate()
 
   const redirectTo = useMemo(() => {
     const search = new URLSearchParams(window.location.search)
@@ -121,6 +125,16 @@ export const useAuthCallback = () => {
         search.get('next')
     )
   }, [])
+
+  const handleRedirect = useCallback(async () => {
+    // Refresh the auth context with the new session
+    // This ensures isAuthenticated is true before we navigate
+    await refreshProfile()
+
+    // Use router navigation to avoid full page reload
+    // This maintains the auth context state
+    navigate({ to: redirectTo, replace: true })
+  }, [refreshProfile, navigate, redirectTo])
 
   useEffect(() => {
     let active = true
@@ -176,7 +190,8 @@ export const useAuthCallback = () => {
       setStatus('success')
       setMessage('Sign-in complete. Redirecting...')
 
-      window.location.replace(redirectTo)
+      // Use the new redirect handler that refreshes profile first
+      await handleRedirect()
     }
 
     run().catch((err: unknown) => {
@@ -189,7 +204,7 @@ export const useAuthCallback = () => {
     return () => {
       active = false
     }
-  }, [redirectTo])
+  }, [handleRedirect])
 
   return {
     status,

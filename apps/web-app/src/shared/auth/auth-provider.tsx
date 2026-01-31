@@ -9,6 +9,14 @@ import type {
   SignUpRequest,
 } from './auth.types'
 
+/**
+ * Check if the current path is the auth callback route.
+ * We skip the initial /auth/me call on this route since tokens aren't set yet.
+ */
+const isAuthCallbackRoute = () => {
+  return window.location.pathname === '/auth/callback'
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<RequestUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -30,8 +38,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  const refreshProfile = useCallback(async () => {
+    setIsLoading(true)
+    try {
+      await loadProfile()
+    } finally {
+      setIsLoading(false)
+    }
+  }, [loadProfile])
+
   useEffect(() => {
     let active = true
+
+    // Skip initial profile load on auth callback route
+    // The callback flow will explicitly call refreshProfile after tokens are set
+    if (isAuthCallbackRoute()) {
+      setIsLoading(false)
+      return
+    }
+
     loadProfile()
       .catch(() => {
         if (!active) return
@@ -108,8 +133,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signInWithGithub: () => signInWithOAuth('github'),
       signOut,
       hasRole,
+      refreshProfile,
     }),
-    [user, isLoading, signUp, signInWithPassword, signOut, hasRole, signInWithOAuth]
+    [user, isLoading, signUp, signInWithPassword, signOut, hasRole, signInWithOAuth, refreshProfile]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
