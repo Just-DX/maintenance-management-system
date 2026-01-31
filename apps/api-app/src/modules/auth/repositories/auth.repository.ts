@@ -31,24 +31,35 @@ export class UserRepository {
     username: string
   }) {
     const { id, email, fullName, username } = payload
-    return prisma.user.upsert({
-      where: { id },
-      update: {
-        email,
-        fullName,
-        username,
-        isActive: true,
-        isDeleted: false,
-      },
-      create: {
-        id,
-        email,
-        fullName,
-        username,
-        isActive: true,
-        isDeleted: false,
-      },
-      include: { userRoles: { include: { role: true } } },
+
+    return prisma.$transaction(async (tx) => {
+      const user = await tx.user.upsert({
+        where: { id },
+        update: {
+          email,
+          fullName,
+          username,
+          isActive: true,
+          isDeleted: false,
+        },
+        create: {
+          id,
+          email,
+          fullName,
+          username,
+          isActive: true,
+          isDeleted: false,
+        },
+        include: { userRoles: { include: { role: true } } },
+      })
+
+      await tx.userProfile.upsert({
+        where: { userId: id },
+        update: {},
+        create: { userId: id },
+      })
+
+      return user
     })
   }
 }
