@@ -6,7 +6,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common'
 import { SignupDto } from './dto/signup.dto'
-import { UserRepository } from './repositories/user.repository'
+import { UserRepository } from './repositories/auth.repository'
 
 type OAuthInput = {
   redirectTo: string
@@ -23,8 +23,16 @@ export class AuthService {
     const { email, password, fullName } = input
     const username = input.username
 
-    if (!email || !password || !fullName) {
-      throw new BadRequestException('email, password and fullName are required')
+    const [existingEmail, existingUsername] = await Promise.all(
+      [this.userRepo.findByEmail(email), this.userRepo.findByUsername(username)].filter(Boolean)
+    )
+
+    if (existingEmail) {
+      throw new ConflictException('Email already registered')
+    }
+
+    if (existingUsername) {
+      throw new ConflictException('Username already taken')
     }
 
     const { data, error } = await this.supabaseService.createUser({

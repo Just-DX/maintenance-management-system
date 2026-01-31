@@ -10,6 +10,13 @@ export class UserRepository {
     })
   }
 
+  async findByEmail(email: string) {
+    return prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    })
+  }
+
   async findByUsername(username: string) {
     return prisma.user.findFirst({
       where: { username },
