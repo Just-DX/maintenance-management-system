@@ -6,6 +6,9 @@
     "baseUrl": "./",
     "incremental": true,
     "noEmit": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "paths": {
       "@/*": ["./src/*"],
       "@decorations/*": ["./src/decorations/*"],

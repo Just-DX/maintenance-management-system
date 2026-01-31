@@ -19,7 +19,7 @@ export class SignupDto {
   @ApiProperty({ example: 'janedoe' })
   @IsString()
   @MinLength(3)
-  username: string
+  username!: string
 }
 
 export class SignupResponseDto {

@@ -19,17 +19,10 @@
         "node_modules/.prisma/**"
       ]
     },
-    "generate": {
-      "outputs": [
-        "src/generated/**"
-      ]
-    },
     "build": {
       "dependsOn": [
         "db:generate",
         "^db:generate",
-        "generate",
-        "^generate",
         "^build"
       ],
       "outputs": [
