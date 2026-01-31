@@ -7,6 +7,8 @@ import {
 } from '@nestjs/common'
 import { prisma } from '@justdx/database'
 import { SupabaseService } from '../../modules/supabase/supabase.service'
+import { AUTH_ACCESS_TOKEN_COOKIE } from '../../modules/auth/auth.constants'
+import { getCookieValue } from '../../modules/auth/auth.cookies'
 import type { AuthenticatedRequest, RequestUser } from '../../modules/auth/auth.types'
 
 @Injectable()
@@ -64,11 +66,11 @@ export class AuthGuard implements CanActivate {
 
   private extractToken(request: AuthenticatedRequest): string | undefined {
     const authHeader = request.headers.authorization
-    if (!authHeader) return undefined
+    if (authHeader) {
+      const [scheme, token] = authHeader.split(' ')
+      if (scheme === 'Bearer' && token) return token
+    }
 
-    const [scheme, token] = authHeader.split(' ')
-    if (scheme !== 'Bearer' || !token) return undefined
-
-    return token
+    return getCookieValue(request.headers.cookie, AUTH_ACCESS_TOKEN_COOKIE)
   }
 }

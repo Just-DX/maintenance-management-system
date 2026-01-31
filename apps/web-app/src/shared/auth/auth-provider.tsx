@@ -1,18 +1,21 @@
-import { supabase } from '@plugins/supabase/client'
-import { apiClientGet, apiClientPost } from '@shared/api'
-import type { Session } from '@supabase/supabase-js'
+import { apiClientGetRaw, apiClientPostRaw } from '@shared/api'
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { AuthContext } from './auth-context'
-import type { AuthContextValue, RequestUser, RoleCode, SignUpRequest } from './auth.types'
+import type {
+  AuthContextValue,
+  RequestUser,
+  RoleCode,
+  SignInResponse,
+  SignUpRequest,
+} from './auth.types'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<RequestUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const loadProfile = useCallback(async () => {
     try {
-      const [data, error] = await apiClientGet('/me')
+      const [data, error] = await apiClientGetRaw('/auth/me')
 
       if (error) {
         console.error('Failed to load profile', error)
@@ -20,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return
       }
 
-      setUser(data ?? null)
+      setUser((data as RequestUser | null) ?? null)
     } catch (error) {
       console.error('Failed to load profile', error)
       setUser(null)
@@ -28,80 +31,67 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    let active = true
-    supabase.auth
-      .getSession()
-      .then(async ({ data }) => {
-        if (!active) return
-        const currentSession = data.session ?? null
-        setSession(currentSession)
+    if (!user) {
+      setIsLoading(false)
+      return
+    }
 
-        if (currentSession?.access_token) {
-          await loadProfile()
-        } else {
-          setUser(null)
-        }
+    let active = true
+    loadProfile()
+      .catch(() => {
+        if (!active) return
+        setUser(null)
       })
       .finally(() => active && setIsLoading(false))
 
-    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
-      if (!active) return
-      setSession(nextSession)
-
-      if (nextSession?.access_token) {
-        await loadProfile()
-      } else {
-        setUser(null)
-      }
-
-      setIsLoading(false)
-    })
-
     return () => {
       active = false
-      listener.subscription.unsubscribe()
     }
   }, [loadProfile])
 
   const signInWithPassword = useCallback(
     async ({ email, password }: { email: string; password: string }) => {
-      const result = await supabase.auth.signInWithPassword({ email, password })
-      if (result.error) throw result.error
+      const [data, error] = await apiClientPostRaw('/auth/sign-in', { email, password })
 
-      const accessToken = result.data.session?.access_token
-      if (accessToken) {
+      if (error) throw error
+      if (!data) throw new Error('Unable to sign in')
+
+      const payload = data as SignInResponse
+      if (payload.user) {
+        setUser(payload.user)
+      } else {
         await loadProfile()
       }
 
-      return result
+      return payload
     },
     [loadProfile]
   )
 
   const signUp = useCallback(async (params: SignUpRequest) => {
-    const [, error] = await apiClientPost('/auth/signup', params)
+    const [, error] = await apiClientPostRaw('/auth/signup', params)
 
     if (error) throw error
   }, [])
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut()
+    await apiClientPostRaw('/auth/sign-out')
     setUser(null)
-    setSession(null)
   }, [])
 
   const signInWithOAuth = useCallback(
     async (provider: 'google' | 'github', redirectTo?: string) => {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: redirectTo ?? `${window.location.origin}/dashboard`,
-        },
-      })
+      const targetPath = redirectTo ?? '/dashboard'
+      const callbackUrl = new URL('/auth/callback', window.location.origin)
+      callbackUrl.searchParams.set('returnTo', targetPath)
+      const [data, error] = await apiClientPostRaw(
+        provider === 'google' ? '/auth/login/google' : '/auth/login/github',
+        { redirectTo: callbackUrl.toString() }
+      )
 
       if (error) throw error
-      if (data?.url) {
-        window.location.href = data.url
+      if (data && typeof data === 'object' && 'url' in data && data.url) {
+        window.location.href = String(data.url)
       }
     },
     []
@@ -120,9 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value: AuthContextValue = useMemo(
     () => ({
       user,
-      session,
-      accessToken: session?.access_token ?? null,
-      isAuthenticated: Boolean(session),
+      isAuthenticated: Boolean(user),
       isLoading,
       signUp,
       signInWithPassword,
@@ -131,7 +119,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signOut,
       hasRole,
     }),
-    [user, session, isLoading, signUp, signInWithPassword, signOut, hasRole, signInWithOAuth]
+    [user, isLoading, signUp, signInWithPassword, signOut, hasRole, signInWithOAuth]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

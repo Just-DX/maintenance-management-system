@@ -1,32 +1,10 @@
-import axios, { AxiosHeaders, type InternalAxiosRequestConfig } from 'axios'
-import { supabase } from '@plugins/supabase/client'
-import type { ParseAsResponse } from 'openapi-fetch'
-import type { PathsWithMethod } from 'openapi-typescript-helpers'
-import type { AppServiceTypes } from '@justdx/types'
-import type {
-  AppServiceAPIGetErrorResponse,
-  AppServiceAPIGetInit,
-  AppServiceAPIGetSuccessResponse,
-  AppServiceAPIPostErrorResponse,
-  AppServiceAPIPostInit,
-  AppServiceAPIPostSuccessResponse,
-} from './typed-client'
+import axios from 'axios'
 
 const baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
 
 const apiClient = axios.create({
   baseURL,
-})
-
-apiClient.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
-  const { data } = await supabase.auth.getSession()
-  const token = data.session?.access_token
-  if (token) {
-    const headers = AxiosHeaders.from(config.headers ?? {})
-    headers.set('Authorization', `Bearer ${token}`)
-    config.headers = headers
-  }
-  return config
+  withCredentials: true,
 })
 
 apiClient.interceptors.response.use(
@@ -41,17 +19,9 @@ apiClient.interceptors.response.use(
   }
 )
 
-export const apiClientGet = async <Path extends PathsWithMethod<AppServiceTypes.paths, 'get'>>(
-  path: Path
-): Promise<
-  [
-    ParseAsResponse<AppServiceAPIGetSuccessResponse<Path>, AppServiceAPIGetInit<Path>> | null,
-    Error | AppServiceAPIGetErrorResponse<Path> | null,
-  ]
-> => {
+export const apiClientGetRaw = async (path: string): Promise<[unknown | null, Error | null]> => {
   try {
-    const client = apiClient
-    const { data } = await client.get(path)
+    const { data } = await apiClient.get(path)
     return [data, null]
   } catch (e: unknown) {
     const err = e instanceof Error ? e : new Error(String(e))
@@ -59,18 +29,12 @@ export const apiClientGet = async <Path extends PathsWithMethod<AppServiceTypes.
   }
 }
 
-export const apiClientPost = async <Path extends PathsWithMethod<AppServiceTypes.paths, 'post'>>(
-  path: Path,
+export const apiClientPostRaw = async (
+  path: string,
   payload?: unknown
-): Promise<
-  [
-    ParseAsResponse<AppServiceAPIPostSuccessResponse<Path>, AppServiceAPIPostInit<Path>> | null,
-    Error | AppServiceAPIPostErrorResponse<Path> | null,
-  ]
-> => {
+): Promise<[unknown | null, Error | null]> => {
   try {
-    const client = apiClient
-    const { data } = await client.post(path, payload)
+    const { data } = await apiClient.post(path, payload)
     return [data, null]
   } catch (e: unknown) {
     const err = e instanceof Error ? e : new Error(String(e))

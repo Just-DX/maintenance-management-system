@@ -1,8 +1,9 @@
-import { Card, CardContent } from '@justdx/components/atoms/Card'
 import { Button } from '@justdx/components/atoms/Button'
+import { Card, CardContent } from '@justdx/components/atoms/Card'
 import { Separator } from '@justdx/components/atoms/Separator'
-import { Github, Shield } from 'lucide-react'
+import { Github } from 'lucide-react'
 
+import { Google } from '@justdx/components'
 import { LoginForm } from './components/LoginForm'
 import { LoginHeader } from './components/LoginHeader'
 import { Signup } from './components/Signup'
@@ -34,7 +35,7 @@ export function LoginPage() {
 
         <div className="flex flex-col gap-3">
           <Button variant="outline" className="w-full" onClick={() => signInWithGoogle()}>
-            <Shield className="mr-2 h-4 w-4" />
+            <Google className="mr-2 h-4 w-4" />
             Continue with Google
           </Button>
           <Button variant="outline" className="w-full" onClick={() => signInWithGithub()}>

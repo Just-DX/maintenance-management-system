@@ -13,6 +13,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
+      if (location.pathname === '/') return
       const returnTo = encodeURIComponent(location.pathname + (location.searchStr ?? ''))
       navigate({ to: '/', search: { returnTo } })
     }

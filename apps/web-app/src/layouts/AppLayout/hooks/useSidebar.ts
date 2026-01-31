@@ -1,17 +1,15 @@
 import { useSidebar as useSidebarComponent } from '@justdx/components'
 import { useAuth } from '@shared/auth'
-import { useLocation, useNavigate } from '@tanstack/react-router'
+import { useLocation } from '@tanstack/react-router'
 
 export function useSidebar() {
   const { user, signOut } = useAuth()
   const { isMobile } = useSidebarComponent()
   const location = useLocation()
-  const navigate = useNavigate()
   const pathname = location.pathname
 
   const handleSignOut = async () => {
     await signOut()
-    navigate({ to: '/', replace: true })
   }
 
   const checkIsActive = (href: string) => {

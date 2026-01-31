@@ -37,23 +37,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Return the authenticated user profile and roles */
-        get: operations["AppController_me"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/signup": {
         parameters: {
             query?: never;
@@ -65,6 +48,74 @@ export interface paths {
         put?: never;
         /** Create a new user (Supabase + local profile) */
         post: operations["AuthController_signup"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sign-in": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sign in with email and password (BFF cookie flow) */
+        post: operations["AuthController_signIn"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Complete OAuth/email callback and set auth cookies */
+        post: operations["AuthController_callback"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sign-out": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Clear auth cookies */
+        post: operations["AuthController_signOut"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Return the authenticated user profile and roles */
+        get: operations["AuthController_me"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -132,6 +183,45 @@ export interface components {
             /** @example janedoe */
             username: string;
         };
+        SignInDto: {
+            /** @example jane.doe@example.com */
+            email: string;
+            /** @example StrongP@ssw0rd! */
+            password: string;
+        };
+        UserRoleDto: {
+            /** Format: uuid */
+            siteId: string;
+            /** Format: uuid */
+            roleId: string;
+            code: string;
+            name: string;
+        };
+        UserDto: {
+            /** Format: uuid */
+            id: string;
+            email: string;
+            fullName: Record<string, never> | null;
+            avatar: Record<string, never> | null;
+            roles: components["schemas"]["UserRoleDto"][];
+        };
+        SignInResponseDto: {
+            user: components["schemas"]["UserDto"];
+            /** @description Unix timestamp (seconds) when the access token expires */
+            sessionExpiresAt: Record<string, never> | null;
+        };
+        AuthCallbackDto: {
+            accessToken: string;
+            refreshToken: string | null;
+            /** @description Unix timestamp (seconds) */
+            expiresAt: number | null;
+            /** @description Seconds until expiry */
+            expiresIn: number | null;
+        };
+        SignOutResponseDto: {
+            /** @example true */
+            success: boolean;
+        };
         OAuthLoginDto: {
             /**
              * @description Full URL to redirect back after provider login
@@ -186,23 +276,6 @@ export interface operations {
             };
         };
     };
-    AppController_me: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     AuthController_signup: {
         parameters: {
             query?: never;
@@ -222,6 +295,90 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SignupResponseDto"];
+                };
+            };
+        };
+    };
+    AuthController_signIn: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignInDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignInResponseDto"];
+                };
+            };
+        };
+    };
+    AuthController_callback: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AuthCallbackDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignInResponseDto"];
+                };
+            };
+        };
+    };
+    AuthController_signOut: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignOutResponseDto"];
+                };
+            };
+        };
+    };
+    AuthController_me: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserDto"];
                 };
             };
         };

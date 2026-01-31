@@ -3,6 +3,7 @@ import { appRoute } from '@routes/app/layout'
 import { workOrderDetailRoute } from '@routes/app/work-order-detail'
 import { workOrderRoute } from '@routes/app/work-orders'
 import { indexRoute } from '@routes/public'
+import { authCallbackRoute } from '@routes/public/auth-callback'
 import { forgotPasswordRoute } from '@routes/public/forgot-password'
 import { publicRoute } from '@routes/public/layout'
 import { resetPasswordRoute } from '@routes/public/reset-password'
@@ -11,7 +12,13 @@ import { createRouter } from '@tanstack/react-router'
 import { rootRoute } from './routes/root'
 
 const routeTree = rootRoute.addChildren([
-  publicRoute.addChildren([indexRoute, signupRoute, forgotPasswordRoute, resetPasswordRoute]),
+  publicRoute.addChildren([
+    indexRoute,
+    signupRoute,
+    forgotPasswordRoute,
+    resetPasswordRoute,
+    authCallbackRoute,
+  ]),
   appRoute.addChildren([dashboardRoute, workOrderRoute, workOrderDetailRoute]),
 ])
 

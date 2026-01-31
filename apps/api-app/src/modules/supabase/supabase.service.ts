@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import {
   createClient,
+  type AdminUserAttributes,
+  type Provider,
   type SupabaseClient,
   type User,
-  type AdminUserAttributes,
   type UserResponse,
-  type Provider,
 } from '@supabase/supabase-js'
 
 /**
@@ -16,8 +16,12 @@ import {
 @Injectable()
 export class SupabaseService {
   private client: SupabaseClient | undefined
+  private publicClient: SupabaseClient | undefined
+  private websiteUrl: string | undefined
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {
+    this.websiteUrl = this.configService.get<string>('WEBSITE_URL')
+  }
 
   private getClient(): SupabaseClient {
     if (this.client) return this.client
@@ -50,9 +54,48 @@ export class SupabaseService {
     return data.user
   }
 
+  private getPublicClient(): SupabaseClient {
+    if (this.publicClient) return this.publicClient
+
+    const url = this.configService.get<string>('SUPABASE_URL')
+    const anonKey = this.configService.get<string>('SUPABASE_ANON_KEY')
+
+    if (!url || !anonKey) {
+      throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY must be set')
+    }
+
+    this.publicClient = createClient(url, anonKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    })
+
+    return this.publicClient
+  }
+
+  async signInWithPassword(email: string, password: string) {
+    const client = this.getPublicClient()
+    return client.auth.signInWithPassword({ email, password })
+  }
+
+  private inviteUserByEmail(email: string): Promise<UserResponse> {
+    const client = this.getClient()
+    return client.auth.admin.inviteUserByEmail(email, {
+      redirectTo: `${this.websiteUrl}/auth/callback`,
+    })
+  }
+
   async createUser(attrs: AdminUserAttributes): Promise<UserResponse> {
     const client = this.getClient()
-    return client.auth.admin.createUser(attrs)
+    const user = await client.auth.admin.createUser(attrs)
+
+    // not await to avoid delaying the response
+    if (attrs.email) {
+      this.inviteUserByEmail(attrs.email)
+    }
+
+    return user
   }
 
   async getOAuthSignInUrl(provider: Provider, redirectTo: string): Promise<string> {
