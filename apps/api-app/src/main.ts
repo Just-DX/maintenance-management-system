@@ -9,6 +9,8 @@ import { AppModule } from './app.module'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
+  app.setGlobalPrefix('api')
+
   // Enable CORS
   app.enableCors({
     origin: true,
@@ -33,11 +35,11 @@ async function bootstrap() {
     .addBearerAuth()
     .build()
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, document)
+  SwaggerModule.setup('swagger', app, document)
 
   const port = process.env.PORT || 4002
   await app.listen(port)
   logger.info(`🚀 Main App API running on http://localhost:${port}`)
-  logger.info(`📚 Swagger docs at http://localhost:${port}/api`)
+  logger.info(`📚 Swagger docs at http://localhost:${port}/swagger`)
 }
 bootstrap()

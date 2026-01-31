@@ -8,12 +8,14 @@ import { forgotPasswordRoute } from '@routes/public/forgot-password'
 import { publicRoute } from '@routes/public/layout'
 import { resetPasswordRoute } from '@routes/public/reset-password'
 import { signupRoute } from '@routes/public/signup'
+import { welcomeRoute } from '@routes/welcome'
 import { createRouter } from '@tanstack/react-router'
 import { rootRoute } from './routes/root'
 
 const routeTree = rootRoute.addChildren([
   publicRoute.addChildren([
     indexRoute,
+    welcomeRoute,
     signupRoute,
     forgotPasswordRoute,
     resetPasswordRoute,

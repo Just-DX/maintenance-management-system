@@ -17,11 +17,11 @@ async function bootstrap() {
     .addBearerAuth()
     .build()
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api', app, document)
+  SwaggerModule.setup('swagger', app, document)
 
   const port = process.env.PORT || 4001
   await app.listen(port)
   logger.info(`🚀 Admin API running on http://localhost:${port}`)
-  logger.info(`📚 Swagger docs at http://localhost:${port}/api`)
+  logger.info(`📚 Swagger docs at http://localhost:${port}/swagger`)
 }
 bootstrap()

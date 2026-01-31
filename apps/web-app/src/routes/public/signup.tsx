@@ -5,6 +5,6 @@ import { publicRoute } from './layout'
 
 export const signupRoute = createRoute({
   getParentRoute: () => publicRoute,
-  path: '/signup',
+  path: '/auth/signup',
   component: SignupPage,
 })

@@ -4,8 +4,8 @@ import { AutoFields, type AutoFieldsProps } from '@justdx/components/molecules/A
 import { ArrowRight, Loader2 } from 'lucide-react'
 import type { SubmitHandler, UseFormReturn } from 'react-hook-form'
 
-import { Link } from '@tanstack/react-router'
 import type { LoginFormData } from '@justdx/common'
+import { Link } from '@tanstack/react-router'
 import { loginCopy } from '../constants/copy'
 
 interface LoginFormProps {
@@ -34,7 +34,7 @@ export function LoginForm({ form, fields, onSubmit, isSubmitting, submitLabel }:
           <AutoFields form={form} fields={rememberMeField} />
 
           <Button variant="link" asChild className="px-0 text-end">
-            <Link to="/forgot-password">{loginCopy.forgotPassword}</Link>
+            <Link to="/auth/forgot-password">{loginCopy.forgotPassword}</Link>
           </Button>
         </div>
 

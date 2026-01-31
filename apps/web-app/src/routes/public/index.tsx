@@ -4,6 +4,6 @@ import { publicRoute } from './layout'
 
 export const indexRoute = createRoute({
   getParentRoute: () => publicRoute,
-  path: '/',
+  path: '/auth/login',
   component: LoginPage,
 })

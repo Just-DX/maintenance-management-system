@@ -11,7 +11,7 @@ export function Signup() {
       <p className="text-center">
         {loginCopy.signup.prompt}{' '}
         <Button variant="link" asChild className="px-0">
-          <Link to="/signup">{loginCopy.signup.action}</Link>
+          <Link to="/auth/signup">{loginCopy.signup.action}</Link>
         </Button>
       </p>
 

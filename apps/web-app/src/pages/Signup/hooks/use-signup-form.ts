@@ -8,7 +8,7 @@ import { type SignupFormData, signupSchema } from '../config/schema'
 
 export const useSignupForm = () => {
   const navigate = useNavigate()
-  const { signUp } = useAuth()
+  const { signUp, signInWithGoogle, signInWithGithub } = useAuth()
 
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
@@ -36,5 +36,7 @@ export const useSignupForm = () => {
     form,
     onSubmit,
     isSubmitting: form.formState.isSubmitting,
+    signInWithGoogle,
+    signInWithGithub,
   }
 }

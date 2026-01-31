@@ -29,26 +29,25 @@ export class UserRepository {
     email: string
     fullName: string
     username: string
+    avatar?: string | null
   }) {
-    const { id, email, fullName, username } = payload
+    const { id, email, fullName, username, avatar } = payload
+    const baseData = {
+      email,
+      fullName,
+      username,
+      isActive: true,
+      isDeleted: false,
+      ...(avatar !== undefined ? { avatar } : {}),
+    }
 
     return prisma.$transaction(async (tx) => {
       const user = await tx.user.upsert({
         where: { id },
-        update: {
-          email,
-          fullName,
-          username,
-          isActive: true,
-          isDeleted: false,
-        },
+        update: baseData,
         create: {
           id,
-          email,
-          fullName,
-          username,
-          isActive: true,
-          isDeleted: false,
+          ...baseData,
         },
         include: { userRoles: { include: { role: true } } },
       })

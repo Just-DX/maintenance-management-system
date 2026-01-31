@@ -1,8 +1,8 @@
-import { LeftPanel } from './components/LeftPanel'
+import { LoadingLayout } from '@layouts/LoadingLayout'
+import { useAuth } from '@shared/auth'
 import { useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { useAuth } from '@shared/auth'
-import { LoadingLayout } from '@layouts/LoadingLayout'
+import { LeftPanel } from './components/LeftPanel'
 
 export function AuthLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()

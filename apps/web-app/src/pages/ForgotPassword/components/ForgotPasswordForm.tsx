@@ -36,7 +36,7 @@ export function ForgotPasswordForm({
 
         <div className="text-center text-sm">
           <Button variant="link" asChild className="px-0">
-            <Link to="/" className="flex items-center">
+            <Link to="/auth/login" className="flex items-center">
               <ArrowLeft className="mr-2 h-4 w-4" />
               {forgotPasswordCopy.backToLogin}
             </Link>

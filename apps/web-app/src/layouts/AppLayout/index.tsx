@@ -1,10 +1,10 @@
 import { AppShell } from '@justdx/components/organisms/AppShell'
-import { Header } from './components/Header'
-import { Sidebar } from './components/Sidebar'
+import { LoadingLayout } from '@layouts/LoadingLayout'
 import { useAuth } from '@shared/auth'
 import { useLocation, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { LoadingLayout } from '@layouts/LoadingLayout'
+import { Header } from './components/Header'
+import { Sidebar } from './components/Sidebar'
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -12,10 +12,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      if (location.pathname === '/') return
+    if (!isLoading && !isAuthenticated && !location.searchStr?.includes('returnTo=')) {
       const returnTo = encodeURIComponent(location.pathname + (location.searchStr ?? ''))
-      navigate({ to: '/', search: { returnTo } })
+      navigate({ to: '/auth/login', search: { returnTo } })
     }
   }, [isLoading, isAuthenticated, navigate, location.pathname, location.searchStr])
 

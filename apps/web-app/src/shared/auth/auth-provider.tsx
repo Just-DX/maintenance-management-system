@@ -31,11 +31,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    if (!user) {
-      setIsLoading(false)
-      return
-    }
-
     let active = true
     loadProfile()
       .catch(() => {
@@ -79,23 +74,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }, [])
 
-  const signInWithOAuth = useCallback(
-    async (provider: 'google' | 'github', redirectTo?: string) => {
-      const targetPath = redirectTo ?? '/dashboard'
-      const callbackUrl = new URL('/auth/callback', window.location.origin)
-      callbackUrl.searchParams.set('returnTo', targetPath)
-      const [data, error] = await apiClientPostRaw(
-        provider === 'google' ? '/auth/login/google' : '/auth/login/github',
-        { redirectTo: callbackUrl.toString() }
-      )
+  const signInWithOAuth = useCallback(async (provider: 'google' | 'github') => {
+    const callbackUrl = new URL('/auth/callback', window.location.origin)
+    const [data, error] = await apiClientPostRaw(
+      provider === 'google' ? '/auth/login/google' : '/auth/login/github',
+      { redirectTo: callbackUrl.toString() }
+    )
 
-      if (error) throw error
-      if (data && typeof data === 'object' && 'url' in data && data.url) {
-        window.location.href = String(data.url)
-      }
-    },
-    []
-  )
+    if (error) throw error
+    if (data && typeof data === 'object' && 'url' in data && data.url) {
+      window.location.href = String(data.url)
+    }
+  }, [])
 
   const hasRole = useCallback(
     (roles: RoleCode[], siteId?: string) => {
@@ -114,8 +104,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isLoading,
       signUp,
       signInWithPassword,
-      signInWithGoogle: (redirectTo?: string) => signInWithOAuth('google', redirectTo),
-      signInWithGithub: (redirectTo?: string) => signInWithOAuth('github', redirectTo),
+      signInWithGoogle: () => signInWithOAuth('google'),
+      signInWithGithub: () => signInWithOAuth('github'),
       signOut,
       hasRole,
     }),

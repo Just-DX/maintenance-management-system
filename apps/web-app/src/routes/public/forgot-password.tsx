@@ -5,6 +5,6 @@ import { publicRoute } from './layout'
 
 export const forgotPasswordRoute = createRoute({
   getParentRoute: () => publicRoute,
-  path: '/forgot-password',
+  path: '/auth/forgot-password',
   component: ForgotPasswordPage,
 })

@@ -5,6 +5,6 @@ import { publicRoute } from './layout'
 
 export const resetPasswordRoute = createRoute({
   getParentRoute: () => publicRoute,
-  path: '/reset-password',
+  path: '/auth/reset-password',
   component: ResetPasswordPage,
 })

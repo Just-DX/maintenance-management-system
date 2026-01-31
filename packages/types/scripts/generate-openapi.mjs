@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url'
 import openapiTS, { astToString } from 'openapi-typescript'
 
 const PRESETS = {
-  app: 'http://localhost:4002/api-json',
-  admin: 'http://localhost:4001/api-json',
+  app: 'http://localhost:4002/swagger-json',
+  admin: 'http://localhost:4001/swagger-json',
 }
 
 // CLI usage:
